@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
 import About from "./sections/About";
 import Projects from "./sections/Projects";
+import Services from "./sections/Services";
+import Blog from "./sections/Blog";
+import Contact from "./sections/Contact";
+import PromoVideos from "./sections/Promo-Videos";
+import Clients from "./sections/Clients";
+import Footer from "./Footer";
 
 class ContentWrapper extends Component {
     render() {
@@ -17,11 +23,17 @@ class ContentWrapper extends Component {
                 {/*<!-- Projects -->*/}
                 <Projects/>
                 {/*<!-- Services -->*/}
+                <Services/>
                 {/*<!-- Blog -->*/}
+                <Blog/>
                 {/*<!-- Contact -->*/}
+                <Contact/>
                 {/*<!-- Promo video - Testiominals -->*/}
+                <PromoVideos/>
                 {/*<!-- Clients -->*/}
+                <Clients/>
                 {/*<!-- Footer -->*/}
+                <Footer/>
             </div>
         );
     }

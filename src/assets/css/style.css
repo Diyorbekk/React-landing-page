@@ -1918,7 +1918,8 @@ button.mfp-arrow {
     border: 1px solid #f4f4f4;
     color: #777;
     border-radius: 100%;
-    margin-right: 3px;
+    margin-right: 6px;
+    margin-left: 6px;
     -webkit-transition: all .4s;
     -o-transition: all .4s;
     transition: all .4s;
