@@ -23,13 +23,13 @@ class Projects extends Component {
                                         <img src={project_1} alt="Projects"/></div>
                                     <div className="con">
                                         <h6>
-                                            <Link to="/">Interior</Link>
+                                            <Link to="/Project">Interior</Link>
                                         </h6>
                                         <h5>
-                                            <Link to="/">Cotton House</Link>
+                                            <Link to="/Project">Cotton House</Link>
                                         </h5>
                                         <div className="line"/>
-                                        <Link to="/">
+                                        <Link to="/Project">
                                             <i className="ti-arrow-right"/>
                                         </Link>
                                     </div>

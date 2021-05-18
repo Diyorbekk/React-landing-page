@@ -6,35 +6,37 @@ import Blog from "./sections/Blog";
 import Contact from "./sections/Contact";
 import PromoVideos from "./sections/Promo-Videos";
 import Clients from "./sections/Clients";
-import Footer from "./Footer";
+import Header from "./header";
 
 class ContentWrapper extends Component {
     render() {
         return (
-            <div className="content-wrapper">
-                {/*<!-- Lines -->*/}
-                <section className="content-lines-wrapper">
-                    <div className="content-lines-inner">
-                        <div className="content-lines"/>
-                    </div>
-                </section>
-                {/*<!-- About -->*/}
-                <About/>
-                {/*<!-- Projects -->*/}
-                <Projects/>
-                {/*<!-- Services -->*/}
-                <Services/>
-                {/*<!-- Blog -->*/}
-                <Blog/>
-                {/*<!-- Contact -->*/}
-                <Contact/>
-                {/*<!-- Promo video - Testiominals -->*/}
-                <PromoVideos/>
-                {/*<!-- Clients -->*/}
-                <Clients/>
-                {/*<!-- Footer -->*/}
-                <Footer/>
-            </div>
+            <React.Fragment>
+                <Header/>
+                <div className="content-wrapper">
+                    {/*<!-- Lines -->*/}
+                    <section className="content-lines-wrapper">
+                        <div className="content-lines-inner">
+                            <div className="content-lines"/>
+                        </div>
+                    </section>
+                    {/*<!-- About -->*/}
+                    <About/>
+                    {/*<!-- Projects -->*/}
+                    <Projects/>
+                    {/*<!-- Services -->*/}
+                    <Services/>
+                    {/*<!-- Blog -->*/}
+                    <Blog/>
+                    {/*<!-- Contact -->*/}
+                    <Contact/>
+                    {/*<!-- Promo video - Testiominals -->*/}
+                    <PromoVideos/>
+                    {/*<!-- Clients -->*/}
+                    <Clients/>
+                    {/*<!-- Footer -->*/}
+                </div>
+            </React.Fragment>
         );
     }
 }

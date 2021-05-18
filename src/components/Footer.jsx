@@ -58,7 +58,7 @@ class Footer extends Component {
                                 </div>
                             </div>
                             <div className="col-md-4">
-                                <p className="right"><a href="#">Terms &amp; Conditions</a></p>
+                                <p className="right"><span>Terms &amp; Conditions</span></p>
                             </div>
                         </div>
                     </div>
