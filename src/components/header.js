@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import slider_1 from '../assets/img/slider/1.jpg';
 import slider_2 from '../assets/img/slider/2.jpg';
 
+
 class Header extends Component {
     render() {
         return (
@@ -15,9 +16,9 @@ class Header extends Component {
                                     <div className="o-hidden">
                                         <h1>Innovate Desing in Toronto</h1>
                                         <hr/>
-                                            <p>Architecture viverra tellus nec massa dictum the euismoe.
-                                                <br/>Curabitur viverra the posuere aukue velit.
-                                            </p>
+                                        <p>Architecture viverra tellus nec massa dictum the euismoe.
+                                            <br/>Curabitur viverra the posuere aukue velit.
+                                        </p>
                                     </div>
                                 </div>
                             </div>

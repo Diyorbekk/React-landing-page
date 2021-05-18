@@ -4,13 +4,30 @@ import slider_1 from '../assets/img/slider/1.jpg'
 import slider_2 from '../assets/img/slider/2.jpg'
 import slider_3 from '../assets/img/slider/3.jpg'
 import slider_4 from '../assets/img/slider/4.jpg'
+import Auxiliary from "../Auxiliary/Auxiliary";
+import $ from 'jquery'
 
 class ProjectPage extends Component {
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+    }
+
     render() {
+        $(document).ready(function() {
+            var pageSection = $(".bg-img, section");
+            pageSection.each(function(indx){
+                if ($(this).attr("data-background")){
+                    $(this).css("background-image", "url(" + $(this).data("background") + ")");
+                }
+            })
+        })
+
         return (
-            <React.Fragment>
-                <div className="banner-header banner-img valign bg-img bg-fixed" data-overlay-light="3"
-                         data-background={Banner}/>
+            <Auxiliary>
+                <div className="banner-header banner-img valign bg-img bg-fixed"
+                     data-overlay-light="3"
+                     data-background={Banner}/>
 
                 <div className="section-padding2">
                     <div className="container">
@@ -59,7 +76,7 @@ class ProjectPage extends Component {
                                     <div className="gallery-box">
                                         <div className="gallery-img">
                                             <img src={slider_3} className="img-fluid mx-auto d-block" alt="work-img"/>
-                                            </div>
+                                        </div>
                                     </div>
                                 </a>
                             </div>
@@ -67,7 +84,8 @@ class ProjectPage extends Component {
                                 <a href={slider_4} title="Architecture" className="img-zoom">
                                     <div className="gallery-box">
                                         <div className="gallery-img">
-                                            <img src={slider_4} className="img-fluid mx-auto d-block" alt="work-img"/></div>
+                                            <img src={slider_4} className="img-fluid mx-auto d-block" alt="work-img"/>
+                                        </div>
                                     </div>
                                 </a>
                             </div>
@@ -92,7 +110,7 @@ class ProjectPage extends Component {
                         </div>
                     </div>
                 </div>
-            </React.Fragment>
+            </Auxiliary>
         );
     }
 }

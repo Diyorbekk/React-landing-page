@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Header from "./header";
 import About from "./sections/About";
 import Projects from "./sections/Projects";
 import Services from "./sections/Services";
@@ -6,7 +7,6 @@ import Blog from "./sections/Blog";
 import Contact from "./sections/Contact";
 import PromoVideos from "./sections/Promo-Videos";
 import Clients from "./sections/Clients";
-import Header from "./header";
 
 class ContentWrapper extends Component {
     render() {
