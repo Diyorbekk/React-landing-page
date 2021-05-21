@@ -2067,9 +2067,9 @@ button.mfp-arrow {
     top: 0;
     left: 0;
     background: white;
-    -webkit-transition: all 0.5s;
-    -o-transition: all 0.5s;
-    transition: all 0.5s;
+    -webkit-transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+    -o-transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
 }
 .pace.pace-inactive {
     width: 100vw;

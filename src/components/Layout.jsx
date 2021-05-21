@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import NavigationBar from "../components/navbar";
 import Footer from "../components/Footer";
+import PreLoader from "./preLoader";
 
 class Layout extends Component {
     render() {
@@ -9,6 +10,7 @@ class Layout extends Component {
                 <NavigationBar/>
                 {this.props.children}
                 <Footer/>
+                <PreLoader/>
             </React.Fragment>
         );
     }
