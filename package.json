@@ -13,17 +13,24 @@
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.0",
     "react-dom": "^17.0.2",
+    "react-loadingg": "^1.7.2",
+    "react-owl-carousel2": "^0.3.0",
+    "react-preloaders": "^3.0.3",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
+    "react-router-hash-link": "^2.4.3",
     "react-router-scroll-top": "^0.2.1",
     "react-scripts": "4.0.3",
+    "waypoints": "^4.0.1",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "cross-env NODE_ENV=development react-scripts start",
+    "build": "cross-env NODE_ENV=production react-scripts build",
+    "build-develop": "cp ./.env.develop .env && cross-env NODE_ENV=production CI=false react-scripts build",
+    "build-master": "cp ./.env.master .env && cross-env NODE_ENV=production CI=false react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "test-coverage": "react-scripts test --env=jsdom --coverage"
   },
   "eslintConfig": {
     "extends": [
@@ -45,6 +52,7 @@
   },
   "devDependencies": {
     "redux": "^4.1.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "cross-env": "^7.0.3"
   }
 }

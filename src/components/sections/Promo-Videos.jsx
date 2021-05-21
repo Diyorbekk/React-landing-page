@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import OwlCarousel from 'react-owl-carousel2';
 import quot from '../../assets/img/quot.png'
 import team_1 from '../../assets/img/team/1.jpg'
 import team_2 from '../../assets/img/team/2.jpg'
@@ -7,6 +8,27 @@ import team_4 from '../../assets/img/team/4.jpg'
 
 class PromoVideos extends Component {
     render() {
+        const options = {
+            loop: true,
+            margin: 30,
+            mouseDrag: true,
+            autoplay: false,
+            dots: true,
+            nav: false,
+            navText: ["<span class='lnr ti-angle-left'></span>", "<span class='lnr ti-angle-right'></span>"],
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                600: {
+                    items: 1
+                },
+                1000: {
+                    items: 1
+                }
+            }
+        }
+
         return (
             <section className="testimonials">
                 <div className="background bg-img bg-fixed section-padding pb-0" data-background="img/banner2.jpg"
@@ -34,11 +56,11 @@ class PromoVideos extends Component {
                                 </div>
                             </div>
                             <div className="col-md-5 offset-md-1">
-                                <div className="testimonials-box animate-box" data-animate-effect="fadeInUp">
+                                <div className="testimonials-box animate-box" data-animate-effect="5">
                                     <div className="head-box">
                                         <h4>What Client's Say?</h4>
                                     </div>
-                                    <div className="owl-carousel owl-theme">
+                                    <OwlCarousel clasname="owl-carousel owl-theme" options={options}>
                                         <div className="item">
                                             <span className="quote">
                                             <img src={quot} alt="quot"/>
@@ -99,7 +121,7 @@ class PromoVideos extends Component {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </OwlCarousel>
                                 </div>
                             </div>
                         </div>

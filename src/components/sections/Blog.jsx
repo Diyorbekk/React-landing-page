@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import OwlCarousel from 'react-owl-carousel2';
 import slider_1 from '../../assets/img/slider/1.jpg'
 import slider_2 from '../../assets/img/slider/2.jpg'
 import slider_3 from '../../assets/img/slider/3.jpg'
@@ -8,6 +9,25 @@ import {Link} from "react-router-dom";
 
 class Blog extends Component {
     render() {
+        const options = {
+            loop: true,
+            margin: 30,
+            mouseDrag: true,
+            autoplay: false,
+            dots: true,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 2
+                },
+                1000: {
+                    items: 2
+                }
+            }
+        }
+
         return (
             <section id="blog" className="bauen-blog section-padding" data-scroll-index="4">
                 <div className="container">
@@ -18,7 +38,7 @@ class Blog extends Component {
                     </div>
                     <div className="row">
                         <div className="col-md-12">
-                            <div className="owl-carousel owl-theme">
+                            <OwlCarousel clasname="owl-carousel owl-theme" options={options}>
                                 <div className="item">
                                     <div className="position-re o-hidden">
                                         <img src={slider_1} alt="slider"/>
@@ -68,7 +88,7 @@ class Blog extends Component {
                                         </h5>
                                     </div>
                                 </div>
-                            </div>
+                            </OwlCarousel>
                         </div>
                     </div>
                 </div>
