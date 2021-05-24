@@ -10,7 +10,8 @@ function NavigationBar(props) {
 
     var nav = null
 
-    if (window.location.href.indexOf('home') > -1) {
+
+    if (location.pathname === '/') {
         nav = (
             <React.Fragment>
                 <li className="nav-item">
@@ -52,26 +53,26 @@ function NavigationBar(props) {
                 <li className="nav-item">
                     <HashLink
                         className="nav-link nav-color"
-                        data-active="/home" to="/home#home"
+                        data-active="/home" to="/#home"
                         scroll={(el) => el.scrollIntoView({ behavior: 'smooth' })}
                     >
                         Home
                     </HashLink>
                 </li>
                 <li className="nav-item">
-                    <HashLink className="nav-link nav-color" data-active="/about"  to="/home#about">About</HashLink>
+                    <HashLink className="nav-link nav-color" data-active="/about"  to="/#about">About</HashLink>
                 </li>
                 <li className="nav-item">
-                    <HashLink className="nav-link nav-color" data-active="/project" to="/home#projects">Projects</HashLink>
+                    <HashLink className="nav-link nav-color" data-active="/project" to="/#projects">Projects</HashLink>
                 </li>
                 <li className="nav-item">
-                    <HashLink className="nav-link nav-color" data-active="/services" to="/home#services">Services</HashLink>
+                    <HashLink className="nav-link nav-color" data-active="/services" to="/#services">Services</HashLink>
                 </li>
                 <li className="nav-item">
-                    <HashLink className="nav-link nav-color" data-active="/blog" to="/home#blog">Blog</HashLink>
+                    <HashLink className="nav-link nav-color" data-active="/blog" to="/#blog">Blog</HashLink>
                 </li>
                 <li className="nav-item">
-                    <HashLink className="nav-link nav-color" data-active="/contact" to="/home#contact">Contact</HashLink>
+                    <HashLink className="nav-link nav-color" data-active="/contact" to="/#contact">Contact</HashLink>
                 </li>
             </React.Fragment>
         )

@@ -212,6 +212,13 @@ $(document).ready(function () {
         $('#preloader').delay(500).fadeOut(800);
     });
 
+    /*
+[Core Script]
+Project: AppForms - Modern & Responsive Forms
+Version: 1.0
+*/
+
+
     // Animation
 /*    var contentWayPoint = function () {
         $('.animate-box').waypoint(function (direction) {

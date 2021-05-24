@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Redirect, Route, Switch, useParams} from 'react-router-dom'
+import {Route, Switch} from 'react-router-dom'
 import ScrollToTop from 'react-router-scroll-top'
 import ToTop from "./components/UI/ToTopButton";
 import Contents from "./components/contents";
@@ -10,6 +10,7 @@ import './assets/css/style.css';
 import './customHooks/importScript';
 import {removeScript} from "./customHooks/removeScript";
 import {appendScript} from "./customHooks/importScript";
+import AdminPanel from "./components/sections/AdminPanel";
 
 class App extends Component {
     componentDidMount() {
@@ -49,34 +50,20 @@ class App extends Component {
     }
 
 
-
     render() {
 
-        function Child() {
-            // We can use the `useParams` hook here to access
-            // the dynamic pieces of the URL.
-            let { id } = useParams();
-
-            return (
-                <div>
-                    <h3>ID: {id}</h3>
-                </div>
-            );
-        }
-
         return (
-            <Switch>
-                <Layout>
-                    <ToTop/>
-                    <ScrollToTop>
-                        <Route path="/all-project/:id" children={<Child />}/>
-                        <Route path="/project" component={ProjectPage}/>
-                        <Route path="/home" component={Contents}/>
-                        <Redirect from='/' to="/home"/>
-                    </ScrollToTop>
+                <Switch>
+                    <Route exact path="/login" children={<AdminPanel/>}/>
+                    <Layout>
+                        <ToTop/>
+                        <ScrollToTop>
 
-                </Layout>
-            </Switch>
+                            <Route path="/project" component={ProjectPage}/>
+                            <Route exact path="/" component={Contents}/>
+                        </ScrollToTop>
+                    </Layout>
+                </Switch>
         );
     }
 
