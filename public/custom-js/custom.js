@@ -295,9 +295,7 @@ $(document).ready(function () {
         }
     });
 
-    //  YouTubePopUp
-    $("a.vid").YouTubePopUp();
-
+/*
     // MagnificPopup
     $(".img-zoom").magnificPopup({
         type: "image"
@@ -316,7 +314,7 @@ $(document).ready(function () {
         , removalDelay: 300
         , preloader: false
         , fixedContentPos: false
-    });
+    });*/
 
     //  Scroll back to top
     var progressPath = document.querySelector('.progress-wrap path');

@@ -1,8 +1,8 @@
 import React, {Component} from "react";
-import {Redirect, Route, Switch} from 'react-router-dom'
+import {Redirect, Route, Switch, useParams} from 'react-router-dom'
 import ScrollToTop from 'react-router-scroll-top'
 import ToTop from "./components/UI/ToTopButton";
-import ContentWrapper from "./components/content-wrapper";
+import Contents from "./components/contents";
 import Layout from "./components/Layout";
 import ProjectPage from "./components/ProjectPage";
 import './assets/css/plugins.css';
@@ -21,7 +21,6 @@ class App extends Component {
         appendScript("custom-js/jquery-migrate-3.0.0.min.js");
         appendScript("custom-js/jquery.magnific-popup.js");
         appendScript("custom-js/modernizr-2.6.2.min.js");
-        appendScript("custom-js/YouTubePopUp.js");
         appendScript("custom-js/custom.js");
     }
 
@@ -34,7 +33,6 @@ class App extends Component {
         appendScript("custom-js/jquery-migrate-3.0.0.min.js");
         appendScript("custom-js/jquery.magnific-popup.js");
         appendScript("custom-js/modernizr-2.6.2.min.js");
-        appendScript("custom-js/YouTubePopUp.js");
         appendScript("custom-js/custom.js");
     }
 
@@ -47,18 +45,33 @@ class App extends Component {
         removeScript("custom-js/jquery-migrate-3.0.0.min.js");
         removeScript("custom-js/jquery.magnific-popup.js");
         removeScript("custom-js/modernizr-2.6.2.min.js");
-        removeScript("custom-js/YouTubePopUp.js");
         removeScript("custom-js/custom.js");
     }
 
+
+
     render() {
+
+        function Child() {
+            // We can use the `useParams` hook here to access
+            // the dynamic pieces of the URL.
+            let { id } = useParams();
+
+            return (
+                <div>
+                    <h3>ID: {id}</h3>
+                </div>
+            );
+        }
+
         return (
             <Switch>
                 <Layout>
                     <ToTop/>
                     <ScrollToTop>
+                        <Route path="/all-project/:id" children={<Child />}/>
                         <Route path="/project" component={ProjectPage}/>
-                        <Route path="/home" component={ContentWrapper}/>
+                        <Route path="/home" component={Contents}/>
                         <Redirect from='/' to="/home"/>
                     </ScrollToTop>
 

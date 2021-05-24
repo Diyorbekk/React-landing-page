@@ -4,27 +4,47 @@ import slider_1 from '../assets/img/slider/1.jpg'
 import slider_2 from '../assets/img/slider/2.jpg'
 import slider_3 from '../assets/img/slider/3.jpg'
 import slider_4 from '../assets/img/slider/4.jpg'
-import Auxiliary from "../Auxiliary/Auxiliary";
 import $ from 'jquery'
+import {GalleryItem, LightBoxGallery} from "@sekmet/react-magnific-popup";
+import ContentWrapper from "./content-wrapper";
+import Footer from "./Footer";
+
+const config = {
+    delegate: 'a',
+    type: 'image',
+    tLoading: 'Loading image #%curr%...',
+    mainClass: 'mfp-fade mfp-img-mobile',
+    gallery: {
+        enabled: true,
+        navigateByImgClick: true,
+        preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
+    },
+    image: {
+        tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
+        titleSrc: function (item) {
+            return item.el.attr('title') + '<small>by Marsel Van Oosten</small>';
+        }
+    }
+}
+
 
 class ProjectPage extends Component {
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-
-    }
-
     render() {
-        $(document).ready(function() {
+        $(document).ready(function () {
+
+            $(this).attr("data-background")
             var pageSection = $(".bg-img, section");
-            pageSection.each(function(indx){
-                if ($(this).attr("data-background")){
+            pageSection.each(function (indx) {
+                if ($(this).attr("data-background")) {
                     $(this).css("background-image", "url(" + $(this).data("background") + ")");
                 }
             })
         })
 
+
         return (
-            <Auxiliary>
+            <ContentWrapper>
                 <div className="banner-header banner-img valign bg-img bg-fixed"
                      data-overlay-light="3"
                      data-background={Banner}/>
@@ -53,42 +73,39 @@ class ProjectPage extends Component {
                             </div>
                         </div>
                         <div className="row mt-30">
-                            <div className="col-md-6 gallery-item">
-                                <a href={slider_1} title="Architecture" className="img-zoom">
-                                    <div className="gallery-box">
-                                        <div className="gallery-img">
-                                            <img src={slider_1} className="img-fluid mx-auto d-block" alt="work-img"/>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div className="col-md-6 gallery-item">
-                                <a href={slider_2} title="Architecture" className="img-zoom">
-                                    <div className="gallery-box">
-                                        <div className="gallery-img">
-                                            <img src={slider_2} className="img-fluid mx-auto d-block" alt="work-img"/>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div className="col-md-6 gallery-item">
-                                <a href={slider_3} title="Architecture" className="img-zoom">
-                                    <div className="gallery-box">
-                                        <div className="gallery-img">
-                                            <img src={slider_3} className="img-fluid mx-auto d-block" alt="work-img"/>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div className="col-md-6 gallery-item">
-                                <a href={slider_4} title="Architecture" className="img-zoom">
-                                    <div className="gallery-box">
-                                        <div className="gallery-img">
-                                            <img src={slider_4} className="img-fluid mx-auto d-block" alt="work-img"/>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
+                            <LightBoxGallery
+                                className="popup-gallery"
+                                config={config}
+                            >
+                                <GalleryItem
+                                    className="col-md-6 gallery-item"
+                                    href={slider_1}
+                                    title="Architecture"
+                                >
+                                    <img src={slider_1} className="img-fluid mx-auto d-block" alt="work-img"/>
+                                </GalleryItem>
+                                <GalleryItem
+                                    className="col-md-6 gallery-item"
+                                    href={slider_2}
+                                    title="Architecture"
+                                >
+                                    <img src={slider_2} className="img-fluid mx-auto d-block" alt="work-img"/>
+                                </GalleryItem>
+                                <GalleryItem
+                                    className="col-md-6 gallery-item"
+                                    href={slider_3}
+                                    title="Architecture"
+                                >
+                                    <img src={slider_3} className="img-fluid mx-auto d-block" alt="work-img"/>
+                                </GalleryItem>
+                                <GalleryItem
+                                    className="col-md-6 gallery-item"
+                                    href={slider_4}
+                                    title="Architecture"
+                                >
+                                    <img src={slider_4} className="img-fluid mx-auto d-block" alt="work-img"/>
+                                </GalleryItem>
+                            </LightBoxGallery>
                         </div>
                     </div>
                 </div>
@@ -110,7 +127,10 @@ class ProjectPage extends Component {
                         </div>
                     </div>
                 </div>
-            </Auxiliary>
+
+                {/*<!-- Footer -->*/}
+                <Footer/>
+            </ContentWrapper>
         );
     }
 }

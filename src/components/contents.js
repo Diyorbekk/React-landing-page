@@ -7,21 +7,16 @@ import Blog from "./sections/Blog";
 import Contact from "./sections/Contact";
 import PromoVideos from "./sections/Promo-Videos";
 import Clients from "./sections/Clients";
+import ContentWrapper from "./content-wrapper";
+import Footer from "./Footer";
 
 
-
-class ContentWrapper extends Component {
+class Contents extends Component {
     render() {
         return (
             <React.Fragment>
                 <Header/>
-                <div className="content-wrapper">
-                    {/*<!-- Lines -->*/}
-                    <section className="content-lines-wrapper">
-                        <div className="content-lines-inner">
-                            <div className="content-lines"/>
-                        </div>
-                    </section>
+                <ContentWrapper>
                     {/*<!-- About -->*/}
                     <About/>
                     {/*<!-- Projects -->*/}
@@ -37,10 +32,11 @@ class ContentWrapper extends Component {
                     {/*<!-- Clients -->*/}
                     <Clients/>
                     {/*<!-- Footer -->*/}
-                </div>
+                    <Footer/>
+                </ContentWrapper>
             </React.Fragment>
         );
     }
 }
 
-export default ContentWrapper;
+export default Contents;

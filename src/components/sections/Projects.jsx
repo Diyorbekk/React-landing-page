@@ -63,13 +63,13 @@ class Projects extends Component {
                                             <img src={project_2} alt="Projects"/></div>
                                         <div className="con">
                                             <h6>
-                                                <Link to="/">Exterior</Link>
+                                                <Link to="/all-project/1">Exterior</Link>
                                             </h6>
                                             <h5>
-                                                <Link to="/">Armada Center</Link>
+                                                <Link to="/all-project/1">Armada Center</Link>
                                             </h5>
-                                            <div className="line"/>
-                                            <Link to="/">
+                                            <div className="/all-project/1"/>
+                                            <Link to="/all-project/1">
                                                 <i className="ti-arrow-right"/>
                                             </Link>
                                         </div>
@@ -111,6 +111,7 @@ class Projects extends Component {
                     </div>
                 </div>
             </section>
+
         );
     }
 }
