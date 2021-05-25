@@ -15,7 +15,7 @@ const Login = (props) => {
                                 <label>Email</label>
                                 <input type="text" autoFocus required value={email}
                                        onChange={(e) => setEmail(e.target.value)}/>
-                                <small className="error-form">{emailError}</small>
+                                <small className="error-form text-danger">{emailError}</small>
                             </div>
 
                             <div className="login-container_group">
@@ -26,7 +26,7 @@ const Login = (props) => {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
-                                <small className="error-form">{passwordError}</small>
+                                <small className="error-form text-danger">{passwordError}</small>
                             </div>
                         </form>
                         <div className="container-btn">
