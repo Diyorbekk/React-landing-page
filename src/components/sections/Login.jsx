@@ -4,6 +4,15 @@ const Login = (props) => {
 
     const {email, setEmail, password, setPassword, handleLogin, handleSignUp, hasAccount, setHasAccount, emailError, passwordError} = props
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            if (hasAccount) {
+                handleSignUp()
+            }else {
+                handleLogin()
+            }
+        }
+    }
     return (
         <section className="login">
             <div className="login-wrapper">
@@ -14,7 +23,9 @@ const Login = (props) => {
                             <div className="login-container_group">
                                 <label>Email</label>
                                 <input type="text" autoFocus required value={email}
-                                       onChange={(e) => setEmail(e.target.value)}/>
+                                       onChange={(e) => setEmail(e.target.value)}
+                                       onKeyDown={handleKeyDown}
+                                />
                                 <small className="error-form text-danger">{emailError}</small>
                             </div>
 
@@ -25,6 +36,7 @@ const Login = (props) => {
                                     required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
+                                    onKeyDown={handleKeyDown}
                                 />
                                 <small className="error-form text-danger">{passwordError}</small>
                             </div>

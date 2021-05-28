@@ -69,6 +69,8 @@ const AdminPanel = () => {
         firebase.auth().signOut();
     };
 
+
+
     const authListener = () => {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
