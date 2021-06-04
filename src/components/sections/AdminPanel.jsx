@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import Login from "./Login";
-import firebase from "../../util/firebase";
+import {firebase} from "../../util/firebase";
 import Panel from "./Panel";
 import PreLoader from "../preLoader";
 

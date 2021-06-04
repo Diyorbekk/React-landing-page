@@ -74,6 +74,7 @@ function NavigationBar(props) {
                 <li className="nav-item">
                     <HashLink className="nav-link nav-color" data-active="/contact" to="/#contact">Contact</HashLink>
                 </li>
+                
             </React.Fragment>
         )
     }

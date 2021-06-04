@@ -114,6 +114,16 @@ b {
 
 .focus-none:focus {
     outline: unset;
+    box-shadow: unset;
+}
+
+.box-shadow-none:focus {
+    box-shadow: unset;
+}
+
+.input-focus:focus,
+.input-focus:active {
+    border-color: black!important;
 }
 
 /* Login */
