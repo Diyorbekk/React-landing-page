@@ -8,7 +8,7 @@ import project_4 from '../../assets/img/projects/4.jpg'
 
 // Projects owlCarousel
 
-class Projects extends Component {
+class SingleProject extends Component {
     render() {
 
         const options = {
@@ -116,4 +116,4 @@ class Projects extends Component {
     }
 }
 
-export default Projects;
+export default SingleProject;

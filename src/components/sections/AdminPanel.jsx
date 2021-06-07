@@ -70,7 +70,6 @@ const AdminPanel = () => {
     };
 
 
-
     const authListener = () => {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {

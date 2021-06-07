@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Header from "./header";
 import About from "./sections/About";
-import Projects from "./sections/Projects";
+import SingleProject from "./sections/SingleProject";
 import Services from "./sections/Services";
 import Blog from "./sections/Blog";
 import Contact from "./sections/Contact";
@@ -20,7 +20,7 @@ class Contents extends Component {
                     {/*<!-- About -->*/}
                     <About/>
                     {/*<!-- Projects -->*/}
-                    <Projects/>
+                    <SingleProject/>
                     {/*<!-- Services -->*/}
                     <Services/>
                     {/*<!-- Blog -->*/}

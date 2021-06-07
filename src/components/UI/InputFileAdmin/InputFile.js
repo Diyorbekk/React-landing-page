@@ -1,6 +1,5 @@
 import React from 'react'
 import './InputFile.scss'
-import $ from "jquery"
 
 function InputFile(props) {
     return (

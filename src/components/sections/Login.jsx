@@ -8,7 +8,7 @@ const Login = (props) => {
         if (event.key === 'Enter') {
             if (hasAccount) {
                 handleSignUp()
-            }else {
+            } else {
                 handleLogin()
             }
         }
@@ -32,7 +32,7 @@ const Login = (props) => {
                             <div className="login-container_group">
                                 <label>Password</label>
                                 <input
-                                    type="text"
+                                    type="password"
                                     required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}

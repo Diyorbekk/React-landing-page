@@ -12,8 +12,8 @@ function Panel({handleLogOut}) {
     const [staticImage, setStaticImage] = useState("");
     const [progress, setProgress] = useState(0);
 
-    var currentdate = new Date();
-    var datetime = currentdate.getDate() + "/"
+    let currentdate = new Date();
+    let datetime = currentdate.getDate() + "/"
         + (currentdate.getMonth() + 1) + "/"
         + currentdate.getFullYear() + " "
         + currentdate.getHours() + ":"
