@@ -4,99 +4,178 @@ import InputFile from "../UI/InputFileAdmin/InputFile";
 import Input from "../UI/InputAdmin/Input";
 import TextArea from "../UI/TextAreaAdmin/TextArea"
 import Button from "../UI/Button/Button";
+import AdminEditorsList from "./AdminEditorsList";
 import {createControl, validate, validateForm} from '../UI/form/formFramework'
 import {connect} from "react-redux"
-import $ from "jquery";
 import {createProject, finishCreateProject} from "../../store/actions/create";
 import Auxiliary from "../../Auxiliary/Auxiliary";
-
-function createOptionControl(number) {
-    return createControl({
-        errorMessage: 'Qiymat bo\'sh bo\'lishi mumkin emas',
-        id: number
-    }, {required: true})
-}
+import AdminNav from "./AdminNav";
+import Card from "../UI/Card/Card";
 
 function createFormControls() {
     return {
-        projectImage: createControl({
-            errorMessage: 'Rasm bo\'sh bo\'lishi mumkin emas'
+        projectTitle: createControl({
+            label: "Create Title",
+            errorMessage: 'Sahifa Nomi bo\'sh bo\'lishi mumkin emas'
         }, {required: true}),
-        projectTitle: createOptionControl(1),
-        projectText: createOptionControl(2),
+        projectText: createControl({
+            label: "Create Text",
+            errorMessage: 'Text bo\'sh bo\'lishi mumkin emas'
+        }, {required: true}),
     }
 }
 
 class Panel extends Component {
-    const [image, setImage] = useState(null)
-    const [url, setUrl] = useState("");
-    const [staticImage, setStaticImage] = useState("");
-    const [progress, setProgress] = useState(0);
-    const [isFormValid, SetIsFormValid] = useState(false);
-    const [formControls, setFormControls] = useState(createFormControls())
+    handleLogOut = this.props.handleLogOut
 
-    let currentdate = new Date();
-    let datetime = currentdate.getDate() + "/"
-        + (currentdate.getMonth() + 1) + "/"
-        + currentdate.getFullYear() + " "
-        + currentdate.getHours() + ":"
-        + currentdate.getMinutes() + ":"
-        + currentdate.getSeconds();
+    state = {
+        image: null,
+        imageAdding: false,
+        url: [],
+        staticImage: "",
+        staticImageName: "Select file",
+        staticImageSize: null,
+        errorImage: null,
+        progress: 0,
+        isFormValid: false,
+        dataCreate: "",
+        formControls: createFormControls()
+    }
 
+    handleChange = e => {
+        let fileUrl = e.target.files[0];
+        let file = e.target.files;
 
-    const handleChange = e => {
-        let label = $("#images").parent().find('span');
-        let fileValue = document.getElementById("images");
-        let file = e.target.files[0];
-        let name = file.name;
-        let size = (file.size / 1048576).toFixed(3); //size in mb
-        setStaticImage(URL.createObjectURL(file))
-        if (e.target.files[0]) {
-            setImage(e.target.files[0]);
-            label.addClass('withFile').text(name + ' (' + size + 'mb)');
+        console.log()
+        if (file.length === 0) {
+            this.setState({
+                staticImage: "",
+                staticImageName: "Select file",
+                staticImageSize: null,
+                errorImage: "File no select",
+            })
         } else {
-            let name = fileValue.value.split("\\");
-            label.addClass('withFile').text(name[name.length - 1]);
+            this.setState({
+                staticImage: URL.createObjectURL(fileUrl),
+                staticImageName: fileUrl.name,
+                staticImageSize: (fileUrl.size / 1048576).toFixed(3),
+                image: e.target.files[0],
+                errorImage: null,
+            })
         }
+    };
+
+    handleUpload = () => {
+        this.setState({
+            image: null,
+            staticImage: "",
+            staticImageName: "Select file",
+            staticImageSize: null,
+        })
+
+        let nameFile = this.state.image.name
+
+        function encode(name) {
+            return window.btoa(name);
+        }
+
+        let inputFileName = this.state.image.name,
+            encoded = encode(inputFileName)
+
+        let lowerCaseEncoded = encoded.toLowerCase();
+
+        let nameList = lowerCaseEncoded.slice(5);
+
+        let ext = nameFile.substr(nameFile.lastIndexOf('.') + 0);
+
+
+        let filenames = nameList + ext
+
+        const uploadTask = storage.ref(`images/${filenames}`).put(this.state.image);
+        uploadTask.on(
+            "state_changed",
+            snapshot => {
+                const progress = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+                this.setState({
+                    progress: progress
+                })
+            },
+            error => {
+                console.log(error);
+            },
+            () => {
+                storage
+                    .ref("images")
+                    .child(filenames)
+                    .getDownloadURL()
+                    .then(url => {
+                        this.setState(prevState => ({
+                            url: [...prevState.url, url],
+                            image: null,
+                            staticImage: "",
+                        }))
+                    });
+            }
+        );
 
     };
 
-    const submitHandler = event => {
+    submitHandler = event => {
         event.preventDefault()
     };
 
-    const addProjectHandler = event => {
+    createProjectHandler = event => {
         event.preventDefault();
 
-        const {projectImage, projectTitle, projectText} = formControls;
+        if (this.state.url.length === 0 ) {
+            this.setState({
+                staticImage: "",
+                staticImageName: "Select file",
+                staticImageSize: null,
+                errorImage: "File no select",
+            })
+        } else {
+            let currentdate = new Date();
+            let datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth() + 1) + "/"
+                + currentdate.getFullYear() + " "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
 
-        const questionItem = {
-            projectImage: projectImage.value,
-            projectTitle: projectTitle.value,
-            projectText: projectText.value,
-            id: this.props.project.length + 1,
-        };
+            const {projectTitle, projectText} = this.state.formControls;
 
-        this.props.createProject(questionItem)
+            const projectItem = {
+                projectTitle: projectTitle.value,
+                projectText: projectText.value,
+                projectImgUrl: this.state.url,
+                createData: datetime,
+                id: this.props.project.length + 1,
+            };
+            this.props.createProject(projectItem)
 
-        SetIsFormValid(isFormValid, false)
-        setFormControls(createFormControls())
+            this.setState({
+                project: [],
+                image: null,
+                staticImage: "",
+                errorImage: null,
+                dataCreate: "",
+                progress: 0,
+                isFormValid: false,
+                imageAdding: false,
+                formControls: createFormControls()
+            })
+
+            this.props.finishCreateProject()
+        }
+
+
     };
 
-    const createProjectHandler = event => {
-        event.preventDefault();
-
-        this.setState({
-            project: [],
-        })
-        SetIsFormValid(isFormValid, false)
-        setFormControls(createFormControls())
-
-        this.props.finishCreateProject()
-    };
-
-    const changeHandler = (value, controlName) => {
-        const formControls = {...formControls};
+    changeHandler = (value, controlName) => {
+        const formControls = {...this.state.formControls};
         const control = {...formControls[controlName]};
 
         control.touched = true;
@@ -105,158 +184,151 @@ class Panel extends Component {
 
         formControls[controlName] = control;
 
-        setFormControls(formControls)
-        SetIsFormValid(validateForm(formControls))
+
+        this.setState({
+            formControls,
+            isFormValid: validateForm(formControls)
+        })
     };
 
+    renderProjects() {
+        return this.state.url.map((projects, index) => {
+            return (
+                <Auxiliary key={index}>
+                    { index < 3
+                        ? <div className="col-md-4 " key={index}>
 
-    const handleUpload = () => {
-        const uploadTask = storage.ref(`images/${image.name}`).put(image);
-        uploadTask.on(
-            "state_changed",
-            snapshot => {
-                const progress = Math.round(
-                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                );
-                setProgress(progress);
-            },
-            error => {
-                console.log(error);
-            },
-            () => {
-                storage
-                    .ref("images")
-                    .child(image.name)
-                    .getDownloadURL()
-                    .then(url => {
-                        setUrl(url);
-                    });
-            }
-        );
-    };
+                            <a
+                                href={projects}
+                            >
+                                <img className="img-thumbnail"
+                                     src={projects || "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"}
+                                     alt={this.state.url || "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"}/>
+                            </a>
+                        </div>
+                        : <div className="col-md-4 mt-4" key={index}>
 
-    const renderInput = () => {
-        return Object.keys(formControls).map((controlName, index) => {
-            const control = formControls[controlName];
+                            <a
+                                href={projects}
+                            >
+                                <img className="img-thumbnail"
+                                     src={projects || "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"}
+                                     alt={this.state.url || "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"}/>
+                            </a>
+                        </div>}
+                </Auxiliary>
+
+
+            )
+        })
+    }
+
+    renderInput = () => {
+        return Object.keys(this.state.formControls).map((controlName, index) => {
+            const control = this.state.formControls[controlName];
 
             return (
                 <Auxiliary key={controlName + index}>
-                    <Input
-                        label="Title"
-                        value={control.value}
-                        valid={control.valid}
-                        shouldValidate={!!control.validation}
-                        touched={control.touched}
-                        errorMessage={control.errorMessage}
-                        onChange={event => changeHandler(event.target.value, controlName)}
-                    />
+                    {
+                        index === 0
+                            ?
+                            <Input
+                                label={control.label}
+                                value={control.value}
+                                valid={control.valid}
+                                shouldValidate={!!control.validation}
+                                touched={control.touched}
+                                errorMessage={control.errorMessage}
+                                onChange={event => this.changeHandler(event.target.value, controlName)}
+                            />
+                            : <TextArea
+                                label={control.label}
+                                value={control.value}
+                                valid={control.valid}
+                                shouldValidate={!!control.validation}
+                                touched={control.touched}
+                                errorMessage={control.errorMessage}
+                                onChange={event => this.changeHandler(event.target.value, controlName)}
+                                row="10"/>}
                 </Auxiliary>
             )
         })
     }
 
-    const renderTextArea = () => {
-        return Object.keys(formControls).map((controlName, index) => {
-            const control = formControls[controlName];
+    render() {
+        return (
+            <section className="border-bottom">
+                <div className="container">
+                    <AdminNav handleLogOut={this.handleLogOut}/>
 
-            return (
-                <Auxiliary key={controlName + index}>
-                    <TextArea
-                        label="Text"
-                        value={control.value}
-                        valid={control.valid}
-                        shouldValidate={!!control.validation}
-                        touched={control.touched}
-                        errorMessage={control.errorMessage}
-                        onChange={event => changeHandler(event.target.value, controlName)}
-                        row="10"/>
-                </Auxiliary>
-            )
-        })
-    }
+                    <AdminEditorsList/>
 
-    return (
-        <section className="border-bottom">
-            <div className="container">
-                <nav className="d-flex justify-content-between align-items-center py-3">
-                    <div className="menu">
-                        <button className="btn menu focus-none rounded">
-                            <span className="icon-bar"><i className="ti-line-double"/></span>
-                        </button>
-                    </div>
-
-                    <h2 className="mb-0">Admin Panel</h2>
-                    <div className="dropdown">
-                        <button className="btn focus-none dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Dropdown button
-                        </button>
-                        <div className="dropdown-menu border" aria-labelledby="dropdownMenuButton">
-                            <button className="dropdown-item" onClick={handleLogOut}>Log out</button>
-                        </div>
-                    </div>
-                </nav>
-
-                <form className="row" onSubmit={submitHandler}>
-                    <div className="col-12">
-                        <InputFile legend="Slide image" file={staticImage} label="Select file" onChange={handleChange}/>
-                        <br/>
-                        {renderInput()}
-                        <br/>
-                        {renderTextArea()}
-                        <br/>
-                        <button className="btn btn-outline-secondary" onClick={handleUpload}>Upload</button>
-                        <br/>
-                        <br/>
-                        <div className="progress">
-                            <div className="progress-bar" style={{width: progress + "%"}} aria-valuenow="0"
-                                 aria-valuemin="0" aria-valuemax="100"/>
-                        </div>
-                        <br/>
-                        {
-                            url
-                                ? <p className="animated fadeInDown">Your link: <a href={url || null}>Image</a></p>
-                                : <p className="animated fadeInDown">You have not uploaded a picture yet</p>
-                        }
-
-                        <br/>
-                    </div>
-                    <div className="col-md-4">
-                        <div className="card mb-3">
-                            <img
-                                src={url || "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"}
-                                className="card-img-top" alt={url}/>
-                            <div className="card-body">
-                                <h5 className="card-title">Card title</h5>
-                                <p className="card-text">This is a wider card with supporting text below as a natural
-                                    lead-in to additional content. This content is a little bit longer.</p>
-                                <p className="card-text">
-                                    <small className="text-muted">Last updated {datetime}</small>
-                                </p>
+                    <form className="row" onSubmit={this.submitHandler}>
+                        <div className="col-12">
+                            <InputFile
+                                legend="Slide image"
+                                file={this.state.staticImage}
+                                label={this.state.staticImageName}
+                                size={this.state.staticImageSize}
+                                errorMessage={this.state.errorImage}
+                                onChange={this.handleChange}
+                            />
+                            <br/>
+                            {
+                                this.state.url.length === 0 ? <p>You have not uploaded a picture yet</p> :
+                                    <div className="row">{this.renderProjects()}</div>
+                            }
+                            <br/>
+                            <div className="progress">
+                                <div className="progress-bar" style={{width: this.state.progress + "%"}}
+                                     aria-valuenow="0"
+                                     aria-valuemin="0" aria-valuemax="100"/>
                             </div>
+                            <br/>
+                            <Button
+                                type="primary"
+                                onClick={this.handleUpload}
+                                disabled={!this.state.image}
+                            >
+                                Image upload
+                            </Button>
+                            <br/>
+                            <br/>
+                            {
+
+                                this.state.imageAdding === false
+                                    ? <React.Fragment>{this.renderInput()}</React.Fragment> : <p>Adding image</p>
+
+                            }
+
+                            <br/>
+
+                            <Button
+                                type="success"
+                                className="btn"
+                                onClick={this.createProjectHandler}
+                                disabled={!this.state.isFormValid}
+                            >
+                                Project Create
+                            </Button>
+                            <br/>
+                            <br/>
                         </div>
+                    </form>
+
+                    <div className="row">
+                        <Card
+                            cardUrl={this.props.project.projectImgUrl}
+                            cardTitle={this.props.project.projectTitle}
+                            cardText={this.props.project.projectText}
+                            cardDataCreate={this.props.project.createData}
+                        />
                     </div>
+                </div>
 
-                    <Button
-                        type="primary"
-                        onClick={addProjectHandler}
-                        disabled={!isFormValid}
-                    >
-                        Savolni qo'shish
-                    </Button>
-
-                    <Button
-                        type="success"
-                        onClick={createProjectHandler}
-                        disabled={project.length === 0}
-                    >
-                        Savol yaratish
-                    </Button>
-                </form>
-
-            </div>
-        </section>
-    );
+            </section>
+        );
+    }
 }
 
 function mapStateToProps(state) {
@@ -268,7 +340,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         createProject: item => dispatch(createProject(item)),
-        finishCreateProject: () => dispatch(finishCreateProject())
+        finishCreateProject: () => dispatch(finishCreateProject()),
+
     }
 }
 

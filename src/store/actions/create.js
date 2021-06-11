@@ -16,7 +16,7 @@ export function resetProjectCreation() {
 
 export function finishCreateProject() {
     return async (dispatch, getState) => {
-        await axios.post('/projects', getState().create.project)
+        await axios.post('/projects.json', getState().create.project)
         dispatch(resetProjectCreation())
     }
 }

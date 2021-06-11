@@ -1,5 +1,6 @@
 import firebase from 'firebase'
 import "firebase/storage"
+import "firebase/database"
 
 const firebaseConfig = {
     apiKey: "AIzaSyAKuALFnhUylZ7-t-KqQubpnIQlExcB2kQ",
@@ -16,5 +17,6 @@ firebase.analytics();
 
 const storage = firebase.storage()
 const firestore = firebase.firestore()
+const database = firebase.database()
 
-export {storage, firestore, firebase}
+export {storage, firestore, database, firebase}
