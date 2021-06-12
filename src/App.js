@@ -55,10 +55,10 @@ class App extends Component {
         return (
                 <Switch>
                     <Route exact path="/login" children={<AdminPanel/>}/>
+                    <Route exact path="/" children={<AdminPanel/>}/>
                     <Layout>
                         <ToTop/>
                         <ScrollToTop>
-
                             <Route path="/project" component={ProjectPage}/>
                             <Route exact path="/" component={Contents}/>
                         </ScrollToTop>

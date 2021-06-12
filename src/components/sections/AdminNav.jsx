@@ -4,8 +4,6 @@ import MenuToggle from "../Navigation/MenuToggle/MenuToggle";
 
 
 class AdminNav extends Component {
-    handleLogOut = this.props.handleLogOut
-
     state = {
         menu: false
     };
@@ -21,11 +19,11 @@ class AdminNav extends Component {
             menu: false
         })
     };
-
     render() {
         return (
             <nav className="d-flex justify-content-between align-items-center py-3">
                 <div className="menu">
+
                     <Drawer
                         isOpen={this.state.menu}
                         onClose={this.menuCloseHandler}

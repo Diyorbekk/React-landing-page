@@ -1,19 +1,17 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
+import {NavLink} from "react-router-dom";
 import Loader from "../UI/Loader/Loader";
 import {fetchProjectById, fetchProjects} from "../../store/actions/project";
 import Card from "../UI/Card/Card";
-import {NavLink} from "react-router-dom";
+import add from "../../assets/img/icons/add.png"
 
 class AdminEditorsList extends Component {
     renderProjects(props) {
         return this.props.projectList.map((projectsList, index) => {
             return (
-                <React.Fragment
-                    key={index}
-                >
-
-                    <NavLink to={"/login/projects" + props[index]} className="col-12 mt-4">
+                <React.Fragment key={index}>
+                    <NavLink to={"/login/projects" + props[index]} className="col-md-4 mt-4">
                         <Card
                             cardUrl={projectsList.projectImgUrl[0]}
                             cardTitle={projectsList.projectTitle}
@@ -21,7 +19,6 @@ class AdminEditorsList extends Component {
                             cardDataCreate={projectsList.createData}
                         />
                     </NavLink>
-
                 </React.Fragment>
             )
         })
@@ -35,19 +32,23 @@ class AdminEditorsList extends Component {
 
     render() {
 
-        const link = this.props.projects.map((projectsUrl) => {return  projectsUrl.path})
+        const link = this.props.projects.map((projectsUrl) => {
+            return projectsUrl.path
+        })
 
         return (
             <div>
                 <h1>Slider Projects</h1>
                 {
                     this.props.loading && this.props.length !== 0
-
                         ? <Loader/>
-                        : <div className="row">
-
-                            {this.renderProjects(link)}
-
+                        : <div className="row">{this.renderProjects(link)}
+                            <div
+                                className="col-md-4 mt-4">
+                                <NavLink to={"/login/projects/add-slider"} className="border rounded d-flex align-items-center justify-content-center pl-2 pt-2">
+                                    <img src={add} style={{width: 150}} alt="icon-add"/>
+                                </NavLink>
+                            </div>
                         </div>
                 }
             </div>

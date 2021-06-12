@@ -12,7 +12,7 @@ function InputFile(props) {
 
                 <img
                     src={props.file || "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"}
-                    className="card-img-top" alt={props.file}/>
+                    alt={props.file}/>
                 <span data-default='Choose file'>{props.label}
                     {props.size === null ?
                         null

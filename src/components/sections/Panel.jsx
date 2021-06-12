@@ -259,7 +259,10 @@ class Panel extends Component {
         return (
             <section className="border-bottom">
                 <div className="container">
-                    <AdminNav handleLogOut={this.handleLogOut}/>
+                    <button className="border-0 focus-none" onClick={this.handleLogOut}>
+                        <span>Log out</span>
+                    </button>
+                    <AdminNav/>
 
                     <AdminEditorsList/>
 
