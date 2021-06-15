@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Redirect, Route, Switch, useHistory} from 'react-router-dom'
+import {Route, Switch, useHistory} from 'react-router-dom'
 import ScrollToTop from 'react-router-scroll-top'
 import ToTop from "./components/UI/ToTopButton";
 import Contents from "./components/contents";
@@ -8,12 +8,11 @@ import ProjectPage from "./components/ProjectPage";
 import './assets/css/plugins.css';
 import './assets/css/style.css';
 import './customHooks/importScript';
-//import {removeScript} from "./customHooks/removeScript";
 import {appendScript} from "./customHooks/importScript";
 import {firebase} from "./util/firebase";
 import Auxiliary from "./Auxiliary/Auxiliary";
-import Panel from "./components/sections/Panel";
 import Login from "./components/sections/Login";
+import Panel from "./components/sections/Panel"
 import PreLoader from "./components/preLoader";
 
 const App = () => {
@@ -166,9 +165,14 @@ const App = () => {
             {user ?
                 (
                     <Switch>
-                        <Route path="/slider-project" exact children={<Panel
-                            handleLogOut={handleLogOut}
-                        />}/>
+                        <React.Fragment>
+                            <ToTop/>
+                            <ScrollToTop>
+                                <Route path="/slider-project" exact children={<Panel
+                                    handleLogOut={handleLogOut}
+                                />}/>
+                            </ScrollToTop>
+                        </React.Fragment>
                         <PreLoader/>
                     </Switch>
                 )

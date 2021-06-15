@@ -35,7 +35,6 @@ function NavigationBar(props) {
         )
     } else {
         $(document).ready(function () {
-            var url = window.location.href.indexOf(location.pathname);
             $('.nav-color').each(function () {
                 var el = $(this);
                 var effect = el.data('active');

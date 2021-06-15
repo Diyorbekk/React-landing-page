@@ -11,7 +11,7 @@ class AdminEditorsList extends Component {
         return this.props.projectList.map((projectsList, index) => {
             return (
                 <React.Fragment key={index}>
-                    <NavLink to={"/login/projects" + props[index]} className="col-md-4 mt-4">
+                    <NavLink to={"/projects/" + props[index]} className="col-md-4 mt-4">
                         <Card
                             cardUrl={projectsList.projectImgUrl[0]}
                             cardTitle={projectsList.projectTitle}

@@ -10,8 +10,7 @@ import {connect} from "react-redux"
 import {createProject, finishCreateProject} from "../../store/actions/create";
 import Auxiliary from "../../Auxiliary/Auxiliary";
 import AdminNav from "./AdminNav";
-import Card from "../UI/Card/Card";
-import PreLoader from "../preLoader";
+import Card from "../UI/Card/Card";;
 
 function createFormControls() {
     return {
