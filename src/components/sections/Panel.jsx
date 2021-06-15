@@ -11,6 +11,7 @@ import {createProject, finishCreateProject} from "../../store/actions/create";
 import Auxiliary from "../../Auxiliary/Auxiliary";
 import AdminNav from "./AdminNav";
 import Card from "../UI/Card/Card";
+import PreLoader from "../preLoader";
 
 function createFormControls() {
     return {
@@ -129,7 +130,7 @@ class Panel extends Component {
     createProjectHandler = event => {
         event.preventDefault();
 
-        if (this.state.url.length === 0 ) {
+        if (this.state.url.length === 0) {
             this.setState({
                 staticImage: "",
                 staticImageName: "Select file",
@@ -195,7 +196,7 @@ class Panel extends Component {
         return this.state.url.map((projects, index) => {
             return (
                 <Auxiliary key={index}>
-                    { index < 3
+                    {index < 3
                         ? <div className="col-md-4 " key={index}>
 
                             <a
@@ -257,79 +258,77 @@ class Panel extends Component {
 
     render() {
         return (
-            <section className="border-bottom">
-                <div className="container">
-                    <button className="border-0 focus-none" onClick={this.handleLogOut}>
-                        <span>Log out</span>
-                    </button>
-                    <AdminNav/>
+            <React.Fragment>
+                <section className="border-bottom">
+                    <div className="container">
+                        <AdminNav handleLogOut={this.handleLogOut}/>
 
-                    <AdminEditorsList/>
+                        <AdminEditorsList/>
 
-                    <form className="row" onSubmit={this.submitHandler}>
-                        <div className="col-12">
-                            <InputFile
-                                legend="Slide image"
-                                file={this.state.staticImage}
-                                label={this.state.staticImageName}
-                                size={this.state.staticImageSize}
-                                errorMessage={this.state.errorImage}
-                                onChange={this.handleChange}
-                            />
-                            <br/>
-                            {
-                                this.state.url.length === 0 ? <p>You have not uploaded a picture yet</p> :
-                                    <div className="row">{this.renderProjects()}</div>
-                            }
-                            <br/>
-                            <div className="progress">
-                                <div className="progress-bar" style={{width: this.state.progress + "%"}}
-                                     aria-valuenow="0"
-                                     aria-valuemin="0" aria-valuemax="100"/>
+                        <form className="row" onSubmit={this.submitHandler}>
+                            <div className="col-12">
+                                <InputFile
+                                    legend="Slide image"
+                                    file={this.state.staticImage}
+                                    label={this.state.staticImageName}
+                                    size={this.state.staticImageSize}
+                                    errorMessage={this.state.errorImage}
+                                    onChange={this.handleChange}
+                                />
+                                <br/>
+                                {
+                                    this.state.url.length === 0 ? <p>You have not uploaded a picture yet</p> :
+                                        <div className="row">{this.renderProjects()}</div>
+                                }
+                                <br/>
+                                <div className="progress">
+                                    <div className="progress-bar" style={{width: this.state.progress + "%"}}
+                                         aria-valuenow="0"
+                                         aria-valuemin="0" aria-valuemax="100"/>
+                                </div>
+                                <br/>
+                                <Button
+                                    type="primary"
+                                    onClick={this.handleUpload}
+                                    disabled={!this.state.image}
+                                >
+                                    Image upload
+                                </Button>
+                                <br/>
+                                <br/>
+                                {
+
+                                    this.state.imageAdding === false
+                                        ? <React.Fragment>{this.renderInput()}</React.Fragment> : <p>Adding image</p>
+
+                                }
+
+                                <br/>
+
+                                <Button
+                                    type="success"
+                                    className="btn"
+                                    onClick={this.createProjectHandler}
+                                    disabled={!this.state.isFormValid}
+                                >
+                                    Project Create
+                                </Button>
+                                <br/>
+                                <br/>
                             </div>
-                            <br/>
-                            <Button
-                                type="primary"
-                                onClick={this.handleUpload}
-                                disabled={!this.state.image}
-                            >
-                                Image upload
-                            </Button>
-                            <br/>
-                            <br/>
-                            {
+                        </form>
 
-                                this.state.imageAdding === false
-                                    ? <React.Fragment>{this.renderInput()}</React.Fragment> : <p>Adding image</p>
-
-                            }
-
-                            <br/>
-
-                            <Button
-                                type="success"
-                                className="btn"
-                                onClick={this.createProjectHandler}
-                                disabled={!this.state.isFormValid}
-                            >
-                                Project Create
-                            </Button>
-                            <br/>
-                            <br/>
+                        <div className="row">
+                            <Card
+                                cardUrl={this.props.project.projectImgUrl}
+                                cardTitle={this.props.project.projectTitle}
+                                cardText={this.props.project.projectText}
+                                cardDataCreate={this.props.project.createData}
+                            />
                         </div>
-                    </form>
-
-                    <div className="row">
-                        <Card
-                            cardUrl={this.props.project.projectImgUrl}
-                            cardTitle={this.props.project.projectTitle}
-                            cardText={this.props.project.projectText}
-                            cardDataCreate={this.props.project.createData}
-                        />
                     </div>
-                </div>
-
-            </section>
+                </section>
+            </React.Fragment>
         );
     }
 }

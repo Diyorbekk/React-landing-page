@@ -1,4 +1,5 @@
 import React from 'react';
+import PreLoader from "../preLoader";
 
 const Login = (props) => {
 
@@ -68,6 +69,7 @@ const Login = (props) => {
                     </div>
                 </div>
             </div>
+            <PreLoader/>
         </section>
     );
 }

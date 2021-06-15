@@ -14,16 +14,29 @@ export function auth(email, emailError, password, passwordError, isLogin) {
             url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAKuALFnhUylZ7-t-KqQubpnIQlExcB2kQ"
         }
 
-        const response = await axios.post(url, authData);
-        const data = response.data
-        const expirationDate = new Date(new Date().getTime() + data.expiresIn * 1000)
+        let resData = []
+        let resDataError = null
 
-        localStorage.setItem('token', data.idToken)
-        localStorage.setItem('userId', data.localId)
+        await axios.post(url, authData)
+            .then(
+                res => resData = res.data
+            )
+            .catch(
+                res => resDataError = res.response.data.error.message
+            )
+
+        if(resDataError === "EMAIL_NOT_FOUND") {
+            alert("Error")
+
+        }
+        const expirationDate = new Date(new Date().getTime() + resData.expiresIn * 1000)
+
+        localStorage.setItem('token', resData.idToken)
+        localStorage.setItem('userId', resData.localId)
         localStorage.setItem('expirationDate', expirationDate)
 
-        dispatch(authSuccess(data.idToken))
-        dispatch(autoLogout(data.expiresIn))
+        dispatch(authSuccess(resData.idToken))
+        dispatch(autoLogout(resData.expiresIn))
     }
 }
 

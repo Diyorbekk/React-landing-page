@@ -4,6 +4,7 @@ import MenuToggle from "../Navigation/MenuToggle/MenuToggle";
 
 
 class AdminNav extends Component {
+    handleLogOut = this.props.handleLogOut
     state = {
         menu: false
     };
@@ -28,7 +29,6 @@ class AdminNav extends Component {
                         isOpen={this.state.menu}
                         onClose={this.menuCloseHandler}
                         handleLogOut={this.handleLogOut}
-                        isAuthenticated={this.props.isAuthenticated}
                     />
 
                     <MenuToggle
