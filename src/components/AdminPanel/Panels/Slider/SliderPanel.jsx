@@ -1,12 +1,14 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {NavLink} from "react-router-dom";
-import Loader from "../UI/Loader/Loader";
-import {fetchProjectById, fetchProjects} from "../../store/actions/project";
-import Card from "../UI/Card/Card";
-import add from "../../assets/img/icons/add.png"
+import Loader from "../../../UI/Loader/Loader";
+import {fetchProjectById, fetchProjects} from "../../../../store/actions/project";
+import Card from "../../../UI/Card/Card";
+import add from "../../../../assets/img/icons/add.png"
+import Auxiliary from "../../../../Auxiliary/Auxiliary";
 
-class AdminEditorsList extends Component {
+
+class SliderPanel extends Component {
     renderProjects(props) {
         return this.props.projectList.map((projectsList, index) => {
             return (
@@ -31,26 +33,32 @@ class AdminEditorsList extends Component {
     }
 
     render() {
-
-        const link = this.props.projects.map((projectsUrl) => {
+        const link = this.props.projectsUrl.map((projectsUrl) => {
             return projectsUrl.id
         })
 
         return (
             <div>
+
+
                 <h1>Slider Projects</h1>
                 {
                     this.props.loading && this.props.length !== 0
                         ? <Loader/>
-                        : <div className="row">{this.renderProjects(link)}
-                            <div
-                                className="col-md-4 mt-4">
-                                <NavLink to={"/login/projects/add-slider"} className="border rounded d-flex align-items-center justify-content-center pl-2 pt-2">
-                                    <img src={add} style={{width: 150}} alt="icon-add"/>
-                                </NavLink>
-                            </div>
+                        : <div className="row">
+                            {this.renderProjects(link)}
+
                         </div>
                 }
+
+                <Auxiliary>
+                    <div className="col-md-4 mt-4">
+                        <NavLink to={"/slider-project/add"}
+                                 className="border rounded d-flex align-items-center justify-content-center pl-2 pt-2">
+                            <img src={add} style={{width: 150}} alt="icon-add"/>
+                        </NavLink>
+                    </div>
+                </Auxiliary>
             </div>
         )
     }
@@ -58,7 +66,7 @@ class AdminEditorsList extends Component {
 
 function mapStateToProps(state) {
     return {
-        projects: state.project.projects,
+        projectsUrl: state.project.projects,
         projectList: state.project.projectList,
         loading: state.project.loading
     }
@@ -72,4 +80,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminEditorsList);
+export default connect(mapStateToProps, mapDispatchToProps)(SliderPanel);

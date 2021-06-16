@@ -9,6 +9,8 @@ import {
 } from "./actionTypes";
 
 export function fetchProjects() {
+
+
     return async dispatch => {
         dispatch(fetchProjectsStart())
         try {

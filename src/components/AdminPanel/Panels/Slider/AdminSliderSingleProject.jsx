@@ -2,8 +2,8 @@ import React, {Component} from "react";
 import OwlCarousel from "react-owl-carousel2";
 import $ from "jquery";
 import {connect} from "react-redux";
-import {fetchProjectByUrl} from "../../store/actions/project";
-import Loader from "../UI/Loader/Loader";
+import {fetchProjectByUrl} from "../../../../store/actions/project";
+import Loader from "../../../UI/Loader/Loader";
 
 
 class AdminSliderSingleProject extends Component {

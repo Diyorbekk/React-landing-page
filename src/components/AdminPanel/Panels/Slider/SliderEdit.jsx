@@ -1,16 +1,14 @@
-import React, {Component} from 'react';
-import {storage} from "../../util/firebase";
-import InputFile from "../UI/InputFileAdmin/InputFile";
-import Input from "../UI/InputAdmin/Input";
-import TextArea from "../UI/TextAreaAdmin/TextArea"
-import Button from "../UI/Button/Button";
-import AdminEditorsList from "./AdminEditorsList";
-import {createControl, validate, validateForm} from '../UI/form/formFramework'
-import {connect} from "react-redux"
-import {createProject, finishCreateProject} from "../../store/actions/create";
-import Auxiliary from "../../Auxiliary/Auxiliary";
-import AdminNav from "./AdminNav";
-import Card from "../UI/Card/Card";;
+import React, {Component} from "react";
+import {createControl, validate, validateForm} from "../../../UI/form/formFramework";
+import {storage} from "../../../../util/firebase";
+import Auxiliary from "../../../../Auxiliary/Auxiliary";
+import Input from "../../../UI/InputAdmin/Input";
+import TextArea from "../../../UI/TextAreaAdmin/TextArea";
+import InputFile from "../../../UI/InputFileAdmin/InputFile";
+import Button from "../../../UI/Button/Button";
+import {createProject, finishCreateProject} from "../../../../store/actions/create";
+import {connect} from "react-redux";
+
 
 function createFormControls() {
     return {
@@ -24,9 +22,7 @@ function createFormControls() {
         }, {required: true}),
     }
 }
-
-class Panel extends Component {
-    handleLogOut = this.props.handleLogOut
+class SliderEdit extends Component {
 
     state = {
         image: null,
@@ -152,7 +148,7 @@ class Panel extends Component {
                 projectText: projectText.value,
                 projectImgUrl: this.state.url,
                 createData: datetime,
-                id: this.props.project.length + 1,
+                id: this.props.projectCreate.length + 1,
             };
             this.props.createProject(projectItem)
 
@@ -257,84 +253,67 @@ class Panel extends Component {
 
     render() {
         return (
-            <React.Fragment>
-                <section className="border-bottom">
-                    <div className="container">
-                        <AdminNav handleLogOut={this.handleLogOut}/>
-
-                        <AdminEditorsList/>
-
-                        <form className="row" onSubmit={this.submitHandler}>
-                            <div className="col-12">
-                                <InputFile
-                                    legend="Slide image"
-                                    file={this.state.staticImage}
-                                    label={this.state.staticImageName}
-                                    size={this.state.staticImageSize}
-                                    errorMessage={this.state.errorImage}
-                                    onChange={this.handleChange}
-                                />
-                                <br/>
-                                {
-                                    this.state.url.length === 0 ? <p>You have not uploaded a picture yet</p> :
-                                        <div className="row">{this.renderProjects()}</div>
-                                }
-                                <br/>
-                                <div className="progress">
-                                    <div className="progress-bar" style={{width: this.state.progress + "%"}}
-                                         aria-valuenow="0"
-                                         aria-valuemin="0" aria-valuemax="100"/>
-                                </div>
-                                <br/>
-                                <Button
-                                    type="primary"
-                                    onClick={this.handleUpload}
-                                    disabled={!this.state.image}
-                                >
-                                    Image upload
-                                </Button>
-                                <br/>
-                                <br/>
-                                {
-
-                                    this.state.imageAdding === false
-                                        ? <React.Fragment>{this.renderInput()}</React.Fragment> : <p>Adding image</p>
-
-                                }
-
-                                <br/>
-
-                                <Button
-                                    type="success"
-                                    className="btn"
-                                    onClick={this.createProjectHandler}
-                                    disabled={!this.state.isFormValid}
-                                >
-                                    Project Create
-                                </Button>
-                                <br/>
-                                <br/>
-                            </div>
-                        </form>
-
-                        <div className="row">
-                            <Card
-                                cardUrl={this.props.project.projectImgUrl}
-                                cardTitle={this.props.project.projectTitle}
-                                cardText={this.props.project.projectText}
-                                cardDataCreate={this.props.project.createData}
-                            />
+            <section className="mt-5 edit container">
+                <form className="row" onSubmit={this.submitHandler}>
+                    <div className="col-12">
+                        <InputFile
+                            legend="Slide image"
+                            file={this.state.staticImage}
+                            label={this.state.staticImageName}
+                            size={this.state.staticImageSize}
+                            errorMessage={this.state.errorImage}
+                            onChange={this.handleChange}
+                        />
+                        <br/>
+                        {
+                            this.state.url.length === 0 ? <p>You have not uploaded a picture yet</p> :
+                                <div className="row">{this.renderProjects()}</div>
+                        }
+                        <br/>
+                        <div className="progress">
+                            <div className="progress-bar" style={{width: this.state.progress + "%"}}
+                                 aria-valuenow="0"
+                                 aria-valuemin="0" aria-valuemax="100"/>
                         </div>
+                        <br/>
+                        <Button
+                            type="primary"
+                            onClick={this.handleUpload}
+                            disabled={!this.state.image}
+                        >
+                            Image upload
+                        </Button>
+                        <br/>
+                        <br/>
+                        {
+
+                            this.state.imageAdding === false
+                                ? <React.Fragment>{this.renderInput()}</React.Fragment> : <p>Adding image</p>
+
+                        }
+
+                        <br/>
+
+                        <Button
+                            type="success"
+                            className="btn"
+                            onClick={this.createProjectHandler}
+                            disabled={!this.state.isFormValid}
+                        >
+                            Project Create
+                        </Button>
+                        <br/>
+                        <br/>
                     </div>
-                </section>
-            </React.Fragment>
-        );
+                </form>
+            </section>
+        )
     }
 }
 
 function mapStateToProps(state) {
     return {
-        project: state.create.project
+        projectCreate: state.create.project,
     }
 }
 
@@ -346,4 +325,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Panel);
+export default connect(mapStateToProps, mapDispatchToProps)(SliderEdit);

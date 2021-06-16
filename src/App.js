@@ -11,9 +11,11 @@ import './customHooks/importScript';
 import {firebase} from "./util/firebase";
 import Auxiliary from "./Auxiliary/Auxiliary";
 import Login from "./components/sections/Login";
-import Panel from "./components/sections/Panel"
+import Panel from "./components/AdminPanel/AdminPanelHome"
+import AdminEditorsList from "./components/AdminPanel/Panels/Slider/SliderPanel";
 import PreLoader from "./components/preLoader";
-import AdminSliderSingleProject from "./components/sections/AdminSliderSingleProject";
+import AdminSliderSingleProject from "./components/AdminPanel/Panels/Slider/AdminSliderSingleProject";
+import SliderEdit from "./components/AdminPanel/Panels/Slider/SliderEdit";
 
 const App = () => {
     const history = useHistory();
@@ -94,7 +96,6 @@ const App = () => {
         firebase.auth().signOut();
     };
 
-
     const authListener = () => {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
@@ -120,10 +121,11 @@ const App = () => {
                         <React.Fragment>
                             <ToTop/>
                             <ScrollToTop>
-                                <Route path="/slider-project" exact children={<Panel
-                                    handleLogOut={handleLogOut}
-                                />}/>
-                                <Route path="/slider-project/:id" exact component={AdminSliderSingleProject}/>
+                                <Panel handleLogOut={handleLogOut}>
+                                    <Route exact path="/slider-project"  component={AdminEditorsList}/>
+                                    <Route path="/slider-project/add" component={SliderEdit}/>
+                                    <Route path="/slider-project/:id" component={AdminSliderSingleProject}/>
+                                </Panel>
                             </ScrollToTop>
                         </React.Fragment>
                         <PreLoader/>
