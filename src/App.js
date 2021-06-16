@@ -8,12 +8,12 @@ import ProjectPage from "./components/ProjectPage";
 import './assets/css/plugins.css';
 import './assets/css/style.css';
 import './customHooks/importScript';
-import {appendScript} from "./customHooks/importScript";
 import {firebase} from "./util/firebase";
 import Auxiliary from "./Auxiliary/Auxiliary";
 import Login from "./components/sections/Login";
 import Panel from "./components/sections/Panel"
 import PreLoader from "./components/preLoader";
+import AdminSliderSingleProject from "./components/sections/AdminSliderSingleProject";
 
 const App = () => {
     const history = useHistory();
@@ -108,54 +108,6 @@ const App = () => {
     }
 
     useEffect(() => {
-        appendScript("custom-js/bootstrap.min.js");
-        appendScript("custom-js/popper.min.js");
-        appendScript("custom-js/jquery.waypoints.min.js");
-        appendScript("custom-js/scrollIt.min.js");
-        appendScript("custom-js/jquery.stellar.min.js");
-        appendScript("custom-js/jquery-migrate-3.0.0.min.js");
-        appendScript("custom-js/jquery.magnific-popup.js");
-        appendScript("custom-js/modernizr-2.6.2.min.js");
-        appendScript("custom-js/custom.js");
-    })
-
-    /*    componentDidMount() {
-            appendScript("custom-js/bootstrap.min.js");
-            appendScript("custom-js/popper.min.js");
-            appendScript("custom-js/jquery.waypoints.min.js");
-            appendScript("custom-js/scrollIt.min.js");
-            appendScript("custom-js/jquery.stellar.min.js");
-            appendScript("custom-js/jquery-migrate-3.0.0.min.js");
-            appendScript("custom-js/jquery.magnific-popup.js");
-            appendScript("custom-js/modernizr-2.6.2.min.js");
-            appendScript("custom-js/custom.js");
-
-        }
-
-        componentDidUpdate() {
-            appendScript("custom-js/bootstrap.min.js");
-            appendScript("custom-js/popper.min.js");
-            appendScript("custom-js/jquery.waypoints.min.js");
-            appendScript("custom-js/scrollIt.min.js");
-            appendScript("custom-js/jquery.stellar.min.js");
-            appendScript("custom-js/jquery-migrate-3.0.0.min.js");
-            appendScript("custom-js/jquery.magnific-popup.js");
-            appendScript("custom-js/modernizr-2.6.2.min.js");
-            appendScript("custom-js/custom.js");
-        }
-
-        componentWillUnmount() {
-            removeScript("custom-js/bootstrap.min.js");
-            removeScript("custom-js/popper.min.js");
-            removeScript("custom-js/jquery.waypoints.min.js");
-            removeScript("custom-js/scrollIt.min.js");
-            removeScript("custom-js/jquery.stellar.min.js");
-            removeScript("custom-js/jquery-migrate-3.0.0.min.js");
-            removeScript("custom-js/jquery.magnific-popup.js");
-            removeScript("custom-js/modernizr-2.6.2.min.js");
-            removeScript("custom-js/custom.js");
-        }*/
-    useEffect(() => {
         authListener()
     })
 
@@ -171,6 +123,7 @@ const App = () => {
                                 <Route path="/slider-project" exact children={<Panel
                                     handleLogOut={handleLogOut}
                                 />}/>
+                                <Route path="/slider-project/:id" exact component={AdminSliderSingleProject}/>
                             </ScrollToTop>
                         </React.Fragment>
                         <PreLoader/>

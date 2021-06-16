@@ -5,10 +5,10 @@ import $ from 'jquery'
 import {HashLink} from "react-router-hash-link";
 
 
-function NavigationBar(props) {
-    var location = useLocation();
+function NavigationBar() {
+    let location = useLocation();
 
-    var nav = null
+    let nav = null
 
 
     if (location.pathname === '/') {

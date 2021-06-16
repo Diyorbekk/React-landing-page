@@ -25,7 +25,10 @@ const store = createStore(
 ReactDOM.render(
     <React.Fragment>
         <Provider store={store}>
-            <BrowserRouter><App/></BrowserRouter>
+            <BrowserRouter>
+
+                <App/>
+            </BrowserRouter>
         </Provider>
     </React.Fragment>,
     document.getElementById('root')

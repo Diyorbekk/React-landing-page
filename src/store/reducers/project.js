@@ -4,12 +4,13 @@ import {
     FETCH_PROJECTS_ERROR,
     FETCH_PROJECTS_START,
     PROJECT_NEXT,
-    FINISH_PROJECT,
+    FINISH_PROJECT, FETCH_PROJECT_SINGLE_SUCCESS,
 } from "../actions/actionTypes";
 
 
 const initialState = {
     projects: [],
+    projectSingle: null,
     projectList: [],
     activeProject: 0,
     loading: false,
@@ -30,6 +31,10 @@ export default function quizReducer(state = initialState, action) {
         case FETCH_PROJECTS_ERROR:
             return {
                 ...state, loading: false, error: action.error
+            }
+        case FETCH_PROJECT_SINGLE_SUCCESS:
+            return {
+                ...state, loading: false, projectSingle: action.projectSingle
             }
         case FETCH_PROJECT_LIST_SUCCESS:
             return {

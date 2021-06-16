@@ -5,6 +5,7 @@ import {
     FETCH_PROJECTS_ERROR,
     FETCH_PROJECTS_START,
     FETCH_PROJECT_LIST_SUCCESS,
+    FETCH_PROJECT_SINGLE_SUCCESS,
 } from "./actionTypes";
 
 export function fetchProjects() {
@@ -18,8 +19,8 @@ export function fetchProjects() {
 
             Object.keys(response.data).forEach((key, index) => {
                 projects.push({
-                    path: key,
-                    id: `${index + 1}`,
+                    id: key,
+                    name: `${index + 1}`,
                 })
             });
 
@@ -77,10 +78,35 @@ export function fetchProjectById() {
     }
 }
 
+export function fetchProjectByUrl(projectUrl) {
+    return async dispatch => {
+        dispatch(fetchProjectsStart())
+
+        try {
+            const response = await axios.get(`/projects/${projectUrl}.json`);
+
+
+            const projectSingle = response.data;
+
+            dispatch(fetchSingleProjectSuccess(projectSingle))
+
+        } catch (e) {
+            dispatch(fetchProjectsError(e))
+        }
+
+    }
+}
+
 export function fetchProjectListSuccess(projectList) {
     return {
         type: FETCH_PROJECT_LIST_SUCCESS,
         projectList
+    }
+}
+export function fetchSingleProjectSuccess(projectSingle) {
+    return {
+        type: FETCH_PROJECT_SINGLE_SUCCESS,
+        projectSingle
     }
 }
 
