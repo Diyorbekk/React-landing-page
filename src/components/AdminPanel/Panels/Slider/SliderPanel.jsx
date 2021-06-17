@@ -5,22 +5,36 @@ import Loader from "../../../UI/Loader/Loader";
 import {fetchProjectById, fetchProjects} from "../../../../store/actions/project";
 import Card from "../../../UI/Card/Card";
 import add from "../../../../assets/img/icons/add.png"
-import Auxiliary from "../../../../Auxiliary/Auxiliary";
+import ProjectsDataService from '../../../../util/projects.service'
 
 
 class SliderPanel extends Component {
+    deleteTutorial(props) {
+        ProjectsDataService.delete(props)
+            .then(() => {
+                return this.props.fetchProjectById()
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    }
+
+
     renderProjects(props) {
         return this.props.projectList.map((projectsList, index) => {
             return (
                 <React.Fragment key={index}>
-                    <NavLink to={"/slider-project/" + props[index]} className="col-md-4 mt-4">
-                        <Card
-                            cardUrl={projectsList.projectImgUrl[0]}
-                            cardTitle={projectsList.projectTitle}
-                            cardText={projectsList.projectText}
-                            cardDataCreate={projectsList.createData}
-                        />
-                    </NavLink>
+                    <div  className="col-md-4 mt-4 d-flex flex-column">
+                        <NavLink to={"/slider-project/" + props[index]}>
+                            <Card
+                                cardUrl={projectsList.projectImgUrl[0]}
+                                cardTitle={projectsList.projectTitle}
+                                cardText={projectsList.projectText}
+                                cardDataCreate={projectsList.createData}
+                            />
+                        </NavLink>
+                        <button onClick={() => this.deleteTutorial(props[index])}>Remove Slider</button>
+                    </div>
                 </React.Fragment>
             )
         })
@@ -29,13 +43,18 @@ class SliderPanel extends Component {
     componentDidMount() {
         this.props.fetchProjects()
         this.props.fetchProjectById()
-
     }
+
+    componentDidUpdate(){
+        return this.props.projectList
+    }
+
 
     render() {
         const link = this.props.projectsUrl.map((projectsUrl) => {
             return projectsUrl.id
         })
+
 
         return (
             <div>
@@ -47,18 +66,14 @@ class SliderPanel extends Component {
                         ? <Loader/>
                         : <div className="row">
                             {this.renderProjects(link)}
-
+                            <div className="col-md-4 mt-4">
+                                <NavLink to={"/slider-add"}
+                                         className="border rounded d-flex align-items-center justify-content-center pl-2 pt-2">
+                                    <img src={add} style={{width: 150}} alt="icon-add"/>
+                                </NavLink>
+                            </div>
                         </div>
                 }
-
-                <Auxiliary>
-                    <div className="col-md-4 mt-4">
-                        <NavLink to={"/slider-project/add"}
-                                 className="border rounded d-flex align-items-center justify-content-center pl-2 pt-2">
-                            <img src={add} style={{width: 150}} alt="icon-add"/>
-                        </NavLink>
-                    </div>
-                </Auxiliary>
             </div>
         )
     }

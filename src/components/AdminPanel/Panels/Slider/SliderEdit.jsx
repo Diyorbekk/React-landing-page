@@ -155,6 +155,7 @@ class SliderEdit extends Component {
             this.setState({
                 project: [],
                 image: null,
+                url: [],
                 staticImage: "",
                 errorImage: null,
                 dataCreate: "",
@@ -245,7 +246,9 @@ class SliderEdit extends Component {
                                 touched={control.touched}
                                 errorMessage={control.errorMessage}
                                 onChange={event => this.changeHandler(event.target.value, controlName)}
-                                row="10"/>}
+                                row="10"/>
+
+                    }
                 </Auxiliary>
             )
         })

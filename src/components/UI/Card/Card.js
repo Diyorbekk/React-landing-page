@@ -10,7 +10,7 @@ function Card(props) {
 
                 <div className="card-body">
                     <h5 className="card-title">{props.cardTitle}</h5>
-                    <p className="card-text">{props.cardText}</p>
+                    <p className="card-text four-line-text">{props.cardText}</p>
                     <p className="card-text">
                         <small className="text-muted">Last updated {props.cardDataCreate}</small>
                     </p>

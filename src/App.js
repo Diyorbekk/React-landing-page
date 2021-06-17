@@ -123,9 +123,9 @@ const App = () => {
                             <ScrollToTop>
                                 <Panel handleLogOut={handleLogOut}>
                                     <Route exact path="/slider-project"  component={AdminEditorsList}/>
-                                    <Route path="/slider-project/add" component={SliderEdit}/>
-                                    <Route path="/slider-project/:id" component={AdminSliderSingleProject}/>
+                                    <Route path="/slider-add" component={SliderEdit}/>
                                 </Panel>
+                                <Route path="/slider-project/:id" component={AdminSliderSingleProject}/>
                             </ScrollToTop>
                         </React.Fragment>
                         <PreLoader/>

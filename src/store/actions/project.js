@@ -42,6 +42,9 @@ export function fetchProjectById() {
         try {
             const response = await axios.get(`/projects.json`);
 
+            console.log(response)
+
+
             const projectKeys = response.data
             const propOwn = Object.getOwnPropertyNames(projectKeys);
             const projectsTik = []
@@ -72,7 +75,10 @@ export function fetchProjectById() {
             dispatch(fetchProjectListSuccess(result))
 
 
+
         } catch (e) {
+            let dataEmpty = []
+            dispatch(fetchProjectListSuccess(dataEmpty))
             dispatch(fetchProjectsError(e))
         }
 

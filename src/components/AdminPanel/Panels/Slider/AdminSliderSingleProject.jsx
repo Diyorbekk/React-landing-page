@@ -46,13 +46,12 @@ class AdminSliderSingleProject extends Component {
                     this.props.loading || !this.props.project
                         ? <Loader/>
                         : this.props.project.map((project, index) => {
-                            console.log(project.projectImgUrl[index])
                             return (
                                 <div className="header slider-fade" key={index}>
                                     <OwlCarousel clasname="owl-carousel owl-theme" options={options} events={events}>
-                                        {project.projectImgUrl.map(projectBg => {
+                                        {project.projectImgUrl.map((projectBg, index) => {
                                             return (
-                                                <div className="text-left item bg-img" data-overlay-dark="3"
+                                                <div className="text-left item bg-img" data-overlay-dark="3" key={index}
                                                          style={{backgroundImage: `url(${projectBg})`}}>
                                                 <div className="v-bottom caption">
                                                     <div className="container">

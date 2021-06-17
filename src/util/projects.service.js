@@ -1,4 +1,6 @@
+import {database} from './firebase'
 const db = database.ref("/projects")
+
 
 class ProjectsDataService {
     getAll() {
