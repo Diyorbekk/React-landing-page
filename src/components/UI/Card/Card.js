@@ -9,8 +9,8 @@ function Card(props) {
             <div className="card-body">
 
                 <div className="card-body">
-                    <h5 className="card-title">{props.cardTitle}</h5>
-                    <p className="card-text four-line-text">{props.cardText}</p>
+                    <h5 className="card-title two-line-text">{props.cardTitle}</h5>
+                    <p className="card-text four-line-text" dangerouslySetInnerHTML={{__html: props.cardText}}/>
                     <p className="card-text">
                         <small className="text-muted">Last updated {props.cardDataCreate}</small>
                     </p>

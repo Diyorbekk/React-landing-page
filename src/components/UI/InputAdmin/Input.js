@@ -23,6 +23,7 @@ function Input(props) {
                 className="form-control box-shadow-none px-2 input-focus border"
                 value={props.value}
                 onChange={props.onChange}
+                onInput={props.onInput}
             />
             {
                 isInvalid(props)

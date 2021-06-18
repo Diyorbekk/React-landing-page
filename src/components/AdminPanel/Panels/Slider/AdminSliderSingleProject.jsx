@@ -60,7 +60,7 @@ class AdminSliderSingleProject extends Component {
                                                                 <div className="o-hidden">
                                                                     <h1>{project.projectTitle}</h1>
                                                                     <hr/>
-                                                                    <p>{project.projectText}</p>
+                                                                    <p dangerouslySetInnerHTML={{__html: project.projectText}}/>
                                                                 </div>
                                                             </div>
                                                         </div>

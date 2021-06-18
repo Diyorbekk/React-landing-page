@@ -8,6 +8,8 @@ import InputFile from "../../../UI/InputFileAdmin/InputFile";
 import Button from "../../../UI/Button/Button";
 import {createProject, finishCreateProject} from "../../../../store/actions/create";
 import {connect} from "react-redux";
+import OwlCarousel from "react-owl-carousel2";
+import $ from "jquery";
 
 
 function createFormControls() {
@@ -16,15 +18,15 @@ function createFormControls() {
             label: "Create Title",
             errorMessage: 'Sahifa Nomi bo\'sh bo\'lishi mumkin emas'
         }, {required: true}),
-        projectText: createControl({
-            label: "Create Text",
-            errorMessage: 'Text bo\'sh bo\'lishi mumkin emas'
-        }, {required: true}),
     }
 }
+
 class SliderEdit extends Component {
 
     state = {
+        textTitle: '',
+        editor: "",
+        editorError: null,
         image: null,
         imageAdding: false,
         url: [],
@@ -38,19 +40,28 @@ class SliderEdit extends Component {
         formControls: createFormControls()
     }
 
+    componentDidMount() {
+        document.querySelector("div[contenteditable]").addEventListener("paste", function (e) {
+            e.preventDefault();
+            let text = e.clipboardData.getData("text/plain");
+            document.execCommand("insertHTML", false, text);
+        });
+    }
+
     handleChange = e => {
         let fileUrl = e.target.files[0];
         let file = e.target.files;
-
-        console.log()
         if (file.length === 0) {
+            $('.__lk-fileInput span').removeClass('right');
             this.setState({
                 staticImage: "",
                 staticImageName: "Select file",
                 staticImageSize: null,
                 errorImage: "File no select",
+                imageAdding: false,
             })
         } else {
+            $('.__lk-fileInput span').addClass('right');
             this.setState({
                 staticImage: URL.createObjectURL(fileUrl),
                 staticImageName: fileUrl.name,
@@ -110,6 +121,7 @@ class SliderEdit extends Component {
                         this.setState(prevState => ({
                             url: [...prevState.url, url],
                             image: null,
+                            imageAdding: true,
                             staticImage: "",
                         }))
                     });
@@ -130,42 +142,56 @@ class SliderEdit extends Component {
                 staticImage: "",
                 staticImageName: "Select file",
                 staticImageSize: null,
-                errorImage: "File no select",
-            })
-        } else {
-            let currentdate = new Date();
-            let datetime = currentdate.getDate() + "/"
-                + (currentdate.getMonth() + 1) + "/"
-                + currentdate.getFullYear() + " "
-                + currentdate.getHours() + ":"
-                + currentdate.getMinutes() + ":"
-                + currentdate.getSeconds();
-
-            const {projectTitle, projectText} = this.state.formControls;
-
-            const projectItem = {
-                projectTitle: projectTitle.value,
-                projectText: projectText.value,
-                projectImgUrl: this.state.url,
-                createData: datetime,
-                id: this.props.projectCreate.length + 1,
-            };
-            this.props.createProject(projectItem)
-
-            this.setState({
-                project: [],
                 image: null,
-                url: [],
-                staticImage: "",
-                errorImage: null,
-                dataCreate: "",
-                progress: 0,
-                isFormValid: false,
                 imageAdding: false,
-                formControls: createFormControls()
+                errorImage: "File no update",
+                url: [],
             })
+            document.getElementById("images").value = "";
+        } else {
+            if (this.state.editor.length <= 6) {
+                this.setState({
+                    editorError: "Text 6 ta harf dan kam bo'lish mumkin emas",
+                })
+            } else {
+                let currentdate = new Date();
+                let datetime = currentdate.getDate() + "/"
+                    + (currentdate.getMonth() + 1) + "/"
+                    + currentdate.getFullYear() + " "
+                    + currentdate.getHours() + ":"
+                    + currentdate.getMinutes() + ":"
+                    + currentdate.getSeconds();
 
-            this.props.finishCreateProject()
+                const {projectTitle} = this.state.formControls;
+
+                const projectItem = {
+                    projectTitle: projectTitle.value,
+                    projectText: this.state.editor,
+                    projectImgUrl: this.state.url,
+                    createData: datetime,
+                    id: this.props.projectCreate.length + 1,
+                };
+                document.getElementById("textBox").innerHTML=''
+                this.props.createProject(projectItem)
+
+                this.setState({
+                    project: [],
+                    image: null,
+                    url: [],
+                    staticImage: "",
+                    errorImage: null,
+                    editorError: null,
+                    dataCreate: "",
+                    editor: "",
+                    progress: 0,
+                    isFormValid: false,
+                    imageAdding: false,
+                    formControls: createFormControls()
+                })
+
+                this.props.finishCreateProject()
+            }
+
         }
 
 
@@ -183,39 +209,62 @@ class SliderEdit extends Component {
 
 
         this.setState({
+            textTitle: value,
             formControls,
             isFormValid: validateForm(formControls)
         })
     };
 
     renderProjects() {
+        const options = {
+            items: 1,
+            loop: true,
+            dots: false,
+            margin: 0,
+            autoplay: true,
+            smartSpeed: 500,
+            nav: true,
+            animateOut: 'fadeOut',
+            navText: ['<i class="ti-angle-left" aria-hidden="true"></i>', '<i class="ti-angle-right" aria-hidden="true"></i>']
+        };
+
+        const events = {
+            onChanged: function (event) {
+                var item = event.item.index - 2;     // Position of the current item
+                $('h4').removeClass('animated fadeInUp');
+                $('h1').removeClass('animated fadeInUp');
+                $('p').removeClass('animated fadeInUp');
+                $('.butn-light').removeClass('animated fadeInUp');
+                $('.owl-item').not('.cloned').eq(item).find('h4').addClass('animated fadeInUp');
+                $('.owl-item').not('.cloned').eq(item).find('h1').addClass('animated fadeInUp');
+                $('.owl-item').not('.cloned').eq(item).find('p').addClass('animated fadeInUp');
+                $('.owl-item').not('.cloned').eq(item).find('.butn-light').addClass('animated fadeInUp');
+            }
+        };
         return this.state.url.map((projects, index) => {
             return (
-                <Auxiliary key={index}>
-                    {index < 3
-                        ? <div className="col-md-4 " key={index}>
-
-                            <a
-                                href={projects}
-                            >
-                                <img className="img-thumbnail"
-                                     src={projects || "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"}
-                                     alt={this.state.url || "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"}/>
-                            </a>
+                <div className="col-12 slider-fade" key={index}>
+                    <OwlCarousel clasname="owl-carousel owl-theme" options={options} events={events}>
+                        <div className="text-left item bg-img" data-overlay-dark="3" key={index}
+                             style={{backgroundImage: `url(${projects})`}}>
+                            <div className="v-bottom caption">
+                                <div className="container">
+                                    <div className="row">
+                                        <div className="col-md-7">
+                                            <div className="o-hidden">
+                                                <h1>{this.state.textTitle}</h1>
+                                                <hr/>
+                                                <p className="text-white"
+                                                   dangerouslySetInnerHTML={{__html: this.state.editor}}/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        : <div className="col-md-4 mt-4" key={index}>
 
-                            <a
-                                href={projects}
-                            >
-                                <img className="img-thumbnail"
-                                     src={projects || "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"}
-                                     alt={this.state.url || "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"}/>
-                            </a>
-                        </div>}
-                </Auxiliary>
-
-
+                    </OwlCarousel>
+                </div>
             )
         })
     }
@@ -227,26 +276,15 @@ class SliderEdit extends Component {
             return (
                 <Auxiliary key={controlName + index}>
                     {
-                        index === 0
-                            ?
-                            <Input
-                                label={control.label}
-                                value={control.value}
-                                valid={control.valid}
-                                shouldValidate={!!control.validation}
-                                touched={control.touched}
-                                errorMessage={control.errorMessage}
-                                onChange={event => this.changeHandler(event.target.value, controlName)}
-                            />
-                            : <TextArea
-                                label={control.label}
-                                value={control.value}
-                                valid={control.valid}
-                                shouldValidate={!!control.validation}
-                                touched={control.touched}
-                                errorMessage={control.errorMessage}
-                                onChange={event => this.changeHandler(event.target.value, controlName)}
-                                row="10"/>
+                        <Input
+                            label={control.label}
+                            value={control.value}
+                            valid={control.valid}
+                            shouldValidate={!!control.validation}
+                            touched={control.touched}
+                            errorMessage={control.errorMessage}
+                            onChange={event => this.changeHandler(event.target.value, controlName)}
+                        />
 
                     }
                 </Auxiliary>
@@ -255,60 +293,147 @@ class SliderEdit extends Component {
     }
 
     render() {
+        let sLnk = "textarea"
         return (
             <section className="mt-5 edit container">
                 <form className="row" onSubmit={this.submitHandler}>
                     <div className="col-12">
-                        <InputFile
-                            legend="Slide image"
-                            file={this.state.staticImage}
-                            label={this.state.staticImageName}
-                            size={this.state.staticImageSize}
-                            errorMessage={this.state.errorImage}
-                            onChange={this.handleChange}
-                        />
                         <br/>
                         {
-                            this.state.url.length === 0 ? <p>You have not uploaded a picture yet</p> :
-                                <div className="row">{this.renderProjects()}</div>
+                            this.state.url.length === 0 ?
+                                <React.Fragment>
+                                <InputFile
+                                    legend="Slide image"
+                                    file={this.state.staticImage}
+                                    label={this.state.staticImageName}
+                                    size={this.state.staticImageSize}
+                                    errorMessage={this.state.errorImage}
+                                    onChange={this.handleChange}
+                                />
+                                    <br/>
+                                    <div className="progress">
+                                        <div className="progress-bar" style={{width: this.state.progress + "%"}}
+                                             aria-valuenow="0"
+                                             aria-valuemin="0" aria-valuemax="100"/>
+                                    </div>
+                                    <br/>
+                                    <Button
+                                        type="primary"
+                                        onClick={this.handleUpload}
+                                        disabled={!this.state.image}
+                                    >
+                                        Image upload
+                                    </Button>
+                                </React.Fragment>
+                                : <div className="row">{this.renderProjects()} </div>
                         }
-                        <br/>
-                        <div className="progress">
-                            <div className="progress-bar" style={{width: this.state.progress + "%"}}
-                                 aria-valuenow="0"
-                                 aria-valuemin="0" aria-valuemax="100"/>
-                        </div>
-                        <br/>
-                        <Button
-                            type="primary"
-                            onClick={this.handleUpload}
-                            disabled={!this.state.image}
-                        >
-                            Image upload
-                        </Button>
+
                         <br/>
                         <br/>
                         {
-
-                            this.state.imageAdding === false
-                                ? <React.Fragment>{this.renderInput()}</React.Fragment> : <p>Adding image</p>
-
+                            <React.Fragment>
+                                {this.renderInput()}
+                                <TextArea
+                                    label="Create Text"
+                                    inputRef={el => sLnk = el}
+                                    onInput={() => this.setState({
+                                        editor: sLnk.innerHTML.trim()
+                                    })}
+                                    errorMessage={this.state.editorError}
+                                />
+                            </React.Fragment>
                         }
 
+                        <br/>
+                        <br/>
                         <br/>
 
                         <Button
                             type="success"
                             className="btn"
                             onClick={this.createProjectHandler}
-                            disabled={!this.state.isFormValid}
+                            disabled={!this.state.isFormValid || !this.state.imageAdding}
                         >
-                            Project Create
+                            Slider Create
                         </Button>
                         <br/>
                         <br/>
                     </div>
                 </form>
+                {/*                <div>
+                    <div id="toolBar1" className="row">
+                        <div className="col-md-2">
+                            <select className="form-control" onChange={(e) => formatDoc('formatblock', e.target.value)}>
+                                <option selected>- формат -</option>
+                                <option value="h1">Title 1 &lt;h1&gt;</option>
+                                <option value="h2">Title 2 &lt;h2&gt;</option>
+                                <option value="h3">Title 3 &lt;h3&gt;</option>
+                                <option value="h4">Title 4 &lt;h4&gt;</option>
+                                <option value="h5">Title 5 &lt;h5&gt;</option>
+                                <option value="h6">Подзаголовок &lt;h6&gt;</option>
+                                <option value="p">Параграф &lt;p&gt;</option>
+                                <option value="pre">Preformatted &lt;pre&gt;</option>
+                            </select>
+                        </div>
+                        <div className="col-md-2">
+                            <select className="form-control" onChange={(e) => formatDoc('fontname', e.target.value)}>
+                                <option className="heading" selected>- шрифт -</option>
+                                <option>Arial</option>
+                                <option>Arial Black</option>
+                                <option>Courier New</option>
+                                <option>Times New Roman</option>
+                            </select>
+                        </div>
+                        <div className="col-md-2">
+                            <select className="form-control" onChange={(e) => formatDoc('fontsize', e.target.value)}>
+                                <option className="heading" selected>- размер -</option>
+                                <option value="1">Малюсенький</option>
+                                <option value="2">Маленький</option>
+                                <option value="3">Нормальный</option>
+                                <option value="4">Большеват</option>
+                                <option value="5">Большой</option>
+                                <option value="6">Большущий</option>
+                                <option value="7">Огромный</option>
+                            </select>
+                        </div>
+                        <div className="col-md-2">
+                            <select className="form-control" onChange={(e) => formatDoc('forecolor', e.target.value)}>
+                                <option className="heading" selected>- цвет -</option>
+                                <option value="red">Красный</option>
+                                <option value="blue">Синий</option>
+                                <option value="green">Зелёный</option>
+                                <option value="black">Чёрный</option>
+                            </select>
+                        </div>
+                        <div className="col-md-2">
+                            <select className="form-control" onChange={(e) => formatDoc('backcolor', e.target.value)}>
+                                <option className="heading" selected>- фон -</option>
+                                <option value="#faa">Красень</option>
+                                <option value="#afa">Зелень</option>
+                                <option value="#aaf">Синь</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="toolBar2">
+                        <img className="intLink" alt="formatDoc" title="Назад" onClick={() => formatDoc('undo')}
+                             src={undoIcon}/>
+                        <img className="intLink" alt="formatDoc" title="Вперёд" onClick={() => formatDoc('redo')}
+                             src={redoIcon}/>
+                        <img className="intLink" alt="formatDoc" title="Жирный" onClick={() => formatDoc('bold')}
+                             src={fontBold}/>
+                        <img className="intLink" alt="formatDoc" title="Italic" onClick={() => formatDoc('italic')}
+                             src={fontItalic}/>
+                        <img className="intLink" alt="formatDoc" title="Подчёркивание"
+                             onClick={() => formatDoc('underline')} src={fontUnderline}/>
+                        <img className="intLink" alt="formatDoc" title="Удалить отступ"
+                             onClick={() => formatDoc('outdent')} src={fontOutDent}/>
+                        <img className="intLink" alt="formatDoc" title="Добавить отступ"
+                             onClick={() => formatDoc('indent')} src={fontInDent}/>
+                        <img className="intLink" alt="formatDoc" title="Гиперссылка" onClick={() => createLink()}
+                             src={LinkIcon}/>
+                    </div>
+                    <div id="textBox" suppressContentEditableWarning={true} contentEditable="true"/>
+                </div>*/}
             </section>
         )
     }
