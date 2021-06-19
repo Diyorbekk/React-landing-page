@@ -12,6 +12,7 @@ function Button(props) {
             onClick={props.onClick}
             className={cls.join(' ')}
             disabled={props.disabled}
+            hidden={props.hidden}
         >
             {props.children}
         </button>

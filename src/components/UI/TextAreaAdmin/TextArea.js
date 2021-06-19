@@ -118,7 +118,7 @@ function TextArea(props) {
                      src={LinkIcon}/>
             </div>
             <div id="textBox" suppressContentEditableWarning={true} contentEditable="true"
-                 ref={props.inputRef} onInput={props.onInput}/>
+                 ref={props.inputRef} onInput={props.onInput} onChange={props.onChange}/>
 
             {props.errorMessage === null ?
                 null

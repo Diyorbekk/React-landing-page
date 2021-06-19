@@ -21,21 +21,27 @@ function createFormControls() {
     }
 }
 
+let refTextarea = "textarea"
+let valueInput = ""
+
 class SliderEdit extends Component {
 
     state = {
         textTitle: '',
         editor: "",
-        editorError: null,
-        image: null,
-        imageAdding: false,
-        url: [],
+        editorText: "",
         staticImage: "",
         staticImageName: "Select file",
+        url: [],
+        editorError: null,
+        image: null,
         staticImageSize: null,
         errorImage: null,
         progress: 0,
+        imageAdding: false,
         isFormValid: false,
+        lookChange: false,
+        lookCheck: false,
         dataCreate: "",
         formControls: createFormControls()
     }
@@ -144,6 +150,7 @@ class SliderEdit extends Component {
                 staticImageSize: null,
                 image: null,
                 imageAdding: false,
+                lookChange: false,
                 errorImage: "File no update",
                 url: [],
             })
@@ -171,7 +178,7 @@ class SliderEdit extends Component {
                     createData: datetime,
                     id: this.props.projectCreate.length + 1,
                 };
-                document.getElementById("textBox").innerHTML=''
+                document.getElementById("textBox").innerHTML = ''
                 this.props.createProject(projectItem)
 
                 this.setState({
@@ -186,6 +193,8 @@ class SliderEdit extends Component {
                     progress: 0,
                     isFormValid: false,
                     imageAdding: false,
+                    lookChange: false,
+                    lookCheck: false,
                     formControls: createFormControls()
                 })
 
@@ -201,72 +210,136 @@ class SliderEdit extends Component {
         const formControls = {...this.state.formControls};
         const control = {...formControls[controlName]};
 
+        if (this.state.textTitle.length == valueInput.length){
+            this.setState({
+                lookChange: false,
+                lookCheck: true,
+            })
+        }
+
         control.touched = true;
         control.value = value;
         control.valid = validate(control.value, control.validation);
 
         formControls[controlName] = control;
-
+        valueInput = value
 
         this.setState({
-            textTitle: value,
             formControls,
             isFormValid: validateForm(formControls)
         })
     };
 
-    renderProjects() {
-        const options = {
-            items: 1,
-            loop: true,
-            dots: false,
-            margin: 0,
-            autoplay: true,
-            smartSpeed: 500,
-            nav: true,
-            animateOut: 'fadeOut',
-            navText: ['<i class="ti-angle-left" aria-hidden="true"></i>', '<i class="ti-angle-right" aria-hidden="true"></i>']
-        };
+    editorChange(event) {
+        event.preventDefault();
+        if (this.state.editor.length == this.state.editorText.length) {
+            this.setState({
+                lookChange: false,
+                lookCheck: true,
+            })
+        }
+        this.setState({
+            editor: refTextarea.innerHTML.trim()
+        })
+    }
 
-        const events = {
-            onChanged: function (event) {
-                var item = event.item.index - 2;     // Position of the current item
-                $('h4').removeClass('animated fadeInUp');
-                $('h1').removeClass('animated fadeInUp');
-                $('p').removeClass('animated fadeInUp');
-                $('.butn-light').removeClass('animated fadeInUp');
-                $('.owl-item').not('.cloned').eq(item).find('h4').addClass('animated fadeInUp');
-                $('.owl-item').not('.cloned').eq(item).find('h1').addClass('animated fadeInUp');
-                $('.owl-item').not('.cloned').eq(item).find('p').addClass('animated fadeInUp');
-                $('.owl-item').not('.cloned').eq(item).find('.butn-light').addClass('animated fadeInUp');
+    saveChanges = () => {
+        if (this.state.url.length === 0) {
+            this.setState({
+                staticImage: "",
+                staticImageName: "Select file",
+                staticImageSize: null,
+                image: null,
+                imageAdding: false,
+                lookChange: false,
+                errorImage: "File no update",
+                url: [],
+            })
+            document.getElementById("images").value = "";
+        } else {
+            if (this.state.editor.length <= 6) {
+                this.setState({
+                    editorError: "Text 6 ta harf dan kam bo'lish mumkin emas",
+                })
+            } else {
+                this.setState({
+                    textTitle: valueInput,
+                    lookChange: true,
+                    editorText: refTextarea.innerHTML.trim()
+                })
             }
-        };
-        return this.state.url.map((projects, index) => {
-            return (
-                <div className="col-12 slider-fade" key={index}>
-                    <OwlCarousel clasname="owl-carousel owl-theme" options={options} events={events}>
-                        <div className="text-left item bg-img" data-overlay-dark="3" key={index}
-                             style={{backgroundImage: `url(${projects})`}}>
-                            <div className="v-bottom caption">
-                                <div className="container">
-                                    <div className="row">
-                                        <div className="col-md-7">
-                                            <div className="o-hidden">
-                                                <h1>{this.state.textTitle}</h1>
-                                                <hr/>
-                                                <p className="text-white"
-                                                   dangerouslySetInnerHTML={{__html: this.state.editor}}/>
+        }
+
+    }
+
+    renderProjects(e) {
+        if (e === false) {
+            if(this.state.lookCheck) {
+                return (
+                    <div className="col-12">
+                        Please check save 🔁
+                    </div>
+                )
+            } else {
+                return (
+                    <div className="col-12">
+                        Uploading Image ✅
+                    </div>
+                )
+            }
+        } else {
+
+
+            const options = {
+                items: 1,
+                loop: true,
+                dots: false,
+                margin: 0,
+                autoplay: true,
+                smartSpeed: 500,
+                nav: true,
+                animateOut: 'fadeOut',
+                navText: ['<i class="ti-angle-left" aria-hidden="true"></i>', '<i class="ti-angle-right" aria-hidden="true"></i>']
+            };
+            const events = {
+                onChanged: function (event) {
+                    var item = event.item.index - 2;     // Position of the current item
+                    $('h4').removeClass('animated fadeInUp');
+                    $('h1').removeClass('animated fadeInUp');
+                    $('p').removeClass('animated fadeInUp');
+                    $('.butn-light').removeClass('animated fadeInUp');
+                    $('.owl-item').not('.cloned').eq(item).find('h4').addClass('animated fadeInUp');
+                    $('.owl-item').not('.cloned').eq(item).find('h1').addClass('animated fadeInUp');
+                    $('.owl-item').not('.cloned').eq(item).find('p').addClass('animated fadeInUp');
+                    $('.owl-item').not('.cloned').eq(item).find('.butn-light').addClass('animated fadeInUp');
+                }
+            };
+            return this.state.url.map((projects, index) => {
+                return (
+                    <div className="col-12 slider-fade" key={index}>
+                        <OwlCarousel clasname="owl-carousel owl-theme" options={options} events={events}>
+                            <div className="text-left item bg-img" data-overlay-dark="3" key={index}
+                                 style={{backgroundImage: `url(${projects})`}}>
+                                <div className="v-bottom caption">
+                                    <div className="container">
+                                        <div className="row">
+                                            <div className="col-md-7">
+                                                <div className="o-hidden">
+                                                    <h1>{this.state.textTitle}</h1>
+                                                    <hr/>
+                                                    <p className="text-white">{this.state.editorText}</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </OwlCarousel>
+                    </div>
+                )
+            })
 
-                    </OwlCarousel>
-                </div>
-            )
-        })
+        }
     }
 
     renderInput = () => {
@@ -293,7 +366,6 @@ class SliderEdit extends Component {
     }
 
     render() {
-        let sLnk = "textarea"
         return (
             <section className="mt-5 edit container">
                 <form className="row" onSubmit={this.submitHandler}>
@@ -302,14 +374,14 @@ class SliderEdit extends Component {
                         {
                             this.state.url.length === 0 ?
                                 <React.Fragment>
-                                <InputFile
-                                    legend="Slide image"
-                                    file={this.state.staticImage}
-                                    label={this.state.staticImageName}
-                                    size={this.state.staticImageSize}
-                                    errorMessage={this.state.errorImage}
-                                    onChange={this.handleChange}
-                                />
+                                    <InputFile
+                                        legend="Slide image"
+                                        file={this.state.staticImage}
+                                        label={this.state.staticImageName}
+                                        size={this.state.staticImageSize}
+                                        errorMessage={this.state.errorImage}
+                                        onChange={this.handleChange}
+                                    />
                                     <br/>
                                     <div className="progress">
                                         <div className="progress-bar" style={{width: this.state.progress + "%"}}
@@ -325,7 +397,7 @@ class SliderEdit extends Component {
                                         Image upload
                                     </Button>
                                 </React.Fragment>
-                                : <div className="row">{this.renderProjects()} </div>
+                                : <div className="row">{this.renderProjects(this.state.lookChange)} </div>
                         }
 
                         <br/>
@@ -335,28 +407,32 @@ class SliderEdit extends Component {
                                 {this.renderInput()}
                                 <TextArea
                                     label="Create Text"
-                                    inputRef={el => sLnk = el}
-                                    onInput={() => this.setState({
-                                        editor: sLnk.innerHTML.trim()
-                                    })}
+                                    inputRef={el => refTextarea = el}
+                                    onInput={(event) => this.editorChange(event)}
                                     errorMessage={this.state.editorError}
                                 />
+
+                                <Button
+                                    type="success"
+                                    className="btn"
+                                    onClick={this.saveChanges}
+                                    disabled={!this.state.isFormValid || !this.state.imageAdding}
+                                    hidden={this.state.lookChange}
+                                >
+                                    Save and Look change slider
+                                </Button>
+                                <Button
+                                    type="success"
+                                    className="btn"
+                                    onClick={this.createProjectHandler}
+                                    disabled={!this.state.lookChange}
+                                    hidden={!this.state.lookChange}
+                                >
+                                    Slider Create
+                                </Button>
+                                <br/>
                             </React.Fragment>
                         }
-
-                        <br/>
-                        <br/>
-                        <br/>
-
-                        <Button
-                            type="success"
-                            className="btn"
-                            onClick={this.createProjectHandler}
-                            disabled={!this.state.isFormValid || !this.state.imageAdding}
-                        >
-                            Slider Create
-                        </Button>
-                        <br/>
                         <br/>
                     </div>
                 </form>
