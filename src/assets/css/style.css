@@ -375,6 +375,7 @@ textarea {
     height: auto;
     background-color: transparent;
     -webkit-box-shadow: none;
+    border: none;
     box-shadow: none;
     border-width: 0 0 1px;
     border-style: solid;
@@ -387,7 +388,7 @@ textarea {
     color: #777;
     background-image: none;
     border-bottom: 1px solid #f4f4f4;
-    border-color: ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 
 input:focus,

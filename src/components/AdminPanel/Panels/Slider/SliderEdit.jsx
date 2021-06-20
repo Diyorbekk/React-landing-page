@@ -209,7 +209,7 @@ class SliderEdit extends Component {
     changeHandler = (value, controlName) => {
         const formControls = {...this.state.formControls};
         const control = {...formControls[controlName]};
-
+        // eslint-disable-next-line
         if (this.state.textTitle.length == valueInput.length){
             this.setState({
                 lookChange: false,
@@ -232,6 +232,7 @@ class SliderEdit extends Component {
 
     editorChange(event) {
         event.preventDefault();
+        // eslint-disable-next-line
         if (this.state.editor.length == this.state.editorText.length) {
             this.setState({
                 lookChange: false,

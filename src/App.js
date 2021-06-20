@@ -42,9 +42,7 @@ const App = () => {
             .auth()
             .setPersistence(firebase.auth.Auth.Persistence.SESSION).then(
             () => {
-                history.push('/slider-project');
-                return firebase.auth().signInWithEmailAndPassword(email, password);
-
+                return firebase.auth().signInWithEmailAndPassword(email, password)
             })
             .catch(err => {
                 switch (err.code) {
@@ -65,10 +63,7 @@ const App = () => {
         clearErrors();
         firebase
             .auth()
-            .setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
-            history.push('/slider-project');
-            return firebase.auth().createUserWithEmailAndPassword(email, password)
-        })
+            .setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {return firebase.auth().createUserWithEmailAndPassword(email, password)})
             .catch(err => {
                 switch (err.code) {
                     case "auth/email-already-in-use":
@@ -100,6 +95,7 @@ const App = () => {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
                 clearInputs();
+                history.push('/slider-project');
                 autoLogoutUser(600)
                 setUser(user)
             } else {
@@ -122,7 +118,7 @@ const App = () => {
                             <ToTop/>
                             <ScrollToTop>
                                 <Panel handleLogOut={handleLogOut}>
-                                    <Route exact path="/slider-project"  component={AdminEditorsList}/>
+                                    <Route exact path="/slider-project" component={AdminEditorsList}/>
                                     <Route path="/slider-add" component={SliderEdit}/>
                                 </Panel>
                                 <Route path="/slider-project/:id" component={AdminSliderSingleProject}/>
