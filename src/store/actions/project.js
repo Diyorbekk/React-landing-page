@@ -9,8 +9,6 @@ import {
 } from "./actionTypes";
 
 export function fetchProjects() {
-
-
     return async dispatch => {
         dispatch(fetchProjectsStart())
         try {
@@ -41,9 +39,6 @@ export function fetchProjectById() {
         dispatch(fetchProjectsStart())
         try {
             const response = await axios.get(`/projects.json`);
-
-            console.log(response)
-
 
             const projectKeys = response.data
             const propOwn = Object.getOwnPropertyNames(projectKeys);

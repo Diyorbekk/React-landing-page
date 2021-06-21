@@ -385,9 +385,13 @@ class SliderEdit extends Component {
                                     />
                                     <br/>
                                     <div className="progress">
-                                        <div className="progress-bar" style={{width: this.state.progress + "%"}}
+                                        <div className="progress-bar"
                                              aria-valuenow="0"
-                                             aria-valuemin="0" aria-valuemax="100"/>
+                                             aria-valuemin="0"
+                                             aria-valuemax="100"
+                                             style={{width: this.state.progress + "%"}}
+                                        />
+                                        {this.state.progress} %
                                     </div>
                                     <br/>
                                     <Button
@@ -437,80 +441,6 @@ class SliderEdit extends Component {
                         <br/>
                     </div>
                 </form>
-                {/*                <div>
-                    <div id="toolBar1" className="row">
-                        <div className="col-md-2">
-                            <select className="form-control" onChange={(e) => formatDoc('formatblock', e.target.value)}>
-                                <option selected>- формат -</option>
-                                <option value="h1">Title 1 &lt;h1&gt;</option>
-                                <option value="h2">Title 2 &lt;h2&gt;</option>
-                                <option value="h3">Title 3 &lt;h3&gt;</option>
-                                <option value="h4">Title 4 &lt;h4&gt;</option>
-                                <option value="h5">Title 5 &lt;h5&gt;</option>
-                                <option value="h6">Подзаголовок &lt;h6&gt;</option>
-                                <option value="p">Параграф &lt;p&gt;</option>
-                                <option value="pre">Preformatted &lt;pre&gt;</option>
-                            </select>
-                        </div>
-                        <div className="col-md-2">
-                            <select className="form-control" onChange={(e) => formatDoc('fontname', e.target.value)}>
-                                <option className="heading" selected>- шрифт -</option>
-                                <option>Arial</option>
-                                <option>Arial Black</option>
-                                <option>Courier New</option>
-                                <option>Times New Roman</option>
-                            </select>
-                        </div>
-                        <div className="col-md-2">
-                            <select className="form-control" onChange={(e) => formatDoc('fontsize', e.target.value)}>
-                                <option className="heading" selected>- размер -</option>
-                                <option value="1">Малюсенький</option>
-                                <option value="2">Маленький</option>
-                                <option value="3">Нормальный</option>
-                                <option value="4">Большеват</option>
-                                <option value="5">Большой</option>
-                                <option value="6">Большущий</option>
-                                <option value="7">Огромный</option>
-                            </select>
-                        </div>
-                        <div className="col-md-2">
-                            <select className="form-control" onChange={(e) => formatDoc('forecolor', e.target.value)}>
-                                <option className="heading" selected>- цвет -</option>
-                                <option value="red">Красный</option>
-                                <option value="blue">Синий</option>
-                                <option value="green">Зелёный</option>
-                                <option value="black">Чёрный</option>
-                            </select>
-                        </div>
-                        <div className="col-md-2">
-                            <select className="form-control" onChange={(e) => formatDoc('backcolor', e.target.value)}>
-                                <option className="heading" selected>- фон -</option>
-                                <option value="#faa">Красень</option>
-                                <option value="#afa">Зелень</option>
-                                <option value="#aaf">Синь</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div id="toolBar2">
-                        <img className="intLink" alt="formatDoc" title="Назад" onClick={() => formatDoc('undo')}
-                             src={undoIcon}/>
-                        <img className="intLink" alt="formatDoc" title="Вперёд" onClick={() => formatDoc('redo')}
-                             src={redoIcon}/>
-                        <img className="intLink" alt="formatDoc" title="Жирный" onClick={() => formatDoc('bold')}
-                             src={fontBold}/>
-                        <img className="intLink" alt="formatDoc" title="Italic" onClick={() => formatDoc('italic')}
-                             src={fontItalic}/>
-                        <img className="intLink" alt="formatDoc" title="Подчёркивание"
-                             onClick={() => formatDoc('underline')} src={fontUnderline}/>
-                        <img className="intLink" alt="formatDoc" title="Удалить отступ"
-                             onClick={() => formatDoc('outdent')} src={fontOutDent}/>
-                        <img className="intLink" alt="formatDoc" title="Добавить отступ"
-                             onClick={() => formatDoc('indent')} src={fontInDent}/>
-                        <img className="intLink" alt="formatDoc" title="Гиперссылка" onClick={() => createLink()}
-                             src={LinkIcon}/>
-                    </div>
-                    <div id="textBox" suppressContentEditableWarning={true} contentEditable="true"/>
-                </div>*/}
             </section>
         )
     }

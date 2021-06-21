@@ -40,7 +40,7 @@ class Drawer extends Component {
 
         const links = [
             {to: '/slider-project', label: 'Slider', exact: false},
-            {to: '/projects', label: 'Projects', exact: false},
+            {to: '/projects-catalog', label: 'Projects', exact: false},
             {to: '/news', label: 'News', exact: false},
         ]
 

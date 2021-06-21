@@ -13,9 +13,11 @@ import Auxiliary from "./Auxiliary/Auxiliary";
 import Login from "./components/sections/Login";
 import Panel from "./components/AdminPanel/AdminPanelHome"
 import AdminEditorsList from "./components/AdminPanel/Panels/Slider/SliderPanel";
+import ProjectEditorsPanel from "./components/AdminPanel/Panels/Projects-list/ProjectListPanel";
 import PreLoader from "./components/preLoader";
 import AdminSliderSingleProject from "./components/AdminPanel/Panels/Slider/AdminSliderSingleProject";
 import SliderEdit from "./components/AdminPanel/Panels/Slider/SliderEdit";
+import ProjectCatalogEdit from "./components/AdminPanel/Panels/Projects-list/ProjectListEdit";
 
 const App = () => {
     const history = useHistory();
@@ -119,6 +121,8 @@ const App = () => {
                             <ScrollToTop>
                                 <Panel handleLogOut={handleLogOut}>
                                     <Route exact path="/slider-project" component={AdminEditorsList}/>
+                                    <Route path="/projects-catalog" component={ProjectEditorsPanel}/>
+                                    <Route path="/project-catalog-add" component={ProjectCatalogEdit}/>
                                     <Route path="/slider-add" component={SliderEdit}/>
                                 </Panel>
                                 <Route path="/slider-project/:id" component={AdminSliderSingleProject}/>

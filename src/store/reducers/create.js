@@ -1,7 +1,13 @@
-import {CREATE_PROJECT,RESET_PROJECT_CREATION} from "../actions/actionTypes";
+import {
+    CREATE_PROJECT,
+    CREATE_PROJECT_CATALOG,
+    RESET_PROJECT_CREATION,
+    RESET_PROJECT_CREATION_CATALOG
+} from "../actions/actionTypes";
 
 const initialState = {
-    project: []
+    project: [],
+    projectCatalog: []
 }
 
 export default function createReducer(state= initialState,action) {
@@ -15,6 +21,16 @@ export default function createReducer(state= initialState,action) {
             return {
                 ...state,
                 project: []
+            }
+        case CREATE_PROJECT_CATALOG:
+            return{
+                ...state,
+                projectCatalog: [...state.projectCatalog, action.item]
+            }
+        case RESET_PROJECT_CREATION_CATALOG:
+            return {
+                ...state,
+                projectCatalog: []
             }
         default:
             return state
