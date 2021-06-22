@@ -390,8 +390,8 @@ class SliderEdit extends Component {
                                              aria-valuemin="0"
                                              aria-valuemax="100"
                                              style={{width: this.state.progress + "%"}}
-                                        />
-                                        {this.state.progress} %
+                                        >{this.state.progress} %</div>
+
                                     </div>
                                     <br/>
                                     <Button

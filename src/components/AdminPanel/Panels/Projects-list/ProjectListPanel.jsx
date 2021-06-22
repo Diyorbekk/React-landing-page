@@ -56,7 +56,7 @@ class ProjectListPanel extends Component {
             <div>
 
 
-                <h1>Slider Projects</h1>
+                <h1>Projects Catalog</h1>
                 {
                     this.props.loading && this.props.length !== 0
                         ? <Loader/>
