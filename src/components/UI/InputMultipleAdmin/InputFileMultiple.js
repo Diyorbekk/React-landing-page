@@ -1,7 +1,7 @@
 import React from 'react'
-import './InputFile.scss'
+import './InputFileMultiple.scss'
 
-function InputFile(props) {
+function InputFileMultiple(props) {
     return (
         <fieldset>
             <legend>{props.legend}</legend>
@@ -27,4 +27,4 @@ function InputFile(props) {
     );
 }
 
-export default InputFile
+export default InputFileMultiple

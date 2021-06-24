@@ -97,7 +97,6 @@ const App = () => {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
                 clearInputs();
-                history.push('/slider-project');
                 autoLogoutUser(600)
                 setUser(user)
             } else {

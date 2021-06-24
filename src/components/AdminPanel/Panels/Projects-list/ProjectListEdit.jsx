@@ -7,9 +7,10 @@ import $ from "jquery";
 import {storage} from "../../../../util/firebase";
 import {createProjectCatalog, finishCreateCatalogProject} from "../../../../store/actions/create";
 import {connect} from "react-redux";
-import OwlCarousel from "react-owl-carousel2";
 import Auxiliary from "../../../../Auxiliary/Auxiliary";
 import Input from "../../../UI/InputAdmin/Input";
+import Select from "../../../UI/Select/Select";
+import InputFileMultiple from "../../../UI/InputMultipleAdmin/InputFileMultiple";
 
 
 function createFormControls() {
@@ -23,6 +24,7 @@ function createFormControls() {
 
 let refTextarea = "textarea"
 let valueInput = ""
+
 class ProjectListEdit extends Component {
 
     state = {
@@ -32,14 +34,15 @@ class ProjectListEdit extends Component {
         staticImage: "",
         staticImageName: "Select file",
         url: [],
+        urlWatch: [],
         editorError: null,
         image: null,
         staticImageSize: null,
         errorImage: null,
-        progress: 0,
+        category: [],
+        progress: [],
         imageAdding: false,
         isFormValid: false,
-        lookChange: false,
         lookCheck: false,
         dataCreate: "",
         formControls: createFormControls()
@@ -56,6 +59,9 @@ class ProjectListEdit extends Component {
     handleChangeCatalog = e => {
         let fileUrl = e.target.files[0];
         let file = e.target.files;
+        let iNum = []
+
+
         if (file.length === 0) {
             $('.__lk-fileInput span').removeClass('right');
             this.setState({
@@ -66,12 +72,16 @@ class ProjectListEdit extends Component {
                 imageAdding: false,
             })
         } else {
+            for (let i = 0; i < file.length; i++) {
+                iNum.push(file[i])
+            }
             $('.__lk-fileInput span').addClass('right');
             this.setState({
+                urlWatch: iNum,
                 staticImage: URL.createObjectURL(fileUrl),
-                staticImageName: fileUrl.name,
+                staticImageName: "First image " + fileUrl.name,
                 staticImageSize: (fileUrl.size / 1048576).toFixed(3),
-                image: e.target.files[0],
+                image: file,
                 errorImage: null,
             })
         }
@@ -85,53 +95,74 @@ class ProjectListEdit extends Component {
             staticImageSize: null,
         })
 
-        let nameFile = this.state.image.name
+        let numFor = 1
 
-        function encode(name) {
-            return window.btoa(name);
+        for (let i = 0; i < this.state.image.length; i++) {
+            let nameFile = this.state.image[i].name
+            numFor = 1 + i
+
+            function encode(name) {
+                return window.btoa(name);
+            }
+
+            let inputFileName = this.state.image[i].name,
+                encoded = encode(inputFileName)
+
+            let lowerCaseEncoded = encoded.toLowerCase();
+
+            let nameList = lowerCaseEncoded.slice(5);
+
+            let ext = nameFile.substr(nameFile.lastIndexOf('.') + 0);
+
+
+            let filenames = nameList + ext
+
+            const uploadTask = storage.ref(`images/${filenames}`).put(this.state.image[i]);
+
+            uploadTask.on(
+                "state_changed",
+                snapshot => {
+
+                    let progressBar = []
+                    if (i === i) {
+                        const progress = Math.round(
+                            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                        )
+
+                        progressBar.push({
+                                [i]: progress
+                            }
+                        )
+                    }
+
+                    this.setState({
+                        progress: progressBar
+                    })
+                },
+                error => {
+                    console.log(error);
+                },
+                () => {
+                    storage
+                        .ref("images")
+                        .child(filenames)
+                        .getDownloadURL()
+                        .then(url => {
+                            this.setState(prevState => ({
+                                url: [...prevState.url, url],
+                                image: null,
+                                imageAdding: true,
+                                staticImage: "",
+                            }))
+                        });
+                }
+            );
+
         }
 
-        let inputFileName = this.state.image.name,
-            encoded = encode(inputFileName)
 
-        let lowerCaseEncoded = encoded.toLowerCase();
+        console.log(numFor)
 
-        let nameList = lowerCaseEncoded.slice(5);
-
-        let ext = nameFile.substr(nameFile.lastIndexOf('.') + 0);
-
-
-        let filenames = nameList + ext
-
-        const uploadTask = storage.ref(`images/${filenames}`).put(this.state.image);
-        uploadTask.on(
-            "state_changed",
-            snapshot => {
-                const progress = Math.round(
-                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                );
-                this.setState({
-                    progress: progress
-                })
-            },
-            error => {
-                console.log(error);
-            },
-            () => {
-                storage
-                    .ref("images")
-                    .child(filenames)
-                    .getDownloadURL()
-                    .then(url => {
-                        this.setState(prevState => ({
-                            url: [...prevState.url, url],
-                            image: null,
-                            imageAdding: true,
-                            staticImage: "",
-                        }))
-                    });
-            }
-        );
 
     };
 
@@ -149,7 +180,6 @@ class ProjectListEdit extends Component {
                 staticImageSize: null,
                 image: null,
                 imageAdding: false,
-                lookChange: false,
                 errorImage: "File no update",
                 url: [],
             })
@@ -192,7 +222,6 @@ class ProjectListEdit extends Component {
                     progress: 0,
                     isFormValid: false,
                     imageAdding: false,
-                    lookChange: false,
                     lookCheck: false,
                     formControls: createFormControls()
                 })
@@ -209,9 +238,8 @@ class ProjectListEdit extends Component {
         const formControls = {...this.state.formControls};
         const control = {...formControls[controlName]};
         // eslint-disable-next-line
-        if (this.state.textTitle.length == valueInput.length){
+        if (this.state.textTitle.length == valueInput.length) {
             this.setState({
-                lookChange: false,
                 lookCheck: true,
             })
         }
@@ -234,7 +262,6 @@ class ProjectListEdit extends Component {
         // eslint-disable-next-line
         if (this.state.editor.length == this.state.editorText.length) {
             this.setState({
-                lookChange: false,
                 lookCheck: true,
             })
         }
@@ -251,7 +278,6 @@ class ProjectListEdit extends Component {
                 staticImageSize: null,
                 image: null,
                 imageAdding: false,
-                lookChange: false,
                 errorImage: "File no update",
                 url: [],
             })
@@ -264,82 +290,11 @@ class ProjectListEdit extends Component {
             } else {
                 this.setState({
                     textTitle: valueInput,
-                    lookChange: true,
                     editorText: refTextarea.innerHTML.trim()
                 })
             }
         }
 
-    }
-
-    renderProjects(e) {
-        if (e === false) {
-            if(this.state.lookCheck) {
-                return (
-                    <div className="col-12">
-                        Please check save 🔁
-                    </div>
-                )
-            } else {
-                return (
-                    <div className="col-12">
-                        Uploading Image ✅
-                    </div>
-                )
-            }
-        } else {
-
-
-            const options = {
-                items: 1,
-                loop: true,
-                dots: false,
-                margin: 0,
-                autoplay: true,
-                smartSpeed: 500,
-                nav: true,
-                animateOut: 'fadeOut',
-                navText: ['<i class="ti-angle-left" aria-hidden="true"></i>', '<i class="ti-angle-right" aria-hidden="true"></i>']
-            };
-            const events = {
-                onChanged: function (event) {
-                    var item = event.item.index - 2;     // Position of the current item
-                    $('h4').removeClass('animated fadeInUp');
-                    $('h1').removeClass('animated fadeInUp');
-                    $('p').removeClass('animated fadeInUp');
-                    $('.butn-light').removeClass('animated fadeInUp');
-                    $('.owl-item').not('.cloned').eq(item).find('h4').addClass('animated fadeInUp');
-                    $('.owl-item').not('.cloned').eq(item).find('h1').addClass('animated fadeInUp');
-                    $('.owl-item').not('.cloned').eq(item).find('p').addClass('animated fadeInUp');
-                    $('.owl-item').not('.cloned').eq(item).find('.butn-light').addClass('animated fadeInUp');
-                }
-            };
-            return this.state.url.map((projects, index) => {
-                return (
-                    <div className="col-12 slider-fade" key={index}>
-                        <OwlCarousel clasname="owl-carousel owl-theme" options={options} events={events}>
-                            <div className="text-left item bg-img" data-overlay-dark="3" key={index}
-                                 style={{backgroundImage: `url(${projects})`}}>
-                                <div className="v-bottom caption">
-                                    <div className="container">
-                                        <div className="row">
-                                            <div className="col-md-7">
-                                                <div className="o-hidden">
-                                                    <h1>{this.state.textTitle}</h1>
-                                                    <hr/>
-                                                    <p className="text-white">{this.state.editorText}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </OwlCarousel>
-                    </div>
-                )
-            })
-
-        }
     }
 
     renderInput = () => {
@@ -365,46 +320,101 @@ class ProjectListEdit extends Component {
         })
     }
 
+    selectChangeHandler = event => {
+        this.setState({
+            category: +event.target.value
+        })
+    };
 
     render() {
+        const select = <Select
+            label="Category"
+            value={this.state.category}
+            onChange={this.selectChangeHandler}
+            options={[
+                {text: "Achitecture", value: 1},
+                {text: "Interior Design", value: 2},
+                {text: "Urban Design", value: 3},
+                {text: "Planning", value: 4},
+                {text: "3D Modelling", value: 5},
+                {text: "Decor Plan", value: 6}
+            ]}
+        />;
+
         return (
             <section className="mt-5 edit container">
                 <form className="row" onSubmit={this.submitHandler}>
                     <div className="col-12">
                         <br/>
+                        <React.Fragment>
+                            <InputFileMultiple
+                                legend="Project Catalog image"
+                                file={this.state.staticImage}
+                                label={this.state.staticImageName}
+                                size={this.state.staticImageSize}
+                                errorMessage={this.state.errorImage}
+                                onChange={this.handleChangeCatalog}
+                            />
+
+                            <br/>
+                            {
+                                this.state.progress === 0
+                                    ? <React.Fragment> {
+                                        this.state.progress.map((progress, index) => {
+                                            return (
+                                                <div className="progress">
+                                                    <div className="progress-bar"
+                                                         aria-valuenow="0"
+                                                         aria-valuemin="0"
+                                                         aria-valuemax="100"
+                                                         style={{width: progress[index] + "%"}}
+                                                    >{progress[index]}</div>
+
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                    </React.Fragment>
+                                    : <React.Fragment> {
+                                        this.state.progress.map((progress, index) => {
+                                            return (
+                                            <div className="progress">
+                                                <div className="progress-bar"
+                                                     aria-valuenow="0"
+                                                     aria-valuemin="0"
+                                                     aria-valuemax="100"
+                                                     style={{width: progress[index] + "%"}}
+                                                >{progress[index]}</div>
+
+                                            </div>
+                                            )
+                                        })
+                                    }
+                                    </React.Fragment>
+                            }
+
+                            <br/>
+                            <Button
+                                type="primary"
+                                onClick={this.handleUploadCatalog}
+                                disabled={!this.state.image}
+                            >
+                                Image upload
+                            </Button>
+                        </React.Fragment>
                         {
-                            this.state.url.length === 0 ?
-                                <React.Fragment>
-                                    <InputFile
-                                        legend="Slide image"
-                                        file={this.state.staticImage}
-                                        label={this.state.staticImageName}
-                                        size={this.state.staticImageSize}
-                                        errorMessage={this.state.errorImage}
-                                        onChange={this.handleChangeCatalog}
-                                    />
-                                    <br/>
-                                    <div className="progress">
-                                        <div className="progress-bar" style={{width: this.state.progress + "%"}}
-                                             aria-valuenow="0"
-                                             aria-valuemin="0" aria-valuemax="100"/>
-                                    </div>
-                                    <br/>
-                                    <Button
-                                        type="primary"
-                                        onClick={this.handleUploadCatalog}
-                                        disabled={!this.state.image}
-                                    >
-                                        Image upload
-                                    </Button>
-                                </React.Fragment>
-                                : <div className="row">{this.renderProjects(this.state.lookChange)} </div>
+                            this.state.urlWatch.map((url, index) => {
+                                return (
+                                    <img src={URL.createObjectURL(url)} alt="images" key={index}/>
+                                )
+                            })
                         }
 
                         <br/>
                         <br/>
                         {
                             <React.Fragment>
+                                {select}
                                 {this.renderInput()}
                                 <TextArea
                                     label="Create Text"
@@ -418,7 +428,6 @@ class ProjectListEdit extends Component {
                                     className="btn"
                                     onClick={this.saveChanges}
                                     disabled={!this.state.isFormValid || !this.state.imageAdding}
-                                    hidden={this.state.lookChange}
                                 >
                                     Save and Look change slider
                                 </Button>
@@ -426,8 +435,6 @@ class ProjectListEdit extends Component {
                                     type="success"
                                     className="btn"
                                     onClick={this.createProjectHandler}
-                                    disabled={!this.state.lookChange}
-                                    hidden={!this.state.lookChange}
                                 >
                                     Slider Create
                                 </Button>
@@ -455,4 +462,5 @@ function mapDispatchToProps(dispatch) {
 
     }
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectListEdit);

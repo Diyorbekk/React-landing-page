@@ -43,10 +43,6 @@ class ProjectListPanel extends Component {
         this.props.fetchProjects()
         this.props.fetchProjectById()
     }
-
-    componentDidUpdate(){
-        return this.props.projectList
-    }
     render() {
         const link = this.props.projectsUrl.map((projectsUrl) => {
             return projectsUrl.id
