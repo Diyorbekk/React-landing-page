@@ -33,7 +33,7 @@ export function resetProjectCreationCatalog() {
 
 export function finishCreateCatalogProject() {
     return async (dispatch, getState) => {
-        await axios.post('/projects-catalog.json', getState().create.project)
+        await axios.post('/category.json', getState().create.category)
         dispatch(resetProjectCreationCatalog())
     }
 }

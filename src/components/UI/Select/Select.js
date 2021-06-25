@@ -11,23 +11,17 @@ function Select(props) {
                 id={htmlFor}
                 value={props.value}
                 onChange={props.onChange}
-                multiple={false}
             >
                 {props.options.map((option, index) => {
                     return (
-                        <React.Fragment key={index}>
-                            {
-                                index === 0
-                                    ? <option hidden selected>{props.placeholder}</option>
-                                    : <option
-                                        value={option.value}
-                                        key={option.value + index}
-                                    >
-                                        {option.text}
-                                    </option>
-
-                            }
-                        </React.Fragment>
+                        <option
+                            hidden={index === 0}
+                            disabled={index === 0}
+                            value={option.value}
+                            key={option.value + index}
+                        >
+                            {option.text}
+                        </option>
 
                     )
                 })}

@@ -161,13 +161,13 @@ class SliderEdit extends Component {
                     editorError: "Text 6 ta harf dan kam bo'lish mumkin emas",
                 })
             } else {
-                let currentdate = new Date();
-                let datetime = currentdate.getDate() + "/"
-                    + (currentdate.getMonth() + 1) + "/"
-                    + currentdate.getFullYear() + " "
-                    + currentdate.getHours() + ":"
-                    + currentdate.getMinutes() + ":"
-                    + currentdate.getSeconds();
+                let currentDateSlider = new Date();
+                let datetimeSlider = currentDateSlider.getDate() + "/"
+                    + (currentDateSlider.getMonth() + 1) + "/"
+                    + currentDateSlider.getFullYear() + " "
+                    + currentDateSlider.getHours() + ":"
+                    + currentDateSlider.getMinutes() + ":"
+                    + currentDateSlider.getSeconds();
 
                 const {projectTitle} = this.state.formControls;
 
@@ -175,7 +175,7 @@ class SliderEdit extends Component {
                     projectTitle: projectTitle.value,
                     projectText: this.state.editor,
                     projectImgUrl: this.state.url,
-                    createData: datetime,
+                    createData: datetimeSlider,
                     id: this.props.projectCreate.length + 1,
                 };
                 document.getElementById("textBox").innerHTML = ''

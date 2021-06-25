@@ -121,6 +121,13 @@ img.intLink { border: 0;  width: auto!important;}
     overflow: auto;
 }
 
+.popup-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
 .two-line-text {
     display: -webkit-box;
     -webkit-line-clamp: 2;

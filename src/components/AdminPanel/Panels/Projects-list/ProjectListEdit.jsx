@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import InputFile from "../../../UI/InputFileAdmin/InputFile";
 import Button from "../../../UI/Button/Button";
 import TextArea from "../../../UI/TextAreaAdmin/TextArea";
 import {createControl, validate, validateForm} from "../../../UI/form/formFramework";
@@ -11,13 +10,26 @@ import Auxiliary from "../../../../Auxiliary/Auxiliary";
 import Input from "../../../UI/InputAdmin/Input";
 import Select from "../../../UI/Select/Select";
 import InputFileMultiple from "../../../UI/InputMultipleAdmin/InputFileMultiple";
+import {GalleryItem, LightBoxGallery} from "@sekmet/react-magnific-popup";
 
 
 function createFormControls() {
     return {
         projectTitle: createControl({
+            label: "Year",
+            errorMessage: 'Yil bo\'sh bo\'lishi mumkin emas'
+        }, {required: true}),
+        projectText: createControl({
             label: "Create Title",
             errorMessage: 'Sahifa Nomi bo\'sh bo\'lishi mumkin emas'
+        }, {required: true}),
+        projectCompany: createControl({
+            label: "Create Company Name",
+            errorMessage: 'Kompaniyani Nomi bo\'sh bo\'lishi mumkin emas'
+        }, {required: true}),
+        projectLocation: createControl({
+            label: "Create Location",
+            errorMessage: 'Manzil bo\'sh bo\'lishi mumkin emas'
         }, {required: true}),
     }
 }
@@ -39,7 +51,8 @@ class ProjectListEdit extends Component {
         image: null,
         staticImageSize: null,
         errorImage: null,
-        category: [],
+        category: 1,
+        categoryText: "",
         progress: [],
         imageAdding: false,
         isFormValid: false,
@@ -79,7 +92,7 @@ class ProjectListEdit extends Component {
             this.setState({
                 urlWatch: iNum,
                 staticImage: URL.createObjectURL(fileUrl),
-                staticImageName: "First image " + fileUrl.name,
+                staticImageName: "First image - " + fileUrl.name,
                 staticImageSize: (fileUrl.size / 1048576).toFixed(3),
                 image: file,
                 errorImage: null,
@@ -190,22 +203,28 @@ class ProjectListEdit extends Component {
                     editorError: "Text 6 ta harf dan kam bo'lish mumkin emas",
                 })
             } else {
-                let currentdate = new Date();
-                let datetime = currentdate.getDate() + "/"
-                    + (currentdate.getMonth() + 1) + "/"
-                    + currentdate.getFullYear() + " "
-                    + currentdate.getHours() + ":"
-                    + currentdate.getMinutes() + ":"
-                    + currentdate.getSeconds();
+                let currentDate = new Date();
+                let datetime = currentDate.getDate() + "/"
+                    + (currentDate.getMonth() + 1) + "/"
+                    + currentDate.getFullYear() + " "
+                    + currentDate.getHours() + ":"
+                    + currentDate.getMinutes() + ":"
+                    + currentDate.getSeconds();
 
                 const {projectTitle} = this.state.formControls;
 
                 const projectItem = {
-                    projectTitle: projectTitle.value,
-                    projectText: this.state.editor,
-                    projectImgUrl: this.state.url,
-                    createData: datetime,
-                    id: this.props.catalogCreate.length + 1,
+                    category: this.state.category,
+                    data: [{
+                        projectTitle: projectTitle.value,
+                        projectText: this.state.editor,
+                        projectImgUrl: this.state.url,
+                        createData: datetime,
+                        id: this.props.catalogCreate.length + 1,
+                    }
+                    ]
+
+
                 };
                 document.getElementById("textBox").innerHTML = ''
                 this.props.createProjectCatalog(projectItem)
@@ -304,15 +323,27 @@ class ProjectListEdit extends Component {
             return (
                 <Auxiliary key={controlName + index}>
                     {
-                        <Input
-                            label={control.label}
-                            value={control.value}
-                            valid={control.valid}
-                            shouldValidate={!!control.validation}
-                            touched={control.touched}
-                            errorMessage={control.errorMessage}
-                            onChange={event => this.changeHandler(event.target.value, controlName)}
-                        />
+                        index === 0
+                            ? <Input
+                                label={control.label}
+                                value={control.value}
+                                type="number"
+                                valid={control.valid}
+                                shouldValidate={!!control.validation}
+                                touched={control.touched}
+                                errorMessage={control.errorMessage}
+                                onChange={event => this.changeHandler(event.target.value, controlName)}
+                            />
+                            : <Input
+                                label={control.label}
+                                value={control.value}
+                                valid={control.valid}
+                                shouldValidate={!!control.validation}
+                                touched={control.touched}
+                                errorMessage={control.errorMessage}
+                                onChange={event => this.changeHandler(event.target.value, controlName)}
+                            />
+
 
                     }
                 </Auxiliary>
@@ -320,127 +351,152 @@ class ProjectListEdit extends Component {
         })
     }
 
+    renderGallery = () => {
+        return this.state.urlWatch.map((url, index) => {
+            return (
+                <div className="col-md-6" key={index}>
+                    <GalleryItem
+                        className="gallery-item"
+                        href={URL.createObjectURL(url)}
+                        title={this.state.categoryText}
+                    >
+                        <div className="gallery-box">
+                            <div className="gallery-img">
+                                <img src={URL.createObjectURL(url)} className="img-fluid mx-auto d-block"
+                                     alt="work-img"/>
+                            </div>
+                        </div>
+                    </GalleryItem>
+                </div>
+
+
+            )
+        })
+    }
+
     selectChangeHandler = event => {
+        let index = event.nativeEvent.target.selectedIndex;
         this.setState({
-            category: +event.target.value
+            category: +event.target.value,
+            categoryText: event.nativeEvent.target[index].text
         })
     };
 
     render() {
         const select = <Select
             label="Category"
+            placeholder="Please select category"
             value={this.state.category}
             onChange={this.selectChangeHandler}
             options={[
-                {text: "Achitecture", value: 1},
-                {text: "Interior Design", value: 2},
-                {text: "Urban Design", value: 3},
-                {text: "Planning", value: 4},
-                {text: "3D Modelling", value: 5},
-                {text: "Decor Plan", value: 6}
+                {text: "Please select category", value: 1},
+                {text: "Architecture", value: 2},
+                {text: "Interior Design", value: 3},
+                {text: "Urban Design", value: 4},
+                {text: "Planning", value: 5},
+                {text: "3D Modelling", value: 6},
+                {text: "Decor Plan", value: 7}
             ]}
         />;
+        const config = {
+            delegate: 'a',
+            type: 'image',
+            tLoading: 'Loading image #%curr%...',
+            mainClass: 'mfp-fade mfp-img-mobile',
+            gallery: {
+                enabled: true,
+                navigateByImgClick: true,
+                preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
+            },
+            image: {
+                tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
+                titleSrc: function (item) {
+                    return item.el.attr('title') + '<small>by Marsel Van Oosten</small>';
+                }
+            }
+        }
 
         return (
             <section className="mt-5 edit container">
                 <form className="row" onSubmit={this.submitHandler}>
                     <div className="col-12">
                         <br/>
-                        <React.Fragment>
-                            <InputFileMultiple
-                                legend="Project Catalog image"
-                                file={this.state.staticImage}
-                                label={this.state.staticImageName}
-                                size={this.state.staticImageSize}
-                                errorMessage={this.state.errorImage}
-                                onChange={this.handleChangeCatalog}
-                            />
+                        <InputFileMultiple
+                            legend="Project Catalog image"
+                            file={this.state.staticImage}
+                            label={this.state.staticImageName}
+                            size={this.state.staticImageSize}
+                            errorMessage={this.state.errorImage}
+                            onChange={this.handleChangeCatalog}
+                        />
 
-                            <br/>
-                            {
-                                this.state.progress === 0
-                                    ? <React.Fragment> {
-                                        this.state.progress.map((progress, index) => {
-                                            return (
-                                                <div className="progress">
-                                                    <div className="progress-bar"
-                                                         aria-valuenow="0"
-                                                         aria-valuemin="0"
-                                                         aria-valuemax="100"
-                                                         style={{width: progress[index] + "%"}}
-                                                    >{progress[index]}</div>
-
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                    </React.Fragment>
-                                    : <React.Fragment> {
-                                        this.state.progress.map((progress, index) => {
-                                            return (
-                                            <div className="progress">
+                        <br/>
+                        {
+                            this.state.progress === 0
+                                ? null
+                                : <React.Fragment> {
+                                    this.state.progress.map((progress, index) => {
+                                        return (
+                                            <div className="progress" key={index}>
                                                 <div className="progress-bar"
                                                      aria-valuenow="0"
                                                      aria-valuemin="0"
                                                      aria-valuemax="100"
                                                      style={{width: progress[index] + "%"}}
-                                                >{progress[index]}</div>
+                                                >{progress[index]} %
+                                                </div>
 
                                             </div>
-                                            )
-                                        })
-                                    }
-                                    </React.Fragment>
-                            }
-
-                            <br/>
-                            <Button
-                                type="primary"
-                                onClick={this.handleUploadCatalog}
-                                disabled={!this.state.image}
-                            >
-                                Image upload
-                            </Button>
-                        </React.Fragment>
-                        {
-                            this.state.urlWatch.map((url, index) => {
-                                return (
-                                    <img src={URL.createObjectURL(url)} alt="images" key={index}/>
-                                )
-                            })
+                                        )
+                                    })
+                                }
+                                </React.Fragment>
                         }
 
                         <br/>
-                        <br/>
+                        <Button
+                            type="primary"
+                            onClick={this.handleUploadCatalog}
+                            disabled={!this.state.image}
+                        >
+                            Image upload
+                        </Button>
                         {
-                            <React.Fragment>
-                                {select}
-                                {this.renderInput()}
-                                <TextArea
-                                    label="Create Text"
-                                    inputRef={el => refTextarea = el}
-                                    onInput={(event) => this.editorChange(event)}
-                                    errorMessage={this.state.editorError}
-                                />
-
-                                <Button
-                                    type="success"
-                                    className="btn"
-                                    onClick={this.saveChanges}
-                                    disabled={!this.state.isFormValid || !this.state.imageAdding}
-                                >
-                                    Save and Look change slider
-                                </Button>
-                                <Button
-                                    type="success"
-                                    className="btn"
-                                    onClick={this.createProjectHandler}
-                                >
-                                    Slider Create
-                                </Button>
-                                <br/>
-                            </React.Fragment>
+                            this.state.urlWatch.length === 0
+                                ? null
+                                : <LightBoxGallery className="popup-gallery"
+                                                   config={config}>{this.renderGallery()}</LightBoxGallery>
                         }
+                        <br/>
+                        <br/>
+                        {select}
+                        {this.renderInput()}
+                        <TextArea
+                            label="Create Text"
+                            inputRef={el => refTextarea = el}
+                            onInput={(event) => this.editorChange(event)}
+                            errorMessage={this.state.editorError}
+                        />
+
+                        <Button
+                            type="success"
+                            className="btn"
+                            onClick={this.saveChanges}
+                            disabled={!this.state.isFormValid || !this.state.imageAdding}
+                            hidden={this.state.lookChange}
+                        >
+                            Save and Look change slider
+                        </Button>
+                        <Button
+                            type="success"
+                            className="btn"
+                            disabled={!this.state.lookChange}
+                            hidden={!this.state.lookChange}
+                            onClick={this.createProjectHandler}
+                        >
+                            Slider Create
+                        </Button>
+                        <br/>
                         <br/>
                     </div>
                 </form>
@@ -451,7 +507,7 @@ class ProjectListEdit extends Component {
 
 function mapStateToProps(state) {
     return {
-        catalogCreate: state.create.projectCatalog,
+        catalogCreate: state.create.category,
     }
 }
 

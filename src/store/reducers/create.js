@@ -7,7 +7,7 @@ import {
 
 const initialState = {
     project: [],
-    projectCatalog: []
+    category: []
 }
 
 export default function createReducer(state= initialState,action) {
@@ -25,12 +25,12 @@ export default function createReducer(state= initialState,action) {
         case CREATE_PROJECT_CATALOG:
             return{
                 ...state,
-                projectCatalog: [...state.projectCatalog, action.item]
+                category: [...state.category, action.item]
             }
         case RESET_PROJECT_CREATION_CATALOG:
             return {
                 ...state,
-                projectCatalog: []
+                category: []
             }
         default:
             return state
