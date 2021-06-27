@@ -40,13 +40,8 @@ function TextArea(props) {
 
         <div className={cls.join(' ')}>
             <label>{props.label}</label>
-{/*            <textarea
-                className="form-control"
-                value={props.value}
-                onChange={props.onChange}
-                rows={props.row}/>*/}
             <div id="toolBar1" className="row">
-                <div className="col-md-2">
+                <div className="col-md-3">
                     <select className="form-control"
                             onChange={(e) => formatDoc('formatblock', e.target.value)}>
                         <option selected>- формат -</option>
@@ -60,7 +55,7 @@ function TextArea(props) {
                         <option value="pre">Preformatted &lt;pre&gt;</option>
                     </select>
                 </div>
-                <div className="col-md-2">
+                <div className="col-md-3">
                     <select className="form-control"
                             onChange={(e) => formatDoc('fontsize', e.target.value)}>
                         <option className="heading" selected>- размер -</option>
@@ -73,7 +68,7 @@ function TextArea(props) {
                         <option value="7">Огромный</option>
                     </select>
                 </div>
-                <div className="col-md-2">
+                <div className="col-md-3">
                     <select className="form-control"
                             onChange={(e) => formatDoc('forecolor', e.target.value)}>
                         <option className="heading" selected>- цвет -</option>
@@ -84,7 +79,7 @@ function TextArea(props) {
                         <option value="white">Белый</option>
                     </select>
                 </div>
-                <div className="col-md-2">
+                <div className="col-md-3">
                     <select className="form-control"
                             onChange={(e) => formatDoc('backcolor', e.target.value)}>
                         <option className="heading" selected>- фон -</option>

@@ -83,6 +83,7 @@ class ProjectListEdit extends Component {
                 staticImageSize: null,
                 errorImage: "File no select",
                 imageAdding: false,
+                urlWatch: [],
             })
         } else {
             for (let i = 0; i < file.length; i++) {
@@ -112,6 +113,7 @@ class ProjectListEdit extends Component {
 
         for (let i = 0; i < this.state.image.length; i++) {
             let nameFile = this.state.image[i].name
+            // eslint-disable-next-line
             numFor = 1 + i
 
             function encode(name) {
@@ -137,6 +139,7 @@ class ProjectListEdit extends Component {
                 snapshot => {
 
                     let progressBar = []
+                    // eslint-disable-next-line
                     if (i === i) {
                         const progress = Math.round(
                             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
@@ -172,11 +175,6 @@ class ProjectListEdit extends Component {
             );
 
         }
-
-
-        console.log(numFor)
-
-
     };
 
     submitHandler = event => {
@@ -420,52 +418,54 @@ class ProjectListEdit extends Component {
             <section className="mt-5 edit container">
                 <form className="row" onSubmit={this.submitHandler}>
                     <div className="col-12">
-                        <br/>
-                        <InputFileMultiple
-                            legend="Project Catalog image"
-                            file={this.state.staticImage}
-                            label={this.state.staticImageName}
-                            size={this.state.staticImageSize}
-                            errorMessage={this.state.errorImage}
-                            onChange={this.handleChangeCatalog}
-                        />
 
                         <br/>
                         {
-                            this.state.progress === 0
-                                ? null
-                                : <React.Fragment> {
-                                    this.state.progress.map((progress, index) => {
-                                        return (
-                                            <div className="progress" key={index}>
-                                                <div className="progress-bar"
-                                                     aria-valuenow="0"
-                                                     aria-valuemin="0"
-                                                     aria-valuemax="100"
-                                                     style={{width: progress[index] + "%"}}
-                                                >{progress[index]} %
-                                                </div>
+                            this.state.url.length === 0
+                                ? <React.Fragment>
+                                    <InputFileMultiple
+                                        legend="Project Catalog image"
+                                        file={this.state.staticImage}
+                                        label={this.state.staticImageName}
+                                        size={this.state.staticImageSize}
+                                        errorMessage={this.state.errorImage}
+                                        onChange={this.handleChangeCatalog}
+                                    />
 
-                                            </div>
-                                        )
-                                    })
-                                }
+                                    <br/>
+                                    {
+                                        this.state.progress === 0
+                                            ? null
+                                            : <React.Fragment> {
+                                                this.state.progress.map((progress, index) => {
+                                                    return (
+                                                        <div className="progress" key={index}>
+                                                            <div className="progress-bar"
+                                                                 aria-valuenow="0"
+                                                                 aria-valuemin="0"
+                                                                 aria-valuemax="100"
+                                                                 style={{width: progress[index] + "%"}}
+                                                            />
+
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+                                            </React.Fragment>
+                                    }
+
+                                    <br/>
+                                    <Button
+                                        type="primary"
+                                        onClick={this.handleUploadCatalog}
+                                        disabled={!this.state.image}
+                                    >
+                                        Image upload
+                                    </Button>
+                                    <LightBoxGallery className="popup-gallery" config={config}>{this.renderGallery()}</LightBoxGallery>
                                 </React.Fragment>
-                        }
 
-                        <br/>
-                        <Button
-                            type="primary"
-                            onClick={this.handleUploadCatalog}
-                            disabled={!this.state.image}
-                        >
-                            Image upload
-                        </Button>
-                        {
-                            this.state.urlWatch.length === 0
-                                ? null
-                                : <LightBoxGallery className="popup-gallery"
-                                                   config={config}>{this.renderGallery()}</LightBoxGallery>
+                                : <LightBoxGallery className="popup-gallery" config={config}>{this.renderGallery(this.state.lookChange)} </LightBoxGallery>
                         }
                         <br/>
                         <br/>
