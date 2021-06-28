@@ -328,7 +328,8 @@ class SliderEdit extends Component {
                                                 <div className="o-hidden">
                                                     <h1>{this.state.textTitle}</h1>
                                                     <hr/>
-                                                    <p className="text-white">{this.state.editorText}</p>
+                                                    <p className="text-white"
+                                                       dangerouslySetInnerHTML={{__html: this.state.editorText}}/>
                                                 </div>
                                             </div>
                                         </div>

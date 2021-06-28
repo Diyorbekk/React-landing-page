@@ -56,6 +56,7 @@ class ProjectListEdit extends Component {
         progress: [],
         imageAdding: false,
         isFormValid: false,
+        lookChange: false,
         lookCheck: false,
         dataCreate: "",
         formControls: createFormControls()
@@ -79,6 +80,7 @@ class ProjectListEdit extends Component {
             $('.__lk-fileInput span').removeClass('right');
             this.setState({
                 staticImage: "",
+                image: null,
                 staticImageName: "Select file",
                 staticImageSize: null,
                 errorImage: "File no select",
@@ -349,35 +351,62 @@ class ProjectListEdit extends Component {
         })
     }
 
-    renderGallery = () => {
-        return this.state.urlWatch.map((url, index) => {
-            return (
-                <div className="col-md-6" key={index}>
-                    <GalleryItem
-                        className="gallery-item"
-                        href={URL.createObjectURL(url)}
-                        title={this.state.categoryText}
-                    >
-                        <div className="gallery-box">
-                            <div className="gallery-img">
-                                <img src={URL.createObjectURL(url)} className="img-fluid mx-auto d-block"
-                                     alt="work-img"/>
+    renderGallery(e) {
+        if (e === false) {
+            if(this.state.lookCheck) {
+                return (
+                    <div className="col-12">
+                        Please check save 🔁
+                    </div>
+                )
+            } else {
+                return (
+                    <div className="col-12">
+                        Uploading Image ✅
+                    </div>
+                )
+            }
+        } else {
+            return this.state.urlWatch.map((url, index) => {
+                return (
+                    <div className="col-md-6" key={index}>
+                        <GalleryItem
+                            className="gallery-item"
+                            href={URL.createObjectURL(url)}
+                            title={this.state.categoryText}
+                        >
+                            <div className="gallery-box">
+                                <div className="gallery-img">
+                                    <img src={URL.createObjectURL(url)} className="img-fluid mx-auto d-block"
+                                         alt="work-img"/>
+                                </div>
                             </div>
-                        </div>
-                    </GalleryItem>
-                </div>
+                        </GalleryItem>
+                    </div>
 
 
-            )
-        })
+                )
+            })
+        }
+
+
     }
 
     selectChangeHandler = event => {
         let index = event.nativeEvent.target.selectedIndex;
+        let category = event.target.value
+
         this.setState({
-            category: +event.target.value,
+            category: category,
             categoryText: event.nativeEvent.target[index].text
         })
+        // eslint-disable-next-line
+        if (category == event.target.value) {
+            this.setState({
+                lookCheck: true,
+            })
+        }
+
     };
 
     render() {
