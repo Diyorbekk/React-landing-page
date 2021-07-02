@@ -6,6 +6,7 @@ import {
     FETCH_PROJECTS_START,
     FETCH_PROJECT_LIST_SUCCESS,
     FETCH_PROJECT_SINGLE_SUCCESS,
+    FETCH_PROJECT_CATALOG_SUCCESS, FETCH_CATALOG_LIST_SUCCESS, FETCH_CATALOG_SINGLE_SUCCESS,
 } from "./actionTypes";
 
 export function fetchProjects() {
@@ -25,6 +26,30 @@ export function fetchProjects() {
             });
 
             dispatch(fetchProjectsSuccess(projects))
+
+
+        } catch (e) {
+            dispatch(fetchProjectsError(e))
+        }
+    }
+}
+
+export function fetchProjectsCatalog() {
+    return async dispatch => {
+        dispatch(fetchProjectsStart())
+        try {
+            const response = await axios.get('/category.json');
+
+            const category = [];
+
+
+            Object.keys(response.data).forEach((key, index) => {
+                category.push({
+                    id: key,
+                    name: `${index + 1}`,
+                })
+            });
+            dispatch(fetchProjectsCatalogSuccess(category))
 
 
         } catch (e) {
@@ -81,6 +106,52 @@ export function fetchProjectById() {
     }
 }
 
+export function fetchProjectCatalogById() {
+
+    return async dispatch => {
+        dispatch(fetchProjectsStart())
+        try {
+            const response = await axios.get(`/category.json`);
+
+            const categoryKeys = response.data
+            const propOwn = Object.getOwnPropertyNames(categoryKeys);
+            const projectsTik = []
+            let projectList = []
+            let i = 0
+            let result = []
+
+            for (const key of propOwn) {
+                i++
+                projectsTik[key] = await axios.get(`/category/${key}.json`);
+                projectList.push({
+                    data: projectsTik[key].data,
+                    path: key,
+                    id: i,
+                })
+            }
+
+            projectList.map(project => {
+                    return project.data.map(projectsList2 => {
+                        return result.push(
+                            projectsList2
+                        )
+                    })
+                }
+            )
+            dispatch(fetchProjectCategoryListSuccess(result))
+
+
+
+        } catch (e) {
+            let dataEmpty = []
+            dispatch(fetchProjectCategoryListSuccess(dataEmpty))
+            dispatch(fetchProjectsError(e))
+        }
+
+
+    }
+}
+
 export function fetchProjectByUrl(projectUrl) {
     return async dispatch => {
         dispatch(fetchProjectsStart())
@@ -100,16 +171,50 @@ export function fetchProjectByUrl(projectUrl) {
     }
 }
 
+export function fetchProjectCatalogByUrl(projectUrl) {
+    return async dispatch => {
+        dispatch(fetchProjectsStart())
+
+        try {
+            const response = await axios.get(`/category/${projectUrl}.json`);
+
+
+            const singleCatalog = response.data;
+
+            dispatch(fetchSingleProjectCategorySuccess(singleCatalog))
+
+        } catch (e) {
+            dispatch(fetchProjectsError(e))
+        }
+
+    }
+}
+
 export function fetchProjectListSuccess(projectList) {
     return {
         type: FETCH_PROJECT_LIST_SUCCESS,
         projectList
     }
 }
+
+export function fetchProjectCategoryListSuccess(categoryList) {
+    return {
+        type: FETCH_CATALOG_LIST_SUCCESS,
+        categoryList
+    }
+}
+
 export function fetchSingleProjectSuccess(projectSingle) {
     return {
         type: FETCH_PROJECT_SINGLE_SUCCESS,
         projectSingle
+    }
+}
+
+export function fetchSingleProjectCategorySuccess(singleCatalog) {
+    return {
+        type: FETCH_CATALOG_SINGLE_SUCCESS,
+        singleCatalog
     }
 }
 
@@ -123,6 +228,13 @@ export function fetchProjectsSuccess(projects) {
     return {
         type: FETCH_PROJECTS_SUCCESS,
         projects
+    }
+}
+
+export function fetchProjectsCatalogSuccess(category) {
+    return {
+        type: FETCH_PROJECT_CATALOG_SUCCESS,
+        category
     }
 }
 

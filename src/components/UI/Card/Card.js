@@ -9,11 +9,14 @@ function Card(props) {
             <div className="card-body">
 
                 <div className="card-body">
-                    <h5 className="card-title two-line-text">{props.cardTitle}</h5>
+                    <h5 className="card-title two-line-text">{props.cardCategory}</h5>
+                    <h4 className="card-title two-line-text">{props.cardTitle}</h4>
                     <p className="card-text four-line-text" dangerouslySetInnerHTML={{__html: props.cardText}}/>
-                    <p className="card-text">
-                        <small className="text-muted">Last updated {props.cardDataCreate}</small>
-                    </p>
+                </div>
+            </div>
+            <div className="card-footer">
+                <div className="px-md-4">
+                <small className="text-muted">Last updated {props.cardDataCreate}</small>
                 </div>
             </div>
         </div>

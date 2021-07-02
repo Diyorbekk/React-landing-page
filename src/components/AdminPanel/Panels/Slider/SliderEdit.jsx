@@ -10,6 +10,7 @@ import {createProject, finishCreateProject} from "../../../../store/actions/crea
 import {connect} from "react-redux";
 import OwlCarousel from "react-owl-carousel2";
 import $ from "jquery";
+import CompletedCheck from "../../../UI/completedCheck/completedCheck";
 
 
 function createFormControls() {
@@ -195,6 +196,10 @@ class SliderEdit extends Component {
                     imageAdding: false,
                     lookChange: false,
                     lookCheck: false,
+                    textTitle: '',
+                    editorText: "",
+                    staticImageName: "Select file",
+                    staticImageSize: null,
                     formControls: createFormControls()
                 })
 
@@ -370,6 +375,11 @@ class SliderEdit extends Component {
     render() {
         return (
             <section className="mt-5 edit container">
+                {
+                    this.props.projectCreate.length === 0
+                        ? null
+                        : <CompletedCheck/>
+                }
                 <form className="row" onSubmit={this.submitHandler}>
                     <div className="col-12">
                         <br/>

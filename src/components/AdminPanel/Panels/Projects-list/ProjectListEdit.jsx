@@ -11,15 +11,18 @@ import Input from "../../../UI/InputAdmin/Input";
 import Select from "../../../UI/Select/Select";
 import InputFileMultiple from "../../../UI/InputMultipleAdmin/InputFileMultiple";
 import {GalleryItem, LightBoxGallery} from "@sekmet/react-magnific-popup";
+import CompletedCheck from "../../../UI/completedCheck/completedCheck";
+import Banner from "../../../../assets/img/banner.jpg";
+import ContentWrapper from "../../../content-wrapper";
 
 
 function createFormControls() {
     return {
-        projectTitle: createControl({
+        projectYear: createControl({
             label: "Year",
             errorMessage: 'Yil bo\'sh bo\'lishi mumkin emas'
         }, {required: true}),
-        projectText: createControl({
+        projectTitle: createControl({
             label: "Create Title",
             errorMessage: 'Sahifa Nomi bo\'sh bo\'lishi mumkin emas'
         }, {required: true}),
@@ -36,15 +39,36 @@ function createFormControls() {
 
 let refTextarea = "textarea"
 let valueInput = ""
+const config = {
+    delegate: 'a',
+    type: 'image',
+    tLoading: 'Loading image #%curr%...',
+    mainClass: 'mfp-fade mfp-img-mobile',
+    gallery: {
+        enabled: true,
+        navigateByImgClick: true,
+        preload: [0, 1]
+    },
+    image: {
+        tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
+        titleSrc: function (item) {
+            return item.el.attr('title') + '<small>by Marsel Van Oosten</small>';
+        }
+    }
+}
+
 
 class ProjectListEdit extends Component {
 
     state = {
         textTitle: '',
+        textYear: '',
+        textCompany: '',
+        textLocation: '',
         editor: "",
         editorText: "",
         staticImage: "",
-        staticImageName: "Select file",
+        staticImageName: "Select files",
         url: [],
         urlWatch: [],
         editorError: null,
@@ -52,8 +76,9 @@ class ProjectListEdit extends Component {
         staticImageSize: null,
         errorImage: null,
         category: 1,
+        categoryError: null,
         categoryText: "",
-        progress: [],
+        progress: 0,
         imageAdding: false,
         isFormValid: false,
         lookChange: false,
@@ -111,12 +136,14 @@ class ProjectListEdit extends Component {
             staticImageSize: null,
         })
 
-        let numFor = 1
+        let numFor = this.state.image.length
+        let iFor = 0
 
         for (let i = 0; i < this.state.image.length; i++) {
+            iFor = 1 + i
             let nameFile = this.state.image[i].name
+
             // eslint-disable-next-line
-            numFor = 1 + i
 
             function encode(name) {
                 return window.btoa(name);
@@ -135,27 +162,27 @@ class ProjectListEdit extends Component {
             let filenames = nameList + ext
 
             const uploadTask = storage.ref(`images/${filenames}`).put(this.state.image[i]);
+            if (iFor === numFor) {
+                uploadTask.on(
+                    "state_changed",
+                    snapshot => {
+                        // eslint-disable-next-line
 
-            uploadTask.on(
-                "state_changed",
-                snapshot => {
-
-                    let progressBar = []
-                    // eslint-disable-next-line
-                    if (i === i) {
                         const progress = Math.round(
                             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
                         )
+                        this.setState({
+                            progress: progress
+                        })
 
-                        progressBar.push({
-                                [i]: progress
-                            }
-                        )
-                    }
 
-                    this.setState({
-                        progress: progressBar
-                    })
+                    },
+                );
+            }
+
+            uploadTask.on(
+                "state_changed",
+                () => {
                 },
                 error => {
                     console.log(error);
@@ -174,7 +201,7 @@ class ProjectListEdit extends Component {
                             }))
                         });
                 }
-            );
+            )
 
         }
     };
@@ -183,82 +210,15 @@ class ProjectListEdit extends Component {
         event.preventDefault()
     };
 
-    createProjectHandler = event => {
-        event.preventDefault();
-
-        if (this.state.url.length === 0) {
-            this.setState({
-                staticImage: "",
-                staticImageName: "Select file",
-                staticImageSize: null,
-                image: null,
-                imageAdding: false,
-                errorImage: "File no update",
-                url: [],
-            })
-            document.getElementById("images").value = "";
-        } else {
-            if (this.state.editor.length <= 6) {
-                this.setState({
-                    editorError: "Text 6 ta harf dan kam bo'lish mumkin emas",
-                })
-            } else {
-                let currentDate = new Date();
-                let datetime = currentDate.getDate() + "/"
-                    + (currentDate.getMonth() + 1) + "/"
-                    + currentDate.getFullYear() + " "
-                    + currentDate.getHours() + ":"
-                    + currentDate.getMinutes() + ":"
-                    + currentDate.getSeconds();
-
-                const {projectTitle} = this.state.formControls;
-
-                const projectItem = {
-                    category: this.state.category,
-                    data: [{
-                        projectTitle: projectTitle.value,
-                        projectText: this.state.editor,
-                        projectImgUrl: this.state.url,
-                        createData: datetime,
-                        id: this.props.catalogCreate.length + 1,
-                    }
-                    ]
-
-
-                };
-                document.getElementById("textBox").innerHTML = ''
-                this.props.createProjectCatalog(projectItem)
-
-                this.setState({
-                    project: [],
-                    image: null,
-                    url: [],
-                    staticImage: "",
-                    errorImage: null,
-                    editorError: null,
-                    dataCreate: "",
-                    editor: "",
-                    progress: 0,
-                    isFormValid: false,
-                    imageAdding: false,
-                    lookCheck: false,
-                    formControls: createFormControls()
-                })
-
-                this.props.finishCreateCatalogProject()
-            }
-
-        }
-
-
-    };
-
     changeHandler = (value, controlName) => {
         const formControls = {...this.state.formControls};
         const control = {...formControls[controlName]};
+        let valueLengthTitle = this.state.textTitle.length, valueLengthYear = this.state.textYear.length,
+            valueLengthCompany = this.state.textCompany.length, valueLengthLocation = this.state.textLocation.length
         // eslint-disable-next-line
-        if (this.state.textTitle.length == valueInput.length) {
+        if (valueLengthTitle == valueInput.length || valueLengthYear == valueInput.length || valueLengthCompany == valueInput.length || valueLengthLocation == valueInput.length) {
             this.setState({
+                lookChange: false,
                 lookCheck: true,
             })
         }
@@ -281,6 +241,7 @@ class ProjectListEdit extends Component {
         // eslint-disable-next-line
         if (this.state.editor.length == this.state.editorText.length) {
             this.setState({
+                lookChange: false,
                 lookCheck: true,
             })
         }
@@ -289,7 +250,9 @@ class ProjectListEdit extends Component {
         })
     }
 
-    saveChanges = () => {
+    createProjectHandler = event => {
+        event.preventDefault();
+
         if (this.state.url.length === 0) {
             this.setState({
                 staticImage: "",
@@ -297,6 +260,7 @@ class ProjectListEdit extends Component {
                 staticImageSize: null,
                 image: null,
                 imageAdding: false,
+                lookChange: false,
                 errorImage: "File no update",
                 url: [],
             })
@@ -307,10 +271,118 @@ class ProjectListEdit extends Component {
                     editorError: "Text 6 ta harf dan kam bo'lish mumkin emas",
                 })
             } else {
+
+                if (this.state.category === 1) {
+                    this.setState({
+                        categoryError: "Kategoriyani talash kerak",
+                    })
+                }
+                let currentDate = new Date();
+                let datetime = currentDate.getDate() + "/"
+                    + (currentDate.getMonth() + 1) + "/"
+                    + currentDate.getFullYear() + " "
+                    + currentDate.getHours() + ":"
+                    + currentDate.getMinutes() + ":"
+                    + currentDate.getSeconds();
+
+                const {projectTitle, projectYear, projectCompany, projectLocation} = this.state.formControls;
+
+                const projectItem = {
+                    category: this.state.category,
+                    categoryName: this.state.categoryText,
+                    categoryData: [{
+                        projectTitle: projectTitle.value,
+                        projectYear: projectYear.value,
+                        projectCompany: projectCompany.value,
+                        projectLocation: projectLocation.value,
+                        projectText: this.state.editor,
+                        projectImgUrl: this.state.url,
+                        createData: datetime,
+                        id: this.props.catalogCreate.length + 1,
+                    }]
+
+
+                };
+                document.getElementById("textBox").innerHTML = ''
+                this.props.createProjectCatalog(projectItem)
+
+                this.props.finishCreateCatalogProject()
+
                 this.setState({
-                    textTitle: valueInput,
-                    editorText: refTextarea.innerHTML.trim()
+                    project: [],
+                    image: null,
+                    url: [],
+                    staticImage: "",
+                    errorImage: null,
+                    editorError: null,
+                    dataCreate: "",
+                    editor: "",
+                    progress: 0,
+                    isFormValid: false,
+                    imageAdding: false,
+                    lookCheck: false,
+                    lookChange: false,
+                    category: 1,
+                    textTitle: '',
+                    textYear: '',
+                    textCompany: '',
+                    textLocation: '',
+                    editorText: "",
+                    staticImageName: "Select files",
+                    urlWatch: [],
+                    staticImageSize: null,
+                    categoryError: null,
+                    categoryText: "",
+                    formControls: createFormControls()
                 })
+            }
+
+        }
+
+
+    };
+
+    saveChanges = event => {
+        event.preventDefault();
+        if (this.state.url.length === 0) {
+            this.setState({
+                staticImage: "",
+                staticImageName: "Select file",
+                staticImageSize: null,
+                image: null,
+                imageAdding: false,
+                errorImage: "File no update",
+                lookChange: false,
+                url: [],
+            })
+            document.getElementById("images").value = "";
+        } else {
+            if (this.state.editor.length <= 6) {
+                this.setState({
+                    editorError: "Text 6 ta harf dan kam bo'lish mumkin emas",
+                })
+            } else {
+
+                if (this.state.category === 1) {
+                    this.setState({
+                        categoryError: "Kategoriyani talash kerak",
+                    })
+                    let element = document.querySelector("#error-select");
+                    element.scrollIntoView({behavior: 'smooth', block: 'end'});
+                } else {
+                    const {projectTitle, projectYear, projectCompany, projectLocation} = this.state.formControls;
+                    this.setState({
+                        lookChange: true,
+                        editorError: null,
+                        categoryError: null,
+                        textTitle: projectTitle.value,
+                        textYear: projectYear.value,
+                        textCompany: projectCompany.value,
+                        textLocation: projectLocation.value,
+                        editorText: refTextarea.innerHTML.trim()
+                    })
+                }
+
             }
         }
 
@@ -351,9 +423,42 @@ class ProjectListEdit extends Component {
         })
     }
 
-    renderGallery(e) {
+    renderGallery() {
+        return this.state.urlWatch.map((url, index) => {
+            return (
+                <div className="col-md-6" key={index}>
+                    <GalleryItem
+                        className="gallery-item"
+                        href={URL.createObjectURL(url)}
+                        title={this.state.categoryText}
+                    >
+                        <div className="gallery-box">
+                            <div className="gallery-img">
+                                <img src={URL.createObjectURL(url)} className="img-fluid mx-auto d-block"
+                                     alt="work-img"/>
+                            </div>
+                        </div>
+                    </GalleryItem>
+                </div>
+
+
+            )
+        })
+    }
+
+    renderLookGallery(e) {
+        $(document).ready(function () {
+
+            $(this).attr("data-background")
+            var pageSection = $(".bg-img, section");
+            pageSection.each(function (indx) {
+                if ($(this).attr("data-background")) {
+                    $(this).css("background-image", "url(" + $(this).data("background") + ")");
+                }
+            })
+        })
         if (e === false) {
-            if(this.state.lookCheck) {
+            if (this.state.lookCheck) {
                 return (
                     <div className="col-12">
                         Please check save 🔁
@@ -367,29 +472,63 @@ class ProjectListEdit extends Component {
                 )
             }
         } else {
-            return this.state.urlWatch.map((url, index) => {
-                return (
-                    <div className="col-md-6" key={index}>
-                        <GalleryItem
-                            className="gallery-item"
-                            href={URL.createObjectURL(url)}
-                            title={this.state.categoryText}
-                        >
-                            <div className="gallery-box">
-                                <div className="gallery-img">
-                                    <img src={URL.createObjectURL(url)} className="img-fluid mx-auto d-block"
-                                         alt="work-img"/>
+
+            return (
+                <ContentWrapper>
+                    <div className="banner-header banner-img valign bg-img bg-fixed"
+                         data-overlay-light="3"
+                         data-background={Banner}/>
+                    <div className="section-padding2">
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <h2 className="section-title2">{this.state.textTitle}</h2>
                                 </div>
                             </div>
-                        </GalleryItem>
+                            <div className="row">
+                                <div className="col-md-8">
+                                    <p dangerouslySetInnerHTML={{__html: this.state.editorText}}/>
+                                </div>
+                                <div className="col-md-4">
+                                    <p><b>Year : </b> {this.state.textYear}</p>
+                                    <p><b>Company : </b> {this.state.textCompany}</p>
+                                    <p><b>Project Name : </b> {this.state.textTitle}</p>
+                                    <p><b>Location : </b> {this.state.textLocation}</p>
+                                </div>
+                            </div>
+                            <div className="row mt-30">
+                                <LightBoxGallery
+                                    className="popup-gallery"
+                                    config={config}
+                                >
+                                    {
+                                        this.state.url.map((url, index) => {
+                                            return (
+                                                <div className="col-md-6" key={index}>
+                                                    <GalleryItem
+                                                        className="gallery-item"
+                                                        href={url}
+                                                        title={this.state.categoryText}
+                                                    >
+                                                        <div className="gallery-box">
+                                                            <div className="gallery-img">
+                                                                <img src={url}
+                                                                     className="img-fluid mx-auto d-block"
+                                                                     alt="work-img"/>
+                                                            </div>
+                                                        </div>
+                                                    </GalleryItem>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </LightBoxGallery>
+                            </div>
+                        </div>
                     </div>
-
-
-                )
-            })
+                </ContentWrapper>
+            )
         }
-
-
     }
 
     selectChangeHandler = event => {
@@ -415,6 +554,7 @@ class ProjectListEdit extends Component {
             placeholder="Please select category"
             value={this.state.category}
             onChange={this.selectChangeHandler}
+            errorMessage={this.state.categoryError}
             options={[
                 {text: "Please select category", value: 1},
                 {text: "Architecture", value: 2},
@@ -425,26 +565,14 @@ class ProjectListEdit extends Component {
                 {text: "Decor Plan", value: 7}
             ]}
         />;
-        const config = {
-            delegate: 'a',
-            type: 'image',
-            tLoading: 'Loading image #%curr%...',
-            mainClass: 'mfp-fade mfp-img-mobile',
-            gallery: {
-                enabled: true,
-                navigateByImgClick: true,
-                preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
-            },
-            image: {
-                tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
-                titleSrc: function (item) {
-                    return item.el.attr('title') + '<small>by Marsel Van Oosten</small>';
-                }
-            }
-        }
 
         return (
             <section className="mt-5 edit container">
+                {
+                    this.props.catalogCreate.length === 0
+                        ? null
+                        : <CompletedCheck/>
+                }
                 <form className="row" onSubmit={this.submitHandler}>
                     <div className="col-12">
 
@@ -462,27 +590,16 @@ class ProjectListEdit extends Component {
                                     />
 
                                     <br/>
-                                    {
-                                        this.state.progress === 0
-                                            ? null
-                                            : <React.Fragment> {
-                                                this.state.progress.map((progress, index) => {
-                                                    return (
-                                                        <div className="progress" key={index}>
-                                                            <div className="progress-bar"
-                                                                 aria-valuenow="0"
-                                                                 aria-valuemin="0"
-                                                                 aria-valuemax="100"
-                                                                 style={{width: progress[index] + "%"}}
-                                                            />
+                                    <div className="progress">
+                                        <div className="progress-bar"
+                                             aria-valuenow="0"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100"
+                                             style={{width: this.state.progress + "%"}}
+                                        >{this.state.progress} %
+                                        </div>
 
-                                                        </div>
-                                                    )
-                                                })
-                                            }
-                                            </React.Fragment>
-                                    }
-
+                                    </div>
                                     <br/>
                                     <Button
                                         type="primary"
@@ -491,10 +608,11 @@ class ProjectListEdit extends Component {
                                     >
                                         Image upload
                                     </Button>
-                                    <LightBoxGallery className="popup-gallery" config={config}>{this.renderGallery()}</LightBoxGallery>
+                                    <LightBoxGallery className="popup-gallery"
+                                                     config={config}>{this.renderGallery()}</LightBoxGallery>
                                 </React.Fragment>
 
-                                : <LightBoxGallery className="popup-gallery" config={config}>{this.renderGallery(this.state.lookChange)} </LightBoxGallery>
+                                : <div className="row w-100">{this.renderLookGallery(this.state.lookChange)}</div>
                         }
                         <br/>
                         <br/>

@@ -7,6 +7,7 @@ import fontUnderline from "../../../assets/img/icons/font-underline.gif";
 import fontOutDent from "../../../assets/img/icons/outdent.gif";
 import fontInDent from "../../../assets/img/icons/indent.gif";
 import LinkIcon from "../../../assets/img/icons/link.gif";
+import $ from "jquery";
 
 function isInvalid({valid, touched, shouldValidate}) {
     return !valid && shouldValidate && touched
@@ -21,6 +22,7 @@ function TextArea(props) {
     }
 
     let sLnk;
+    let selection
 
     function formatDoc(sCmd, sValue) {
         document.execCommand(sCmd, false, sValue)
@@ -29,9 +31,13 @@ function TextArea(props) {
     function createLink() {
         // eslint-disable-next-line
         sLnk = prompt('Введите ваш URL', 'http:\/\/')
+        selection = document.getSelection();
         // eslint-disable-next-line
         if (sLnk && sLnk != '' && sLnk != 'http://') {
-            formatDoc('createlink', sLnk)
+            formatDoc('createlink',sLnk)
+            let listId = window.getSelection().focusNode.parentNode;
+            selection.anchorNode.parentElement.target = '_blank';
+            $(listId).addClass("link-target");
         }
     }
 

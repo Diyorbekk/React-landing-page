@@ -27,16 +27,20 @@ class AdminSliderSingleProject extends Component {
         };
 
         const events = {
-            onChanged: function (event) {
-                var item = event.item.index - 2;     // Position of the current item
-                $('h4').removeClass('animated fadeInUp');
-                $('h1').removeClass('animated fadeInUp');
-                $('p').removeClass('animated fadeInUp');
-                $('.butn-light').removeClass('animated fadeInUp');
-                $('.owl-item').not('.cloned').eq(item).find('h4').addClass('animated fadeInUp');
-                $('.owl-item').not('.cloned').eq(item).find('h1').addClass('animated fadeInUp');
-                $('.owl-item').not('.cloned').eq(item).find('p').addClass('animated fadeInUp');
-                $('.owl-item').not('.cloned').eq(item).find('.butn-light').addClass('animated fadeInUp');
+            onChanged: function () {
+                $(document).ready(function () {
+                    let owlItem = $('.owl-item')
+                    let owlItemActive = $('.owl-item.active')
+                    let owlItemClone = $('.owl-item.cloned')
+                    if (owlItem.hasClass("active") || owlItemClone.hasClass("active")) {
+                        $(owlItemActive).not('.cloned').find('h1').addClass('animated fadeInUp');
+                        $(owlItemActive).not('.cloned').find('p').addClass('animated fadeInUp');
+                        setTimeout(function() {
+                            $(owlItemActive).not('.cloned').find('h1').removeClass('animated fadeInUp')
+                            $(owlItemActive).not('.cloned').find('p').removeClass('animated fadeInUp')
+                        }, 2000);
+                    }
+                })
             }
         };
 

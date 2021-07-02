@@ -26,6 +26,10 @@ function Select(props) {
                     )
                 })}
             </select>
+            {props.errorMessage === null ?
+                <span id="error-select" className="text-danger bg-transparent my-0">{props.errorMessage}</span>
+                : <span id="error-select" className="text-danger bg-transparent my-0">{props.errorMessage}</span>
+            }
         </div>
     );
 }

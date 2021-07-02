@@ -18,6 +18,7 @@ import PreLoader from "./components/preLoader";
 import AdminSliderSingleProject from "./components/AdminPanel/Panels/Slider/AdminSliderSingleProject";
 import SliderEdit from "./components/AdminPanel/Panels/Slider/SliderEdit";
 import ProjectCatalogEdit from "./components/AdminPanel/Panels/Projects-list/ProjectListEdit";
+import AdminProjectListSingleProject from "./components/AdminPanel/Panels/Projects-list/CatalogSingleProject";
 
 const App = () => {
     const history = useHistory();
@@ -125,6 +126,7 @@ const App = () => {
                                     <Route path="/slider-add" component={SliderEdit}/>
                                 </Panel>
                                 <Route path="/slider-project/:id" component={AdminSliderSingleProject}/>
+                                <Route path="/catalog-project/:id" component={AdminProjectListSingleProject}/>
                             </ScrollToTop>
                         </React.Fragment>
                         <PreLoader/>
@@ -148,7 +150,7 @@ const App = () => {
                         <Layout>
                             <ToTop/>
                             <ScrollToTop>
-                                <Route path="/project" component={ProjectPage}/>
+                                <Route path="/project/:id" component={ProjectPage}/>
                                 <Route path="/" exact component={Contents}/>
                             </ScrollToTop>
                         </Layout>

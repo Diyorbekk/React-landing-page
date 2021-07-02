@@ -1,9 +1,8 @@
-import {database} from './firebase'
-const db = database.ref("/projects")
+import {database} from "./firebase";
 
+const db = database.ref("/category")
 
-
-class ProjectsDataService {
+class CategoryDataService {
     getAll() {
         return db;
     }
@@ -25,4 +24,5 @@ class ProjectsDataService {
     }
 }
 
-export default new ProjectsDataService();
+
+export default new CategoryDataService();

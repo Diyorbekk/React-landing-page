@@ -1,18 +1,18 @@
 import React, {Component} from "react";
-import {NavLink} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import Card from "../../../UI/Card/Card";
 import Loader from "../../../UI/Loader/Loader";
 import add from "../../../../assets/img/icons/add.png";
-import {fetchProjectById, fetchProjects} from "../../../../store/actions/project";
+import {fetchProjectCatalogById, fetchProjectsCatalog} from "../../../../store/actions/project";
 import {connect} from "react-redux";
-import ProjectsDataService from "../../../../util/projects.service";
-    
+import CategoryDataService from "../../../../util/category.service";
+
 class ProjectListPanel extends Component {
 
     deleteTutorial(props) {
-        ProjectsDataService.delete(props)
+        CategoryDataService.delete(props)
             .then(() => {
-                return this.props.fetchProjectById()
+                return this.props.fetchProjectCatalogById()
             })
             .catch((e) => {
                 console.log(e);
@@ -20,31 +20,47 @@ class ProjectListPanel extends Component {
     }
 
     renderProjects(props) {
-        return this.props.projectList.map((projectsList, index) => {
+        return this.props.categoryList.map((projectsList, index) => {
             return (
                 <React.Fragment key={index}>
-                    <div  className="col-md-4 mt-4 d-flex flex-column">
-                        <NavLink to={"/slider-project/" + props[index]}>
-                            <Card
-                                cardUrl={projectsList.projectImgUrl[0]}
-                                cardTitle={projectsList.projectTitle}
-                                cardText={projectsList.projectText}
-                                cardDataCreate={projectsList.createData}
-                            />
-                        </NavLink>
+                    <div className="col-md-4 mt-4 d-flex flex-column">
+                        <Link to={"/catalog-project/" + props[index]}>
+                            {
+                                projectsList.categoryData.map((listCategory, number) => {
+                                    return (
+                                        <Card
+                                            key={number}
+                                            cardUrl={listCategory.projectImgUrl[0]}
+                                            cardTitle={listCategory.projectTitle}
+                                            cardCategory={projectsList.categoryName}
+                                            cardText={listCategory.projectText}
+                                            cardDataCreate={listCategory.createData}
+                                        />
+                                    )
+                                })
+                            }
+
+                        </Link>
                         <button onClick={() => this.deleteTutorial(props[index])}>Remove Slider</button>
                     </div>
                 </React.Fragment>
             )
         })
+
+
     }
 
     componentDidMount() {
-        this.props.fetchProjects()
-        this.props.fetchProjectById()
+        this.props.fetchProjectsCatalog()
+        this.props.fetchProjectCatalogById()
     }
+
+    componentDidUpdate() {
+        return this.props.categoryList
+    }
+
     render() {
-        const link = this.props.projectsUrl.map((projectsUrl) => {
+        const link = this.props.categoryUrl.map((projectsUrl) => {
             return projectsUrl.id
         })
 
@@ -56,15 +72,17 @@ class ProjectListPanel extends Component {
                 {
                     this.props.loading && this.props.length !== 0
                         ? <Loader/>
-                        : <div className="row">
-                            {this.renderProjects(link)}
-                            <div className="col-md-4 mt-4">
+                        : <React.Fragment>
+                            <div className="row">
+                                {this.renderProjects(link)}
+                                <div className="col-md-4 mt-4">
                                 <NavLink to={"/project-catalog-add"}
                                          className="border rounded d-flex align-items-center justify-content-center pl-2 pt-2">
                                     <img src={add} style={{width: 150}} alt="icon-add"/>
                                 </NavLink>
-                            </div>
-                        </div>
+                            </div></div>
+
+                        </React.Fragment>
                 }
             </div>
         )
@@ -73,16 +91,16 @@ class ProjectListPanel extends Component {
 
 function mapStateToProps(state) {
     return {
-        projectsUrl: state.project.projects,
-        projectList: state.project.projectList,
+        categoryUrl: state.project.category,
+        categoryList: state.project.categoryList,
         loading: state.project.loading
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        fetchProjects: () => dispatch(fetchProjects()),
-        fetchProjectById: () => dispatch(fetchProjectById()),
+        fetchProjectsCatalog: () => dispatch(fetchProjectsCatalog()),
+        fetchProjectCatalogById: () => dispatch(fetchProjectCatalogById()),
     }
 }
 

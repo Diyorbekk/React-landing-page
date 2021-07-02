@@ -111,6 +111,15 @@ b {
     font-weight: 400;
     color: #b19777;
 }
+
+.link-target {
+    text-decoration: underline!important;
+}
+
+.link-target:hover {
+    color: #007bff;
+}
+
 .intLink { cursor: pointer; margin: 10px}
 img.intLink { border: 0;  width: auto!important;}
 #textBox {
@@ -1607,6 +1616,7 @@ hr {
     position: relative;
     overflow: hidden;
     margin-bottom: 30px;
+    max-height: 380px;
 }
 
 .projects .item:hover img {
@@ -1629,6 +1639,8 @@ hr {
 .projects .item img {
     -webkit-transition: all .5s;
     transition: all .5s;
+    object-fit: cover;
+    height: 100%!important;
 }
 
 .projects .item .con {
@@ -1805,6 +1817,7 @@ hr {
 .gallery-box .gallery-img {
     position: relative;
     overflow: hidden;
+    height: 300px;
 }
 
 .gallery-box .gallery-img:after {
@@ -1822,6 +1835,8 @@ hr {
 .gallery-box .gallery-img > img {
     transition: all 0.3s cubic-bezier(0.3, 0.1, 0.58, 1);
     border-radius: 0;
+    object-fit: cover;
+    height: 100%!important;
 }
 
 .gallery-box .gallery-detail {

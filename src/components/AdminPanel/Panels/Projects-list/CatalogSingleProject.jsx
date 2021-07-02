@@ -1,12 +1,11 @@
-import React, {Component} from 'react'
-import Banner from '../assets/img/banner.jpg'
-import $ from 'jquery'
-import {GalleryItem, LightBoxGallery} from "@sekmet/react-magnific-popup";
-import ContentWrapper from "./content-wrapper";
-import Footer from "./Footer";
-import Loader from "./UI/Loader/Loader";
-import {fetchProjectCatalogByUrl} from "../store/actions/project";
+import React, {Component} from "react";
+import Banner from "../../../../assets/img/banner.jpg";
+import ContentWrapper from "../../../content-wrapper";
+import $ from "jquery";
+import {fetchProjectCatalogByUrl} from "../../../../store/actions/project";
 import {connect} from "react-redux";
+import Loader from "../../../UI/Loader/Loader";
+import {GalleryItem, LightBoxGallery} from "@sekmet/react-magnific-popup";
 
 const config = {
     delegate: 'a',
@@ -26,7 +25,7 @@ const config = {
     }
 }
 
-class ProjectPage extends Component {
+class CatalogSingleProject extends Component {
     componentDidMount() {
         this.props.fetchProjectCatalogByUrl(this.props.match.params.id)
     }
@@ -116,8 +115,26 @@ class ProjectPage extends Component {
                         }</React.Fragment>
                 }
 
+
+                {/*<div className="projects-prev-next">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="d-sm-flex align-items-center justify-content-between">
+                                    <div className="projects-prev-next-left">
+                                        <a href="stonya-villa.html"> <i className="ti-arrow-left"/> Previous Project</a>
+                                    </div>
+                                    <a href="projects.html"><i className="ti-layout-grid3-alt"/></a>
+                                    <div className="projects-prev-next-right">
+                                        <a href="cotton-house.html">Next Project <i className="ti-arrow-right"/></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>*/}
+
                 {/*<!-- Footer -->*/}
-                <Footer/>
             </ContentWrapper>
         )
     }
@@ -136,4 +153,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectPage);
+export default connect(mapStateToProps, mapDispatchToProps)(CatalogSingleProject);

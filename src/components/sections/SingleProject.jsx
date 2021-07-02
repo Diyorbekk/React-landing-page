@@ -1,15 +1,28 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import OwlCarousel from 'react-owl-carousel2';
-import project_1 from '../../assets/img/projects/1.jpg'
-import project_2 from '../../assets/img/projects/2.jpg'
-import project_3 from '../../assets/img/projects/3.jpg'
-import project_4 from '../../assets/img/projects/4.jpg'
+import {fetchProjectCatalogById, fetchProjectsCatalog} from "../../store/actions/project";
+import {connect} from "react-redux";
 
 // Projects owlCarousel
 
 class SingleProject extends Component {
+    componentDidMount() {
+        this.props.fetchProjectsCatalog()
+        this.props.fetchProjectCatalogById()
+    }
+
+    renderProjects(props) {
+
+
+
+    }
+
     render() {
+
+        const link = this.props.categoryUrl.map((projectsUrl) => {
+            return projectsUrl.id
+        })
 
         const options = {
             loop: true,
@@ -42,70 +55,36 @@ class SingleProject extends Component {
                     <div className="row">
                         <div className="col-md-12">
                             <OwlCarousel clasname="owl-carousel owl-theme" options={options}>
-                                    <div className="item">
-                                        <div className="position-re o-hidden">
-                                            <img src={project_1} alt="Projects"/></div>
-                                        <div className="con">
-                                            <h6>
-                                                <Link to="/project">Interior</Link>
-                                            </h6>
-                                            <h5>
-                                                <Link to="/project">Cotton House</Link>
-                                            </h5>
-                                            <div className="line"/>
-                                            <Link to="/project">
-                                                <i className="ti-arrow-right"/>
-                                            </Link>
-                                        </div>
-                                    </div>
-                                    <div className="item">
-                                        <div className="position-re o-hidden">
-                                            <img src={project_2} alt="Projects"/></div>
-                                        <div className="con">
-                                            <h6>
-                                                <Link to="/project/1">Exterior</Link>
-                                            </h6>
-                                            <h5>
-                                                <Link to="/project/1">Armada Center</Link>
-                                            </h5>
-                                            <div className="/asdas/1"/>
-                                            <Link to="/project/1">
-                                                <i className="ti-arrow-right"/>
-                                            </Link>
-                                        </div>
-                                    </div>
-                                    <div className="item">
-                                        <div className="position-re o-hidden">
-                                            <img src={project_3} alt="Projects"/></div>
-                                        <div className="con">
-                                            <h6>
-                                                <Link to="/">Urban</Link>
-                                            </h6>
-                                            <h5>
-                                                <Link to="/">Stonya Villa</Link>
-                                            </h5>
-                                            <div className="line"/>
-                                            <Link to="/">
-                                                <i className="ti-arrow-right"/>
-                                            </Link>
-                                        </div>
-                                    </div>
-                                    <div className="item">
-                                        <div className="position-re o-hidden">
-                                            <img src={project_4} alt="Projects"/></div>
-                                        <div className="con">
-                                            <h6>
-                                                <Link to="/">Interior</Link>
-                                            </h6>
-                                            <h5>
-                                                <Link to="/">Prime Hotel</Link>
-                                            </h5>
-                                            <div className="line"/>
-                                            <Link to="/">
-                                                <i className="ti-arrow-right"/>
-                                            </Link>
-                                        </div>
-                                    </div>
+                                {
+                                    this.props.categoryList.map((projectsList, index) => {
+                                        return (
+                                            <div className="item" key={index}>
+                                                <Link to={"/project/" + link[index]} className="h-100 d-block">
+                                                    {
+                                                        projectsList.categoryData.map((listCategory, number) => {
+                                                            return (
+                                                                <React.Fragment key={number}>
+                                                                    <div className="position-re o-hidden h-100">
+                                                                        <img src={listCategory.projectImgUrl[0]}
+                                                                             alt={listCategory.projectImgUrl[0]}/>
+                                                                    </div>
+                                                                    <div className="con">
+                                                                        <h6>{projectsList.categoryName}</h6>
+                                                                        <h5>{listCategory.projectTitle}</h5>
+                                                                        <div className="line"/>
+                                                                        <Link to={"/catalog-project/" + link}><i
+                                                                            className="ti-arrow-right"/></Link>
+                                                                    </div>
+                                                                </React.Fragment>
+                                                            )
+                                                        })
+                                                    }
+                                                </Link>
+                                            </div>
+                                        )
+                                    })
+                                }
+
                             </OwlCarousel>
                         </div>
                     </div>
@@ -116,4 +95,19 @@ class SingleProject extends Component {
     }
 }
 
-export default SingleProject;
+function mapStateToProps(state) {
+    return {
+        categoryUrl: state.project.category,
+        categoryList: state.project.categoryList,
+        loading: state.project.loading
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        fetchProjectsCatalog: () => dispatch(fetchProjectsCatalog()),
+        fetchProjectCatalogById: () => dispatch(fetchProjectCatalogById()),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SingleProject);
