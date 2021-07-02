@@ -72,7 +72,7 @@ class SingleProject extends Component {
                                                                         <h6>{projectsList.categoryName}</h6>
                                                                         <h5>{listCategory.projectTitle}</h5>
                                                                         <div className="line"/>
-                                                                        <Link to={"/catalog-project/" + link}><i
+                                                                        <Link to={"/catalog-project/" + link[index]}><i
                                                                             className="ti-arrow-right"/></Link>
                                                                     </div>
                                                                 </React.Fragment>
