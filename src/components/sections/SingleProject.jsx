@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Link} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import OwlCarousel from 'react-owl-carousel2';
 import {fetchProjectCatalogById, fetchProjectsCatalog} from "../../store/actions/project";
 import {connect} from "react-redux";
@@ -26,7 +26,7 @@ class SingleProject extends Component {
         })
 
         const options = {
-            loop: true,
+            loop: false,
             margin: 30,
             mouseDrag: true,
             autoplay: false,
@@ -64,7 +64,7 @@ class SingleProject extends Component {
                                             this.props.categoryList.map((projectsList, index) => {
                                                 return (
                                                     <div className="item" key={index}>
-                                                        <Link to={"/project/" + link[index]} className="h-100 d-block">
+                                                        <NavLink to={"/project/" + link[index]} className="h-100 d-block">
                                                             {
                                                                 projectsList.categoryData.map((listCategory, number) => {
                                                                     return (
@@ -83,7 +83,7 @@ class SingleProject extends Component {
                                                                     )
                                                                 })
                                                             }
-                                                        </Link>
+                                                        </NavLink>
                                                     </div>
                                                 )
                                             })
