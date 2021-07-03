@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import OwlCarousel from 'react-owl-carousel2';
 import {fetchProjectCatalogById, fetchProjectsCatalog} from "../../store/actions/project";
 import {connect} from "react-redux";
+import Loader from "../UI/Loader/Loader";
 
 // Projects owlCarousel
 
@@ -54,38 +55,43 @@ class SingleProject extends Component {
                     </div>
                     <div className="row">
                         <div className="col-md-12">
-                            <OwlCarousel clasname="owl-carousel owl-theme" options={options}>
-                                {
-                                    this.props.categoryList.map((projectsList, index) => {
-                                        return (
-                                            <div className="item" key={index}>
-                                                <Link to={"/project/" + link[index]} className="h-100 d-block">
-                                                    {
-                                                        projectsList.categoryData.map((listCategory, number) => {
-                                                            return (
-                                                                <React.Fragment key={number}>
-                                                                    <div className="position-re o-hidden h-100">
-                                                                        <img src={listCategory.projectImgUrl[0]}
-                                                                             alt={listCategory.projectImgUrl[0]}/>
-                                                                    </div>
-                                                                    <div className="con">
-                                                                        <h6>{projectsList.categoryName}</h6>
-                                                                        <h5>{listCategory.projectTitle}</h5>
-                                                                        <div className="line"/>
-                                                                        <Link to={"/catalog-project/" + link[index]}><i
-                                                                            className="ti-arrow-right"/></Link>
-                                                                    </div>
-                                                                </React.Fragment>
-                                                            )
-                                                        })
-                                                    }
-                                                </Link>
-                                            </div>
-                                        )
-                                    })
-                                }
 
-                            </OwlCarousel>
+                            {
+                                this.props.loading || this.props.categoryList.length === 0
+                                    ? <Loader/>
+                                    : <OwlCarousel clasname="owl-carousel owl-theme" options={options}>
+                                        {
+                                            this.props.categoryList.map((projectsList, index) => {
+                                                return (
+                                                    <div className="item" key={index}>
+                                                        <Link to={"/project/" + link[index]} className="h-100 d-block">
+                                                            {
+                                                                projectsList.categoryData.map((listCategory, number) => {
+                                                                    return (
+                                                                        <React.Fragment key={number}>
+                                                                            <div className="position-re o-hidden h-100">
+                                                                                <img src={listCategory.projectImgUrl[0]}
+                                                                                     alt={listCategory.projectImgUrl[0]} loading={"lazy"}/>
+                                                                            </div>
+                                                                            <div className="con">
+                                                                                <h6>{projectsList.categoryName}</h6>
+                                                                                <h5>{listCategory.projectTitle}</h5>
+                                                                                <div className="line"/>
+                                                                                <i className="ti-arrow-right"/>
+                                                                            </div>
+                                                                        </React.Fragment>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </Link>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+
+                                    </OwlCarousel>
+                            }
+
                         </div>
                     </div>
                 </div>
