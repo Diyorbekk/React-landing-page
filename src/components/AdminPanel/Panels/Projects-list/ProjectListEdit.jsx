@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import Button from "../../../UI/Button/Button";
 import TextArea from "../../../UI/TextAreaAdmin/TextArea";
 import {createControl, validate, validateForm} from "../../../UI/form/formFramework";
-import $ from "jquery";
 import {storage} from "../../../../util/firebase";
 import {createProjectCatalog, finishCreateCatalogProject} from "../../../../store/actions/create";
 import {connect} from "react-redux";
@@ -14,6 +13,9 @@ import {GalleryItem, LightBoxGallery} from "@sekmet/react-magnific-popup";
 import CompletedCheck from "../../../UI/completedCheck/completedCheck";
 import Banner from "../../../../assets/img/banner.jpg";
 import ContentWrapper from "../../../content-wrapper";
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
 
 
 function createFormControls() {
@@ -102,7 +104,7 @@ class ProjectListEdit extends Component {
 
 
         if (file.length === 0) {
-            $('.__lk-fileInput span').removeClass('right');
+            window.$('.__lk-fileInput span').removeClass('right');
             this.setState({
                 staticImage: "",
                 image: null,
@@ -116,7 +118,7 @@ class ProjectListEdit extends Component {
             for (let i = 0; i < file.length; i++) {
                 iNum.push(file[i])
             }
-            $('.__lk-fileInput span').addClass('right');
+            window.$('.__lk-fileInput span').addClass('right');
             this.setState({
                 urlWatch: iNum,
                 staticImage: URL.createObjectURL(fileUrl),
@@ -447,13 +449,13 @@ class ProjectListEdit extends Component {
     }
 
     renderLookGallery(e) {
-        $(document).ready(function () {
+        window.$(document).ready(function () {
 
-            $(this).attr("data-background")
-            var pageSection = $(".bg-img, section");
+            window.$(this).attr("data-background")
+            var pageSection = window.$(".bg-img, section");
             pageSection.each(function (indx) {
-                if ($(this).attr("data-background")) {
-                    $(this).css("background-image", "url(" + $(this).data("background") + ")");
+                if (window.$(this).attr("data-background")) {
+                    window.$(this).css("background-image", "url(" + window.$(this).data("background") + ")");
                 }
             })
         })

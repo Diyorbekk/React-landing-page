@@ -1,35 +1,37 @@
 import React, {Component} from "react";
-import $ from "jquery";
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
 
 class ToTopButton extends Component {
     componentDidMount() {
-        var progressPath = document.querySelector('.progress-wrap path');
-        var pathLength = progressPath.getTotalLength();
+        let progressPath = document.querySelector('.progress-wrap path');
+        let pathLength = progressPath.getTotalLength();
         progressPath.style.transition = progressPath.style.WebkitTransition = 'none';
         progressPath.style.strokeDasharray = pathLength + ' ' + pathLength;
         progressPath.style.strokeDashoffset = pathLength;
         progressPath.getBoundingClientRect();
         progressPath.style.transition = progressPath.style.WebkitTransition = 'stroke-dashoffset 10ms linear';
-        var updateProgress = function () {
-            var scroll = $(window).scrollTop();
-            var height = $(document).height() - $(window).height();
-            var progress = pathLength - (scroll * pathLength / height);
+        let updateProgress = function () {
+            let scroll = window.$(window).scrollTop();
+            let height = window.$(document).height() - window.$(window).height();
+            let progress = pathLength - (scroll * pathLength / height);
             progressPath.style.strokeDashoffset = progress;
         }
         updateProgress();
-        $(window).scroll(updateProgress);
-        var offset = 150;
-        var duration = 550;
-        $(window).on('scroll', function () {
-            if ($(this).scrollTop() > offset) {
-                $('.progress-wrap').addClass('active-progress');
+        window.$(window).scroll(updateProgress);
+        let offset = 150;
+        let duration = 550;
+        window.$(window).on('scroll', function () {
+            if (window.$(this).scrollTop() > offset) {
+                window.$('.progress-wrap').addClass('active-progress');
             } else {
-                $('.progress-wrap').removeClass('active-progress');
+                window.$('.progress-wrap').removeClass('active-progress');
             }
         });
-        $('.progress-wrap').on('click', function (event) {
+        window.$('.progress-wrap').on('click', function (event) {
             event.preventDefault();
-            $('html, body').animate({ scrollTop: 0 }, duration);
+            window.$('html, body').animate({ scrollTop: 0 }, duration);
             return false;
         })
     }

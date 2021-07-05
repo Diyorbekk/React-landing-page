@@ -2,9 +2,11 @@ import React, {Component} from 'react';
 import {fetchProjectById, fetchProjects} from "../store/actions/project";
 import {connect} from "react-redux";
 import Loader from "./UI/Loader/Loader";
-import $ from "jquery";
 import OwlCarousel from "react-owl-carousel2";
 import image from "../assets/img/projects/1.jpg"
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
 
 class Header extends Component {
 
@@ -26,22 +28,22 @@ class Header extends Component {
         };
         const events = {
             onChanged: function () {
-                $(document).ready(function () {
-                    let pageSection = $(".bg-img, section");
+                window.$(document).ready(function () {
+                    let pageSection = window.$(".bg-img, section");
                     pageSection.each(function () {
-                        if ($(this).attr("data-background")) {
-                            $(this).css("background-image", "url(" + $(this).data("background") + ")");
+                        if (window.$(this).attr("data-background")) {
+                            window.$(this).css("background-image", "url(" + window.$(this).data("background") + ")");
                         }
                     });
-                    let owlItem = $('.owl-item')
-                    let owlItemActive = $('.owl-item.active')
-                    let owlItemClone = $('.owl-item.cloned')
+                    let owlItem = window.$('.owl-item')
+                    let owlItemActive = window.$('.owl-item.active')
+                    let owlItemClone = window.$('.owl-item.cloned')
                     if (owlItem.hasClass("active") || owlItemClone.hasClass("active")) {
-                        $(owlItemActive).not('.cloned').find('h1').addClass('animated fadeInUp');
-                        $(owlItemActive).not('.cloned').find('p').addClass('animated fadeInUp');
+                        window.$(owlItemActive).not('.cloned').find('h1').addClass('animated fadeInUp');
+                        window.$(owlItemActive).not('.cloned').find('p').addClass('animated fadeInUp');
                         setTimeout(function () {
-                            $(owlItemActive).not('.cloned').find('h1').removeClass('animated fadeInUp')
-                            $(owlItemActive).not('.cloned').find('p').removeClass('animated fadeInUp')
+                            window.$(owlItemActive).not('.cloned').find('h1').removeClass('animated fadeInUp')
+                            window.$(owlItemActive).not('.cloned').find('p').removeClass('animated fadeInUp')
                         }, 2000);
                     }
                 })

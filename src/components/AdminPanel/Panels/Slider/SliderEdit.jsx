@@ -9,8 +9,10 @@ import Button from "../../../UI/Button/Button";
 import {createProject, finishCreateProject} from "../../../../store/actions/create";
 import {connect} from "react-redux";
 import OwlCarousel from "react-owl-carousel2";
-import $ from "jquery";
 import CompletedCheck from "../../../UI/completedCheck/completedCheck";
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
 
 
 function createFormControls() {
@@ -59,7 +61,7 @@ class SliderEdit extends Component {
         let fileUrl = e.target.files[0];
         let file = e.target.files;
         if (file.length === 0) {
-            $('.__lk-fileInput span').removeClass('right');
+            window.$('.__lk-fileInput span').removeClass('right');
             this.setState({
                 staticImage: "",
                 staticImageName: "Select file",
@@ -68,7 +70,7 @@ class SliderEdit extends Component {
                 imageAdding: false,
             })
         } else {
-            $('.__lk-fileInput span').addClass('right');
+            window.$('.__lk-fileInput span').addClass('right');
             this.setState({
                 staticImage: URL.createObjectURL(fileUrl),
                 staticImageName: fileUrl.name,
@@ -309,15 +311,15 @@ class SliderEdit extends Component {
             };
             const events = {
                 onChanged: function (event) {
-                    var item = event.item.index - 2;     // Position of the current item
-                    $('h4').removeClass('animated fadeInUp');
-                    $('h1').removeClass('animated fadeInUp');
-                    $('p').removeClass('animated fadeInUp');
-                    $('.butn-light').removeClass('animated fadeInUp');
-                    $('.owl-item').not('.cloned').eq(item).find('h4').addClass('animated fadeInUp');
-                    $('.owl-item').not('.cloned').eq(item).find('h1').addClass('animated fadeInUp');
-                    $('.owl-item').not('.cloned').eq(item).find('p').addClass('animated fadeInUp');
-                    $('.owl-item').not('.cloned').eq(item).find('.butn-light').addClass('animated fadeInUp');
+                    let item = event.item.index - 2;     // Position of the current item
+                    window.$('h4').removeClass('animated fadeInUp');
+                    window.$('h1').removeClass('animated fadeInUp');
+                    window.$('p').removeClass('animated fadeInUp');
+                    window.$('.butn-light').removeClass('animated fadeInUp');
+                    window.$('.owl-item').not('.cloned').eq(item).find('h4').addClass('animated fadeInUp');
+                    window.$('.owl-item').not('.cloned').eq(item).find('h1').addClass('animated fadeInUp');
+                    window.$('.owl-item').not('.cloned').eq(item).find('p').addClass('animated fadeInUp');
+                    window.$('.owl-item').not('.cloned').eq(item).find('.butn-light').addClass('animated fadeInUp');
                 }
             };
             return this.state.url.map((projects, index) => {

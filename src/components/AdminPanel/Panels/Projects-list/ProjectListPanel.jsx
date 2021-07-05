@@ -24,7 +24,7 @@ class ProjectListPanel extends Component {
             return (
                 <React.Fragment key={index}>
                     <div className="col-md-4 mt-4 d-flex flex-column">
-                        <Link to={"/catalog-project/" + props[index]}>
+                        <Link to={"/projects-catalog/" + props[index]}>
                             {
                                 projectsList.categoryData.map((listCategory, number) => {
                                     return (
@@ -61,9 +61,8 @@ class ProjectListPanel extends Component {
 
     render() {
         const link = this.props.categoryUrl.map((projectsUrl) => {
-            return projectsUrl.id
+            return projectsUrl.id.slice(1)
         })
-
         return (
             <div>
 
@@ -81,7 +80,6 @@ class ProjectListPanel extends Component {
                                     <img src={add} style={{width: 150}} alt="icon-add"/>
                                 </NavLink>
                             </div></div>
-
                         </React.Fragment>
                 }
             </div>

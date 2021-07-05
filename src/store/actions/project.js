@@ -152,6 +152,52 @@ export function fetchProjectCatalogById() {
     }
 }
 
+export function fetchProjectCategory() {
+
+    return async dispatch => {
+        dispatch(fetchProjectsStart())
+        try {
+            const response = await axios.get(`/category.json`);
+
+            const categoryKeys = response.data
+            const propOwn = Object.getOwnPropertyNames(categoryKeys);
+            const projectsTik = []
+            let projectList = []
+            let i = 0
+            let result = []
+
+            for (const key of propOwn) {
+                i++
+                projectsTik[key] = await axios.get(`/category/${key}.json`);
+                projectList.push({
+                    data: projectsTik[key].data,
+                    path: key,
+                    id: i,
+                })
+            }
+
+            projectList.map(project => {
+                    return project.data.map(projectsList2 => {
+                        return result.push(
+                            projectsList2
+                        )
+                    })
+                }
+            )
+            dispatch(fetchProjectCategoryListSuccess(result))
+
+
+
+        } catch (e) {
+            let dataEmpty = []
+            dispatch(fetchProjectCategoryListSuccess(dataEmpty))
+            dispatch(fetchProjectsError(e))
+        }
+
+
+    }
+}
+
 export function fetchProjectByUrl(projectUrl) {
     return async dispatch => {
         dispatch(fetchProjectsStart())

@@ -2,8 +2,8 @@ import React from 'react';
 import PreLoader from "../preLoader";
 
 const Login = (props) => {
-
     const {email, setEmail, password, setPassword, handleLogin, handleSignUp, hasAccount, setHasAccount, emailError, passwordError} = props
+
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {

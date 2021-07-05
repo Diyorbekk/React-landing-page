@@ -1,11 +1,13 @@
 import React from 'react';
 import './CompletedCheck.scss'
-import $ from "jquery";
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
 
 function CompletedCheck(props) {
-    $(".check-icon").hide();
+    window.$ (".check-icon").hide();
     setTimeout(function () {
-        $(".check-icon").show();
+        window.$ (".check-icon").show();
     }, 10);
 
     return (

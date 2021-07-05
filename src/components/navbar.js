@@ -1,13 +1,14 @@
 import React from "react";
-import {useLocation} from "react-router-dom"
+import {Link, useLocation} from "react-router-dom"
 import logo from '../assets/img/logo.png'
-import $ from 'jquery'
 import {HashLink} from "react-router-hash-link";
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
 
 
 function NavigationBar() {
     let location = useLocation();
-
     let nav = null
 
 
@@ -34,13 +35,13 @@ function NavigationBar() {
             </React.Fragment>
         )
     } else {
-        $(document).ready(function () {
-            $('.nav-color').each(function () {
-                var el = $(this);
+        window.$(document).ready(function () {
+            window.$('.nav-color').each(function () {
+                var el = window.$(this);
                 var effect = el.data('active');
                 // eslint-disable-next-line
                 if (effect==location.pathname) {
-                    $(this).addClass('active');
+                    window.$(this).addClass('active');
                 }
             });
         })
@@ -81,9 +82,9 @@ function NavigationBar() {
     return (
         <nav className="navbar navbar-expand-lg">
             <div className="container">
-                <HashLink className="logo" to="/home">
+                <Link className="logo" to="/">
                     <img src={logo} alt="logo"/>
-                </HashLink>
+                </Link>
                 <button className="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">

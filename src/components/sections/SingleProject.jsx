@@ -13,16 +13,10 @@ class SingleProject extends Component {
         this.props.fetchProjectCatalogById()
     }
 
-    renderProjects(props) {
-
-
-
-    }
-
     render() {
 
         const link = this.props.categoryUrl.map((projectsUrl) => {
-            return projectsUrl.id
+            return projectsUrl.id.slice(1)
         })
 
         const options = {
@@ -62,6 +56,7 @@ class SingleProject extends Component {
                                     : <OwlCarousel clasname="owl-carousel owl-theme" options={options}>
                                         {
                                             this.props.categoryList.map((projectsList, index) => {
+                                                console.log()
                                                 return (
                                                     <div className="item" key={index}>
                                                         <NavLink to={"/project/" + link[index]} className="h-100 d-block">

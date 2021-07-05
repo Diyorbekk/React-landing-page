@@ -1,11 +1,13 @@
 import React, {Component} from "react";
 import Banner from "../../../../assets/img/banner.jpg";
 import ContentWrapper from "../../../content-wrapper";
-import $ from "jquery";
 import {fetchProjectCatalogByUrl} from "../../../../store/actions/project";
 import {connect} from "react-redux";
 import Loader from "../../../UI/Loader/Loader";
 import {GalleryItem, LightBoxGallery} from "@sekmet/react-magnific-popup";
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
 
 const config = {
     delegate: 'a',
@@ -27,21 +29,11 @@ const config = {
 
 class CatalogSingleProject extends Component {
     componentDidMount() {
-        this.props.fetchProjectCatalogByUrl(this.props.match.params.id)
+        const str = this.props.match.params.id;
+        this.props.fetchProjectCatalogByUrl("-" + str)
     }
 
     render() {
-        $(document).ready(function () {
-
-            $(this).attr("data-background")
-            var pageSection = $(".bg-img, section");
-            pageSection.each(function (indx) {
-                if ($(this).attr("data-background")) {
-                    $(this).css("background-image", "url(" + $(this).data("background") + ")");
-                }
-            })
-        })
-
         return (
             <ContentWrapper>
                 <div className="banner-header banner-img valign bg-img bg-fixed"

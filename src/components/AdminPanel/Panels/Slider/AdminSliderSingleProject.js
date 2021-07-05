@@ -1,15 +1,18 @@
 import React, {Component} from "react";
 import OwlCarousel from "react-owl-carousel2";
-import $ from "jquery";
 import {connect} from "react-redux";
 import {fetchProjectByUrl} from "../../../../store/actions/project";
 import Loader from "../../../UI/Loader/Loader";
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
 
 
 class AdminSliderSingleProject extends Component {
 
     componentDidMount() {
-        this.props.fetchProjectByUrl(this.props.match.params.id)
+        const str = this.props.match.params.id;
+        this.props.fetchProjectByUrl("-" + str)
 
     }
 
@@ -28,16 +31,16 @@ class AdminSliderSingleProject extends Component {
 
         const events = {
             onChanged: function () {
-                $(document).ready(function () {
-                    let owlItem = $('.owl-item')
-                    let owlItemActive = $('.owl-item.active')
-                    let owlItemClone = $('.owl-item.cloned')
+                window.$(document).ready(function () {
+                    let owlItem = window.$('.owl-item')
+                    let owlItemActive = window.$('.owl-item.active')
+                    let owlItemClone = window.$('.owl-item.cloned')
                     if (owlItem.hasClass("active") || owlItemClone.hasClass("active")) {
-                        $(owlItemActive).not('.cloned').find('h1').addClass('animated fadeInUp');
-                        $(owlItemActive).not('.cloned').find('p').addClass('animated fadeInUp');
+                        window.$(owlItemActive).not('.cloned').find('h1').addClass('animated fadeInUp');
+                        window.$(owlItemActive).not('.cloned').find('p').addClass('animated fadeInUp');
                         setTimeout(function() {
-                            $(owlItemActive).not('.cloned').find('h1').removeClass('animated fadeInUp')
-                            $(owlItemActive).not('.cloned').find('p').removeClass('animated fadeInUp')
+                            window.$(owlItemActive).not('.cloned').find('h1').removeClass('animated fadeInUp')
+                            window.$(owlItemActive).not('.cloned').find('p').removeClass('animated fadeInUp')
                         }, 2000);
                     }
                 })

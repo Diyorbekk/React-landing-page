@@ -1,12 +1,14 @@
 import React, {Component} from 'react'
 import Banner from '../assets/img/banner.jpg'
-import $ from 'jquery'
 import {GalleryItem, LightBoxGallery} from "@sekmet/react-magnific-popup";
 import ContentWrapper from "./content-wrapper";
 import Footer from "./Footer";
 import Loader from "./UI/Loader/Loader";
 import {fetchProjectCatalogByUrl} from "../store/actions/project";
 import {connect} from "react-redux";
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
 
 const config = {
     delegate: 'a',
@@ -28,21 +30,11 @@ const config = {
 
 class ProjectPage extends Component {
     componentDidMount() {
-        this.props.fetchProjectCatalogByUrl(this.props.match.params.id)
+        const str = this.props.match.params.id;
+        this.props.fetchProjectCatalogByUrl("-" + str)
     }
 
     render() {
-        $(document).ready(function () {
-
-            $(this).attr("data-background")
-            var pageSection = $(".bg-img, section");
-            pageSection.each(function (indx) {
-                if ($(this).attr("data-background")) {
-                    $(this).css("background-image", "url(" + $(this).data("background") + ")");
-                }
-            })
-        })
-
         return (
             <ContentWrapper>
                 <div className="banner-header banner-img valign bg-img bg-fixed"
@@ -51,7 +43,7 @@ class ProjectPage extends Component {
                 {
                     this.props.loading || !this.props.catalog
                         ? <Loader/>
-                        : <React.Fragment>                {
+                        : <React.Fragment> {
                             this.props.catalog.map((project, index) => {
                                 return (
                                     <div className="section-padding2" key={index}>

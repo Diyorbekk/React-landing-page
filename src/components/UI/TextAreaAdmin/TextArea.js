@@ -7,7 +7,9 @@ import fontUnderline from "../../../assets/img/icons/font-underline.gif";
 import fontOutDent from "../../../assets/img/icons/outdent.gif";
 import fontInDent from "../../../assets/img/icons/indent.gif";
 import LinkIcon from "../../../assets/img/icons/link.gif";
-import $ from "jquery";
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
 
 function isInvalid({valid, touched, shouldValidate}) {
     return !valid && shouldValidate && touched
@@ -37,7 +39,7 @@ function TextArea(props) {
             formatDoc('createlink',sLnk)
             let listId = window.getSelection().focusNode.parentNode;
             selection.anchorNode.parentElement.target = '_blank';
-            $(listId).addClass("link-target");
+            window.$(listId).addClass("link-target");
         }
     }
 

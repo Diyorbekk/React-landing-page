@@ -52,7 +52,7 @@ class SliderPanel extends Component {
 
     render() {
         const link = this.props.projectsUrl.map((projectsUrl) => {
-            return projectsUrl.id
+            return projectsUrl.id.slice(1)
         })
 
 

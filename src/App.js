@@ -28,6 +28,18 @@ const App = () => {
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [hasAccount, setHasAccount] = useState('');
+    let location = false
+
+    window.$(document).ready(function () {
+        window.$(this).attr("data-background")
+        let pageSection = window.$(".bg-img, section");
+        pageSection.each(function () {
+            if (window.$(this).attr("data-background")) {
+                window.$(this).css("background-image", "url(" + window.$(this).data("background") + ")");
+            }
+        })
+    })
+
 
     const clearInputs = () => {
         setEmail('')
@@ -43,10 +55,9 @@ const App = () => {
         clearInputs();
         firebase
             .auth()
-            .setPersistence(firebase.auth.Auth.Persistence.SESSION).then(
-            () => {
-                return firebase.auth().signInWithEmailAndPassword(email, password)
-            })
+            .setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
+            return firebase.auth().signInWithEmailAndPassword(email, password)
+        })
             .catch(err => {
                 switch (err.code) {
                     case "auth/invalid-email":
@@ -66,7 +77,9 @@ const App = () => {
         clearErrors();
         firebase
             .auth()
-            .setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {return firebase.auth().createUserWithEmailAndPassword(email, password)})
+            .setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
+            return firebase.auth().createUserWithEmailAndPassword(email, password)
+        })
             .catch(err => {
                 switch (err.code) {
                     case "auth/email-already-in-use":
@@ -98,7 +111,7 @@ const App = () => {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
                 clearInputs();
-                autoLogoutUser(600)
+                autoLogoutUser(1200)
                 setUser(user)
             } else {
                 setUser("")
@@ -106,10 +119,26 @@ const App = () => {
         });
     }
 
+    location = firebase.auth().currentUser !== null;
+
+
+
+
+
     useEffect(() => {
         authListener()
+        if (location === true) {
+            let locationPath = window.location.pathname
+            if (window.performance) {
+                // eslint-disable-next-line
+                if (performance.navigation.type == 1) {
+                    history.push(locationPath)
+                } else {
+                    history.push("/slider-project")
+                }
+            }
+        }
     })
-
     return (
         <Auxiliary>
 
@@ -121,13 +150,15 @@ const App = () => {
                             <ScrollToTop>
                                 <Panel handleLogOut={handleLogOut}>
                                     <Route exact path="/slider-project" component={AdminEditorsList}/>
-                                    <Route path="/projects-catalog" component={ProjectEditorsPanel}/>
+                                    <Route exact path="/projects-catalog" component={ProjectEditorsPanel}/>
                                     <Route path="/project-catalog-add" component={ProjectCatalogEdit}/>
                                     <Route path="/slider-add" component={SliderEdit}/>
                                 </Panel>
-                                <Route path="/slider-project/:id" component={AdminSliderSingleProject}/>
-                                <Route path="/catalog-project/:id" component={AdminProjectListSingleProject}/>
+
+                                <Route exact path="/slider-project/:id" component={AdminSliderSingleProject}/>
+                                <Route path="/projects-catalog/:id" component={AdminProjectListSingleProject}/>
                             </ScrollToTop>
+
                         </React.Fragment>
                         <PreLoader/>
                     </Switch>
