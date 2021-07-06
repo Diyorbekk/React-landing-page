@@ -33,7 +33,7 @@ class SliderPanel extends Component {
                                 cardDataCreate={projectsList.createData}
                             />
                         </NavLink>
-                        <button onClick={() => this.deleteTutorial(props[index])}>Remove Slider</button>
+                        <button onClick={() => this.deleteTutorial("-" + props[index])}>Remove Slider</button>
                     </div>
                 </React.Fragment>
             )

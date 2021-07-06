@@ -41,7 +41,7 @@ class ProjectListPanel extends Component {
                             }
 
                         </Link>
-                        <button onClick={() => this.deleteTutorial(props[index])}>Remove Slider</button>
+                        <button onClick={() => this.deleteTutorial("-" + props[index])}>Remove Slider</button>
                     </div>
                 </React.Fragment>
             )
