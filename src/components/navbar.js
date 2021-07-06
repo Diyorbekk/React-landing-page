@@ -12,6 +12,7 @@ function NavigationBar() {
     let nav = null
 
 
+
     if (location.pathname === '/') {
         nav = (
             <React.Fragment>
@@ -37,10 +38,10 @@ function NavigationBar() {
     } else {
         window.$(document).ready(function () {
             window.$('.nav-color').each(function () {
-                var el = window.$(this);
-                var effect = el.data('active');
+                let el = window.$(this);
+                let effect = el.data('active');
                 // eslint-disable-next-line
-                if (effect==location.pathname) {
+                if (location.pathname.indexOf(effect) === 0) {
                     window.$(this).addClass('active');
                 }
             });
@@ -50,13 +51,12 @@ function NavigationBar() {
         nav = (
             <React.Fragment>
                 <li className="nav-item">
-                    <HashLink
+                    <Link
                         className="nav-link nav-color"
-                        data-active="/home" to="/#home"
-                        scroll={(el) => el.scrollIntoView({ behavior: 'smooth' })}
+                        data-active="/home" to="/"
                     >
                         Home
-                    </HashLink>
+                    </Link>
                 </li>
                 <li className="nav-item">
                     <HashLink className="nav-link nav-color" data-active="/about"  to="/#about">About</HashLink>

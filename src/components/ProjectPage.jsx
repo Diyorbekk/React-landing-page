@@ -10,31 +10,44 @@ import $ from 'jquery';
 window.jQuery = $;
 window.$ = $;
 
-const config = {
-    delegate: 'a',
-    type: 'image',
-    tLoading: 'Loading image #%curr%...',
-    mainClass: 'mfp-fade mfp-img-mobile',
-    gallery: {
-        enabled: true,
-        navigateByImgClick: true,
-        preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
-    },
-    image: {
-        tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
-        titleSrc: function (item) {
-            return item.el.attr('title') + '<small>by Marsel Van Oosten</small>';
-        }
-    }
-}
+
 
 class ProjectPage extends Component {
     componentDidMount() {
         const str = this.props.match.params.id;
         this.props.fetchProjectCatalogByUrl("-" + str)
+
     }
 
     render() {
+
+        window.$(document).ready(function () {
+            window.$(this).attr("data-background")
+            let pageSection = window.$(".bg-img, section");
+            pageSection.each(function () {
+                if (window.$(this).attr("data-background")) {
+                    window.$(this).css("background-image", "url(" + window.$(this).data("background") + ")");
+                }
+            })
+        })
+        const config = {
+            delegate: 'a',
+            type: 'image',
+            tLoading: 'Loading image #%curr%...',
+            mainClass: 'mfp-fade mfp-img-mobile',
+            gallery: {
+                enabled: true,
+                navigateByImgClick: true,
+                preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
+            },
+            image: {
+                tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
+                titleSrc: function (item) {
+                    return item.el.attr('title') + '<small>by RENDERTIME INTERIOR STUDIO</small>';
+                }
+            }
+        }
+
         return (
             <ContentWrapper>
                 <div className="banner-header banner-img valign bg-img bg-fixed"
@@ -86,6 +99,7 @@ class ProjectPage extends Component {
                                                                                         <div className="gallery-img">
                                                                                             <img src={urlImg}
                                                                                                  className="img-fluid mx-auto d-block"
+                                                                                                 loading={"lazy"}
                                                                                                  alt="work-img"/>
                                                                                         </div>
                                                                                     </div>

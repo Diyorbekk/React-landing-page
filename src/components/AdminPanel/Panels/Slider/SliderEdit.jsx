@@ -181,7 +181,7 @@ class SliderEdit extends Component {
                     createData: datetimeSlider,
                     id: this.props.projectCreate.length + 1,
                 };
-                document.getElementById("textBox").innerHTML = ''
+
                 this.props.createProject(projectItem)
 
                 this.setState({
@@ -206,6 +206,7 @@ class SliderEdit extends Component {
                 })
 
                 this.props.finishCreateProject()
+                document.getElementById("textBox").innerHTML = ''
             }
 
         }

@@ -41,23 +41,6 @@ function createFormControls() {
 
 let refTextarea = "textarea"
 let valueInput = ""
-const config = {
-    delegate: 'a',
-    type: 'image',
-    tLoading: 'Loading image #%curr%...',
-    mainClass: 'mfp-fade mfp-img-mobile',
-    gallery: {
-        enabled: true,
-        navigateByImgClick: true,
-        preload: [0, 1]
-    },
-    image: {
-        tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
-        titleSrc: function (item) {
-            return item.el.attr('title') + '<small>by Marsel Van Oosten</small>';
-        }
-    }
-}
 
 
 class ProjectListEdit extends Component {
@@ -97,6 +80,8 @@ class ProjectListEdit extends Component {
         });
     }
 
+
+
     handleChangeCatalog = e => {
         let fileUrl = e.target.files[0];
         let file = e.target.files;
@@ -104,7 +89,10 @@ class ProjectListEdit extends Component {
 
 
         if (file.length === 0) {
-            window.$('.__lk-fileInput span').removeClass('right');
+            window.$(document).ready(function () {
+                window.$('.__lk-fileInput span').removeClass('right');
+                window.$('.__lk-fileInput .multiple-file').addClass('error');
+            })
             this.setState({
                 staticImage: "",
                 image: null,
@@ -116,17 +104,44 @@ class ProjectListEdit extends Component {
             })
         } else {
             for (let i = 0; i < file.length; i++) {
-                iNum.push(file[i])
+                let fileName = file[i].name
+                let fileNameSlice = fileName.slice(0, fileName.indexOf('.'))
+                if(fileNameSlice.length < 4){
+                    console.log("error")
+                    window.$(document).ready(function () {
+                        window.$('.__lk-fileInput span').removeClass('right');
+                        window.$('.__lk-fileInput .multiple-file').addClass('error');
+                    })
+
+                    this.setState({
+                        staticImage: "",
+                        image: null,
+                        staticImageName: "Select file",
+                        staticImageSize: null,
+                        errorImage: file[i].name + " - Fayl nomi 4 ta harf dan kam yoki bosh nomi son bo'lish mumkun emas",
+                        imageAdding: false,
+                        urlWatch: [],
+                    })
+                } else {
+                    console.log("no error")
+                    iNum.push(file[i])
+                    window.$(document).ready(function () {
+                        window.$('.__lk-fileInput span').addClass('right');
+                        window.$('.__lk-fileInput .multiple-file').removeClass('error');
+                    })
+                    window.$('.__lk-fileInput span').addClass('right');
+                    this.setState({
+                        urlWatch: iNum,
+                        staticImage: URL.createObjectURL(fileUrl),
+                        staticImageName: "First image - " + fileUrl.name,
+                        staticImageSize: (fileUrl.size / 1048576).toFixed(3),
+                        image: file,
+                        errorImage: null,
+                    })
+                }
+
             }
-            window.$('.__lk-fileInput span').addClass('right');
-            this.setState({
-                urlWatch: iNum,
-                staticImage: URL.createObjectURL(fileUrl),
-                staticImageName: "First image - " + fileUrl.name,
-                staticImageSize: (fileUrl.size / 1048576).toFixed(3),
-                image: file,
-                errorImage: null,
-            })
+
         }
     };
 
@@ -305,7 +320,6 @@ class ProjectListEdit extends Component {
 
 
                 };
-                document.getElementById("textBox").innerHTML = ''
                 this.props.createProjectCatalog(projectItem)
 
                 this.props.finishCreateCatalogProject()
@@ -337,6 +351,7 @@ class ProjectListEdit extends Component {
                     categoryText: "",
                     formControls: createFormControls()
                 })
+                document.getElementById("textBox").innerHTML = ''
             }
 
         }
@@ -449,11 +464,28 @@ class ProjectListEdit extends Component {
     }
 
     renderLookGallery(e) {
+        const config = {
+            delegate: 'a',
+            type: 'image',
+            tLoading: 'Loading image #%curr%...',
+            mainClass: 'mfp-fade mfp-img-mobile',
+            gallery: {
+                enabled: true,
+                navigateByImgClick: true,
+                preload: [0, 1]
+            },
+            image: {
+                tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
+                titleSrc: function (item) {
+                    return item.el.attr('title') + '<small>by Marsel Van Oosten</small>';
+                }
+            }
+        }
         window.$(document).ready(function () {
 
             window.$(this).attr("data-background")
             var pageSection = window.$(".bg-img, section");
-            pageSection.each(function (indx) {
+            pageSection.each(function () {
                 if (window.$(this).attr("data-background")) {
                     window.$(this).css("background-image", "url(" + window.$(this).data("background") + ")");
                 }
@@ -551,6 +583,24 @@ class ProjectListEdit extends Component {
     };
 
     render() {
+        const config = {
+            delegate: 'a',
+            type: 'image',
+            tLoading: 'Loading image #%curr%...',
+            mainClass: 'mfp-fade mfp-img-mobile',
+            gallery: {
+                enabled: true,
+                navigateByImgClick: true,
+                preload: [0, 1]
+            },
+            image: {
+                tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
+                titleSrc: function (item) {
+                    return item.el.attr('title') + '<small>by Marsel Van Oosten</small>';
+                }
+            }
+        }
+
         const select = <Select
             label="Category"
             placeholder="Please select category"

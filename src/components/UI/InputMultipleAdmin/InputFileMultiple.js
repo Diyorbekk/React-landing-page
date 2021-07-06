@@ -17,7 +17,7 @@ function InputFileMultiple(props) {
 
                 {props.errorMessage === null ?
                     null
-                    : <span className="text-danger bg-transparent my-0">{props.errorMessage}</span>
+                    : <span className="text-danger multiple-file bg-transparent my-0">{props.errorMessage}</span>
                 }
                 <input type="file" multiple name="images" id="images" required="required" onChange={props.onChange}/>
             </label>

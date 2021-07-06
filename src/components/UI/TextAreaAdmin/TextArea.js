@@ -37,9 +37,14 @@ function TextArea(props) {
         // eslint-disable-next-line
         if (sLnk && sLnk != '' && sLnk != 'http://') {
             formatDoc('createlink',sLnk)
-            let listId = window.getSelection().focusNode.parentNode;
+            window.$(document).ready(function () {
+                let listId = window.getSelection().focusNode.parentNode;
+                selection.anchorNode.parentElement.target = '_blank';
+                window.$(listId).addClass("link-target");
+            })
+/*            let listId = window.getSelection().focusNode.parentNode;
             selection.anchorNode.parentElement.target = '_blank';
-            window.$(listId).addClass("link-target");
+            window.$(listId).addClass("link-target");*/
         }
     }
 
