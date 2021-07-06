@@ -34,17 +34,12 @@ function TextArea(props) {
         // eslint-disable-next-line
         sLnk = prompt('Введите ваш URL', 'http:\/\/')
         selection = document.getSelection();
+
+        let wrappedSelection = `<a href='${sLnk}' class="link-target" target="_blank">${selection}</a>`;
         // eslint-disable-next-line
         if (sLnk && sLnk != '' && sLnk != 'http://') {
-            formatDoc('createlink',sLnk)
-            window.$(document).ready(function () {
-                let listId = window.getSelection().focusNode.parentNode;
-                selection.anchorNode.parentElement.target = '_blank';
-                window.$(listId).addClass("link-target");
-            })
-/*            let listId = window.getSelection().focusNode.parentNode;
-            selection.anchorNode.parentElement.target = '_blank';
-            window.$(listId).addClass("link-target");*/
+            /*formatDoc('createlink', sLnk)*/
+            document.execCommand('insertHTML', false, wrappedSelection);
         }
     }
 

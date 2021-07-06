@@ -240,6 +240,9 @@ class SliderEdit extends Component {
 
     editorChange(event) {
         event.preventDefault();
+        document.getElementById("textBox").addEventListener("input", function(e) {
+            console.log(refTextarea.innerHTML.trim());
+        }, false);
         // eslint-disable-next-line
         if (this.state.editor.length == this.state.editorText.length) {
             this.setState({
@@ -376,6 +379,8 @@ class SliderEdit extends Component {
     }
 
     render() {
+
+        console.log(this.state.editor)
         return (
             <section className="mt-5 edit container">
                 {
@@ -428,6 +433,7 @@ class SliderEdit extends Component {
                                     label="Create Text"
                                     inputRef={el => refTextarea = el}
                                     onInput={(event) => this.editorChange(event)}
+                                    onChange={(event) => this.editorChange(event)}
                                     errorMessage={this.state.editorError}
                                 />
 
