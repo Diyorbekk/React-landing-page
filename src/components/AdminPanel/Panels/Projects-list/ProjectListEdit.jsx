@@ -107,7 +107,6 @@ class ProjectListEdit extends Component {
                 let fileName = file[i].name
                 let fileNameSlice = fileName.slice(0, fileName.indexOf('.'))
                 if(fileNameSlice.length < 4){
-                    console.log("error")
                     window.$(document).ready(function () {
                         window.$('.__lk-fileInput span').removeClass('right');
                         window.$('.__lk-fileInput .multiple-file').addClass('error');
@@ -123,7 +122,6 @@ class ProjectListEdit extends Component {
                         urlWatch: [],
                     })
                 } else {
-                    console.log("no error")
                     iNum.push(file[i])
                     window.$(document).ready(function () {
                         window.$('.__lk-fileInput span').addClass('right');

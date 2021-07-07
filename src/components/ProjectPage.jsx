@@ -1,26 +1,34 @@
 import React, {Component} from 'react'
+import PropTypes from "prop-types";
 import Banner from '../assets/img/banner.jpg'
 import {GalleryItem, LightBoxGallery} from "@sekmet/react-magnific-popup";
 import ContentWrapper from "./content-wrapper";
 import Footer from "./Footer";
 import Loader from "./UI/Loader/Loader";
-import {fetchProjectCatalogByUrl} from "../store/actions/project";
+import {fetchNextAndPrev, fetchProjectCatalogByUrl} from "../store/actions/project";
 import {connect} from "react-redux";
 import $ from 'jquery';
+import {Link, NavLink} from "react-router-dom";
+
 window.jQuery = $;
 window.$ = $;
 
 
-
 class ProjectPage extends Component {
     componentDidMount() {
-        const str = this.props.match.params.id;
-        this.props.fetchProjectCatalogByUrl("-" + str)
+        this.props.fetchProjectCatalogByUrl(this.props.match.params.id)
+        this.props.fetchNextAndPrev(this.props.match.params.id)
+        console.log(this.props.nextProps)
+    }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.location !== prevProps.location) {
+            this.props.fetchProjectCatalogByUrl(this.props.match.params.id)
+            this.props.fetchNextAndPrev(this.props.match.params.id)
+        }
     }
 
     render() {
-
         window.$(document).ready(function () {
             window.$(this).attr("data-background")
             let pageSection = window.$(".bg-img, section");
@@ -54,6 +62,7 @@ class ProjectPage extends Component {
                      data-overlay-light="3"
                      data-background={Banner}/>
                 {
+
                     this.props.loading || !this.props.catalog
                         ? <Loader/>
                         : <React.Fragment> {
@@ -120,8 +129,46 @@ class ProjectPage extends Component {
                                 )
                             })
                         }</React.Fragment>
-                }
 
+                }
+                <section className="projects-prev-next">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="d-sm-flex align-items-center justify-content-between">
+                                    {
+                                        !this.props.catalog
+                                            ? <Loader/>
+                                            : <React.Fragment>
+                                                <div className="projects-prev-next-left">
+                                                    {
+                                                        this.props.previous === null
+
+                                                            ? null
+                                                            : <NavLink to={this.props.previous}> <i
+                                                                className="ti-arrow-left"/> Previous
+                                                                Project</NavLink>
+                                                    }
+
+                                                </div>
+                                                <NavLink to={"/project/"}><i className="ti-layout-grid3-alt"/></NavLink>
+                                                <div className="projects-prev-next-right">
+                                                    {
+                                                        this.props.nextProps === null
+
+                                                            ? null
+                                                            : <NavLink to={this.props.nextProps}>Next Project <i
+                                                                className="ti-arrow-right"/></NavLink>
+                                                    }
+                                                </div>
+                                            </React.Fragment>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
                 {/*<!-- Footer -->*/}
                 <Footer/>
             </ContentWrapper>
@@ -132,6 +179,8 @@ class ProjectPage extends Component {
 function mapStateToProps(state) {
     return {
         catalog: state.project.singleCatalog,
+        previous: state.project.previous,
+        nextProps: state.project.next,
         loading: state.project.loading
     }
 }
@@ -139,6 +188,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         fetchProjectCatalogByUrl: id => dispatch(fetchProjectCatalogByUrl(id)),
+        fetchNextAndPrev: id => dispatch(fetchNextAndPrev(id)),
     }
 }
 

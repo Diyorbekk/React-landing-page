@@ -6,7 +6,11 @@ import {
     FETCH_PROJECTS_START,
     FETCH_PROJECT_LIST_SUCCESS,
     FETCH_PROJECT_SINGLE_SUCCESS,
-    FETCH_PROJECT_CATALOG_SUCCESS, FETCH_CATALOG_LIST_SUCCESS, FETCH_CATALOG_SINGLE_SUCCESS,
+    FETCH_PROJECT_CATALOG_SUCCESS,
+    FETCH_CATALOG_LIST_SUCCESS,
+    FETCH_CATALOG_SINGLE_SUCCESS,
+    GET_CATALOG_SUCCESS,
+    GET_NAVIGATION_SUCCESS,
 } from "./actionTypes";
 
 export function fetchProjects() {
@@ -83,8 +87,8 @@ export function fetchProjectById() {
             }
 
             projectList.map(project => {
-                return project.data.map(projectsList2 => {
-                    return result.push(
+                    return project.data.map(projectsList2 => {
+                        return result.push(
                             projectsList2
                         )
                     })
@@ -93,7 +97,6 @@ export function fetchProjectById() {
 
 
             dispatch(fetchProjectListSuccess(result))
-
 
 
         } catch (e) {
@@ -141,7 +144,6 @@ export function fetchProjectCatalogById() {
             dispatch(fetchProjectCategoryListSuccess(result))
 
 
-
         } catch (e) {
             let dataEmpty = []
             dispatch(fetchProjectCategoryListSuccess(dataEmpty))
@@ -152,7 +154,7 @@ export function fetchProjectCatalogById() {
     }
 }
 
-export function fetchProjectCategory() {
+export function getProjectCategory(getCategoriesReturnType) {
 
     return async dispatch => {
         dispatch(fetchProjectsStart())
@@ -176,21 +178,26 @@ export function fetchProjectCategory() {
                 })
             }
 
+
             projectList.map(project => {
+                    // eslint-disable-next-line
                     return project.data.map(projectsList2 => {
-                        return result.push(
-                            projectsList2
-                        )
+                        // eslint-disable-next-line
+                        if (projectsList2.category == getCategoriesReturnType) {
+                            return result.push(
+                                projectsList2
+                            )
+                        }
                     })
                 }
             )
-            dispatch(fetchProjectCategoryListSuccess(result))
 
+            dispatch(getProjectCategorySuccess(result))
 
 
         } catch (e) {
             let dataEmpty = []
-            dispatch(fetchProjectCategoryListSuccess(dataEmpty))
+            dispatch(getProjectCategorySuccess(dataEmpty))
             dispatch(fetchProjectsError(e))
         }
 
@@ -224,10 +231,70 @@ export function fetchProjectCatalogByUrl(projectUrl) {
         try {
             const response = await axios.get(`/category/${projectUrl}.json`);
 
-
             const singleCatalog = response.data;
 
             dispatch(fetchSingleProjectCategorySuccess(singleCatalog))
+
+        } catch (e) {
+            dispatch(fetchProjectsError(e))
+        }
+
+    }
+}
+
+export function fetchNextAndPrev(navigation) {
+    return async dispatch => {
+        dispatch(fetchProjectsStart())
+
+        try {
+            const response = await axios.get(`/category.json`);
+            const projects = []
+            Object.keys(response.data).forEach((key, index) => {
+                projects.push({
+                    id: key,
+                    name: `${index + 1}`,
+                })
+            });
+
+            let previous = null
+            let next = null
+/*            let lastElement = projects[projects.length - 1].name;*/
+            let i = 0
+
+
+/*            previous = projects[i==0?projects.length-1:i-1];
+            next = projects[i==projects.length-1?0:i+1];*/
+
+            for (let i = 0; i < projects.length; i++) {
+                if (projects[i].id === navigation) {
+                    previous = projects[i==0?projects.length-1:i-1].id;
+                    next = projects[i==projects.length-1?0:i+1].id;
+
+                    console.log(previous)
+                    console.log(next)
+/*                    if (parseInt(projects[0].name) === 1) {
+                        console.log(0)
+                        previous = null;
+                        next = projects[i + 1].id;
+                    }
+                    if (parseInt(lastElement) === projects.length) {
+                        console.log(4)
+                        previous = projects[i - 1].id;
+                        next = null;
+                        break;
+
+                    }
+                    if (parseInt(projects[0].name) !== 1 || parseInt(lastElement) === projects.length) {
+                        console.log("hi")
+
+                        break;
+                    }*/
+/*                    previous = projects[i - 1].id;
+                    next = projects[i + 1].id;*/
+                }
+            }
+
+            dispatch(fetchNavigationSuccess(previous, next))
 
         } catch (e) {
             dispatch(fetchProjectsError(e))
@@ -250,6 +317,13 @@ export function fetchProjectCategoryListSuccess(categoryList) {
     }
 }
 
+export function getProjectCategorySuccess(GetCategory) {
+    return {
+        type: GET_CATALOG_SUCCESS,
+        GetCategory
+    }
+}
+
 export function fetchSingleProjectSuccess(projectSingle) {
     return {
         type: FETCH_PROJECT_SINGLE_SUCCESS,
@@ -261,6 +335,14 @@ export function fetchSingleProjectCategorySuccess(singleCatalog) {
     return {
         type: FETCH_CATALOG_SINGLE_SUCCESS,
         singleCatalog
+    }
+}
+
+export function fetchNavigationSuccess(previous, next) {
+    return {
+        type: GET_NAVIGATION_SUCCESS,
+        previous,
+        next
     }
 }
 

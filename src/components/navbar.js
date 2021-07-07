@@ -1,7 +1,7 @@
 import React from "react";
 import {Link, useLocation} from "react-router-dom"
 import logo from '../assets/img/logo.png'
-import {HashLink} from "react-router-hash-link";
+import {NavHashLink} from "react-router-hash-link";
 import $ from 'jquery';
 window.jQuery = $;
 window.$ = $;
@@ -11,6 +11,11 @@ function NavigationBar() {
     let location = useLocation();
     let nav = null
 
+    const scrollWidthOffset = (el) => {
+        const yCoordinate = el.getBoundingClientRect().top + window.pageYOffset;
+        const yOffset = -880;
+        window.scrollTo({ top: yCoordinate + yOffset, behavior: 'smooth' });
+    }
 
 
     if (location.pathname === '/') {
@@ -59,19 +64,19 @@ function NavigationBar() {
                     </Link>
                 </li>
                 <li className="nav-item">
-                    <HashLink className="nav-link nav-color" data-active="/about"  to="/#about">About</HashLink>
+                    <NavHashLink className="nav-link nav-color" data-active="/about"  to="/#about">About</NavHashLink>
                 </li>
                 <li className="nav-item">
-                    <HashLink className="nav-link nav-color" data-active="/project" to="/#projects">Projects</HashLink>
+                    <NavHashLink className="nav-link nav-color" data-active="/project" to="/#projects">Projects</NavHashLink>
                 </li>
                 <li className="nav-item">
-                    <HashLink className="nav-link nav-color" data-active="/services" to="/#services">Services</HashLink>
+                    <NavHashLink className="nav-link nav-color" data-active="/services" to="/#services" scroll={el => scrollWidthOffset(el)} >Services</NavHashLink>
                 </li>
                 <li className="nav-item">
-                    <HashLink className="nav-link nav-color" data-active="/blog" to="/#blog">Blog</HashLink>
+                    <NavHashLink className="nav-link nav-color" data-active="/blog" to="/#blog" scroll={el => scrollWidthOffset(el)}>Blog</NavHashLink>
                 </li>
                 <li className="nav-item">
-                    <HashLink className="nav-link nav-color" data-active="/contact" to="/#contact">Contact</HashLink>
+                    <NavHashLink  className="nav-link nav-color" data-active="/contact" to="/#contact" scroll={el => scrollWidthOffset(el)}>Contact</NavHashLink>
                 </li>
                 
             </React.Fragment>

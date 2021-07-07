@@ -17,7 +17,8 @@ class Header extends Component {
     render() {
         const options = {
             items: 1,
-            loop: true,
+            loop: false,
+            rewind: true,
             dots: false,
             margin: 0,
             autoplay: true,
