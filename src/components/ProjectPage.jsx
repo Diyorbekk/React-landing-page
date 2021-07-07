@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import PropTypes from "prop-types";
 import Banner from '../assets/img/banner.jpg'
 import {GalleryItem, LightBoxGallery} from "@sekmet/react-magnific-popup";
 import ContentWrapper from "./content-wrapper";
@@ -8,7 +7,7 @@ import Loader from "./UI/Loader/Loader";
 import {fetchNextAndPrev, fetchProjectCatalogByUrl} from "../store/actions/project";
 import {connect} from "react-redux";
 import $ from 'jquery';
-import {Link, NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 window.jQuery = $;
 window.$ = $;
@@ -144,19 +143,22 @@ class ProjectPage extends Component {
                                                     {
                                                         this.props.previous === null
 
-                                                            ? null
+                                                            ? <NavLink to={"/project"} className="invisible"> <i
+                                                                className="ti-arrow-left"/> Previous
+                                                                Project</NavLink>
                                                             : <NavLink to={this.props.previous}> <i
                                                                 className="ti-arrow-left"/> Previous
                                                                 Project</NavLink>
                                                     }
 
                                                 </div>
-                                                <NavLink to={"/project/"}><i className="ti-layout-grid3-alt"/></NavLink>
+                                                <NavLink to={"/project"}><i className="ti-layout-grid3-alt"/></NavLink>
                                                 <div className="projects-prev-next-right">
                                                     {
                                                         this.props.nextProps === null
 
-                                                            ? null
+                                                            ? <NavLink to={"/project"} className="invisible">Next Project <i
+                                                                className="ti-arrow-right"/></NavLink>
                                                             : <NavLink to={this.props.nextProps}>Next Project <i
                                                                 className="ti-arrow-right"/></NavLink>
                                                     }

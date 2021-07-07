@@ -258,8 +258,8 @@ export function fetchNextAndPrev(navigation) {
 
             let previous = null
             let next = null
-/*            let lastElement = projects[projects.length - 1].name;*/
-            let i = 0
+            let lastElement = projects[projects.length - 1].id;
+            let firstElement = projects[0].id;
 
 
 /*            previous = projects[i==0?projects.length-1:i-1];
@@ -267,30 +267,22 @@ export function fetchNextAndPrev(navigation) {
 
             for (let i = 0; i < projects.length; i++) {
                 if (projects[i].id === navigation) {
+
+                    // eslint-disable-next-line
                     previous = projects[i==0?projects.length-1:i-1].id;
+                    // eslint-disable-next-line
                     next = projects[i==projects.length-1?0:i+1].id;
-
-                    console.log(previous)
-                    console.log(next)
-/*                    if (parseInt(projects[0].name) === 1) {
-                        console.log(0)
+                    if (firstElement === navigation) {
                         previous = null;
-                        next = projects[i + 1].id;
+                        // eslint-disable-next-line
+                        next = projects[i==projects.length-1?0:i+1].id;
                     }
-                    if (parseInt(lastElement) === projects.length) {
-                        console.log(4)
-                        previous = projects[i - 1].id;
+
+                    if (lastElement === navigation) {
+                        // eslint-disable-next-line
+                        previous = projects[i==0?projects.length-1:i-1].id;
                         next = null;
-                        break;
-
                     }
-                    if (parseInt(projects[0].name) !== 1 || parseInt(lastElement) === projects.length) {
-                        console.log("hi")
-
-                        break;
-                    }*/
-/*                    previous = projects[i - 1].id;
-                    next = projects[i + 1].id;*/
                 }
             }
 
