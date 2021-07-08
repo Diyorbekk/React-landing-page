@@ -6,8 +6,8 @@ import Footer from "./Footer";
 import Loader from "./UI/Loader/Loader";
 import {fetchNextAndPrev, fetchProjectCatalogByUrl} from "../store/actions/project";
 import {connect} from "react-redux";
-import $ from 'jquery';
 import {NavLink} from "react-router-dom";
+import $ from 'jquery';
 
 window.jQuery = $;
 window.$ = $;
@@ -17,7 +17,6 @@ class ProjectPage extends Component {
     componentDidMount() {
         this.props.fetchProjectCatalogByUrl(this.props.match.params.id)
         this.props.fetchNextAndPrev(this.props.match.params.id)
-        console.log(this.props.nextProps)
     }
 
     componentDidUpdate(prevProps) {

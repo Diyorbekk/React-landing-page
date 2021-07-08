@@ -19,6 +19,7 @@ import AdminSliderSingleProject from "./components/AdminPanel/Panels/Slider/Admi
 import SliderEdit from "./components/AdminPanel/Panels/Slider/SliderEdit";
 import ProjectCatalogEdit from "./components/AdminPanel/Panels/Projects-list/ProjectListEdit";
 import AdminProjectListSingleProject from "./components/AdminPanel/Panels/Projects-list/CatalogSingleProject";
+import Projects from "./components/sections/Projects";
 
 const App = () => {
     const history = useHistory();
@@ -182,6 +183,7 @@ const App = () => {
                             <ToTop/>
                             <ScrollToTop>
                                 <Route path="/project/:id" component={ProjectPage}/>
+                                <Route path="/project" exact component={Projects}/>
                                 <Route path="/" exact component={Contents}/>
                             </ScrollToTop>
                         </Layout>

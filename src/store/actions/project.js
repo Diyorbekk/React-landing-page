@@ -192,6 +192,9 @@ export function getProjectCategory(getCategoriesReturnType) {
                 }
             )
 
+            if(result.length === 0){
+                result = null
+            }
             dispatch(getProjectCategorySuccess(result))
 
 
@@ -260,10 +263,6 @@ export function fetchNextAndPrev(navigation) {
             let next = null
             let lastElement = projects[projects.length - 1].id;
             let firstElement = projects[0].id;
-
-
-/*            previous = projects[i==0?projects.length-1:i-1];
-            next = projects[i==projects.length-1?0:i+1];*/
 
             for (let i = 0; i < projects.length; i++) {
                 if (projects[i].id === navigation) {
