@@ -28,6 +28,9 @@ class Projects extends Component {
     }
 
     categoryValue = (el) => {
+        this.setState({
+            time: false
+        })
         this.categoryNone(false)
         this.props.getProjectCategory(el.target.id)
         window.$(".sidebar .services ul li").removeClass("active")
@@ -88,14 +91,23 @@ class Projects extends Component {
         this.categoryClick(this.props.category)
     }
 
-    categoryClick = (el) => {
-        this.setState({
-            time: false
-        })
+    categoryClick(el) {
         if (el === null) {
-            return (
-                <div className="empty-category">There are no photos in this category</div>
-            )
+            const timer = setTimeout(() => {
+                this.setState({
+                    time: true
+                })
+            }, 6000);
+            if (this.state.time === false) {
+                return (
+                    <Loader/>
+                )
+            } else {
+                clearTimeout(timer);
+                return (
+                    <div className="empty-category">There are no photos in this category</div>
+                )
+            }
         } else {
             const timer = setTimeout(() => {
                 this.setState({
@@ -188,7 +200,7 @@ class Projects extends Component {
                                 <React.Fragment>
                                     {
                                         this.props.loading || this.props.category === null
-                                            ? this.categoryNone() || this.categoryClick()
+                                            ? this.categoryClick() || this.categoryNone()
                                             : this.props.category.length === 0
                                             ? <Loader/>
                                             : <LightBoxGallery
@@ -220,13 +232,15 @@ class Projects extends Component {
                                                                                     </div>
                                                                                 </GalleryItem>
 
-                                                                                <div
-                                                                                    onClick={() => this.projectLink(category.path)}
-                                                                                    className="service-link">
-                                                                                    <h6>{category.data.categoryName}</h6>
-                                                                                    <h5>{urlImage.projectTitle}</h5>
-                                                                                    <div className="line"/>
-                                                                                    <i className="ti-arrow-right"/>
+                                                                                <div className="position-relative">
+                                                                                    <div
+                                                                                        onClick={() => this.projectLink(category.path)}
+                                                                                        className="service-link">
+                                                                                        <h6 className="two-line-text">{category.data.categoryName}</h6>
+                                                                                        <h5>{urlImage.projectTitle}</h5>
+                                                                                        <div className="line"/>
+                                                                                        <i className="ti-arrow-right"/>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         )

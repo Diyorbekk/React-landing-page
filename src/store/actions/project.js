@@ -1,14 +1,14 @@
 import axios from "../../firebaseAxios/firebaseAxios";
 
 import {
-    FETCH_PROJECTS_SUCCESS,
-    FETCH_PROJECTS_ERROR,
-    FETCH_PROJECTS_START,
-    FETCH_PROJECT_LIST_SUCCESS,
-    FETCH_PROJECT_SINGLE_SUCCESS,
-    FETCH_PROJECT_CATALOG_SUCCESS,
     FETCH_CATALOG_LIST_SUCCESS,
     FETCH_CATALOG_SINGLE_SUCCESS,
+    FETCH_PROJECT_CATALOG_SUCCESS,
+    FETCH_PROJECT_LIST_SUCCESS,
+    FETCH_PROJECT_SINGLE_SUCCESS,
+    FETCH_PROJECTS_ERROR,
+    FETCH_PROJECTS_START,
+    FETCH_PROJECTS_SUCCESS,
     GET_CATALOG_SUCCESS,
     GET_NAVIGATION_SUCCESS,
 } from "./actionTypes";
@@ -185,7 +185,7 @@ export function getProjectCategory(getCategoriesReturnType) {
                         // eslint-disable-next-line
                         if (projectsList2.category == getCategoriesReturnType) {
                             return result.push({
-                                data:projectsList2,
+                                data: projectsList2,
                                 path: project.path
                             })
                         }
@@ -193,10 +193,9 @@ export function getProjectCategory(getCategoriesReturnType) {
                 }
             )
 
-            if(result.length === 0){
+            if (result.length === 0) {
                 result = null
             }
-            console.log(result)
             dispatch(getProjectCategorySuccess(result))
 
 
@@ -270,18 +269,18 @@ export function fetchNextAndPrev(navigation) {
                 if (projects[i].id === navigation) {
 
                     // eslint-disable-next-line
-                    previous = projects[i==0?projects.length-1:i-1].id;
+                    previous = projects[i == 0 ? projects.length - 1 : i - 1].id;
                     // eslint-disable-next-line
-                    next = projects[i==projects.length-1?0:i+1].id;
+                    next = projects[i == projects.length - 1 ? 0 : i + 1].id;
                     if (firstElement === navigation) {
                         previous = null;
                         // eslint-disable-next-line
-                        next = projects[i==projects.length-1?0:i+1].id;
+                        next = projects[i == projects.length - 1 ? 0 : i + 1].id;
                     }
 
                     if (lastElement === navigation) {
                         // eslint-disable-next-line
-                        previous = projects[i==0?projects.length-1:i-1].id;
+                        previous = projects[i == 0 ? projects.length - 1 : i - 1].id;
                         next = null;
                     }
                 }

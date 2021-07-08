@@ -115,13 +115,16 @@ b {
 .service-link {
     position: absolute;
     bottom: 8px;
-    height: 110px;
-    width: 92.5%;
-    left: 15px;
+    height: 125px;
+    width: 100%;
+    left: 0;
     background: linear-gradient(to bottom, transparent 0, rgba(0, 0, 0, .01) 2%, rgba(0, 0, 0, .75) 60%);
     text-align: center;
     cursor: pointer;
 }
+
+
+
 
 
 
