@@ -112,11 +112,74 @@ b {
     color: #b19777;
 }
 
+.service-link {
+    position: absolute;
+    bottom: 8px;
+    height: 110px;
+    width: 92.5%;
+    left: 15px;
+    background: linear-gradient(to bottom, transparent 0, rgba(0, 0, 0, .01) 2%, rgba(0, 0, 0, .75) 60%);
+    text-align: center;
+    cursor: pointer;
+}
+
+
+
+.service-link .line {
+    text-align: center;
+    height: 1px;
+    width: 60px;
+    background-color: rgba(255, 255, 255, 0.2);
+    transition-property: all;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
+    margin: 0 auto 10px;
+}
+
+.service-link:hover .line {
+    width: 90.5%;
+    transition-property: all;
+    transition-duration: 0.8s;
+    transition-timing-function: ease-in-out;
+}
+
+.service-link h6 {
+    position: relative;
+    color: #b19777;
+    font-size: 13px;
+    font-weight: 400;
+    margin-top: 0;
+    margin-bottom: 10px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+}
+
+.service-link i {
+    color: #fff;
+    font-size: 20px;
+}
+
+.service-link:hover i {
+    color: #b19777;
+}
+
+.service-link h5 {
+    position: relative;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 300;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+}
+
 .empty-category {
     color: #b19777;
     font-size: 22px;
     font-weight: 700;
-    margin: 30px 0;
+    margin: 60px 0;
+    text-align: center;
 }
 
 .link-target {
@@ -1624,7 +1687,7 @@ hr {
     position: relative;
     overflow: hidden;
     margin-bottom: 30px;
-    max-height: 380px;
+    height: 380px;
 }
 
 .projects .item:hover img {

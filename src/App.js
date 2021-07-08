@@ -183,7 +183,7 @@ const App = () => {
                             <ToTop/>
                             <ScrollToTop>
                                 <Route path="/project/:id" component={ProjectPage}/>
-                                <Route path="/project" exact component={Projects}/>
+                                <Route path="/services" exact component={Projects}/>
                                 <Route path="/" exact component={Contents}/>
                             </ScrollToTop>
                         </Layout>

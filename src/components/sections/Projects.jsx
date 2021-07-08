@@ -5,6 +5,7 @@ import {getProjectCategory} from "../../store/actions/project";
 import {connect} from "react-redux";
 import {GalleryItem, LightBoxGallery} from "@sekmet/react-magnific-popup";
 import Loader from "../UI/LoaderMinHeight/Loader";
+import {withRouter} from "react-router-dom";
 
 class Projects extends Component {
     state = {
@@ -26,11 +27,11 @@ class Projects extends Component {
         this.props.getProjectCategory(1)
     }
 
-    categoryValue(el) {
+    categoryValue = (el) => {
+        this.categoryNone(false)
         this.props.getProjectCategory(el.target.id)
         window.$(".sidebar .services ul li").removeClass("active")
         window.$('#' + el.target.id).parent().addClass("active")
-        console.log(el.target.id)
 
         if (parseInt(el.target.id) === 2) {
             /*            if(this.props.category === null){
@@ -71,27 +72,31 @@ class Projects extends Component {
         if (parseInt(el.target.id) === 6) {
             this.setState({
                 categoryTitle: "3D Modelling",
-                categoryText: "In 3D computer graphics, 3D modeling is the process of developing a mathematical coordinate-based representation of any surface of an object (inanimate or living) in three dimensions via specialized software.[1]\n" +
+                categoryText: "In 3D computer graphics, 3D modeling is the process of developing a mathematical coordinate-based representation of any surface of an object (inanimate or living) in three dimensions via specialized software.\n" +
                     "\n" +
                     "Three-dimensional (3D) models represent a physical body using a collection of points in 3D space, connected by various geometric entities such as triangles, lines, curved surfaces, etc. Being a collection of data (points and other information), 3D models can be created manually, algorithmically (procedural modeling), or by scanning. Their surfaces may be further defined with texture mapping."
             })
         }
 
-        if(parseInt(el.target.id) === 6) {
+        if (parseInt(el.target.id) === 7) {
             this.setState({
                 categoryTitle: "Decor Plan",
                 categoryText: "A Decor plan, or 3D floorplan, is a virtual model of a building floor plan, depicted from a birds eye view, utilized within the building industry to better convey architectural plans. Usually built to scale, a 3D floor plan must include walls and a floor and typically includes exterior wall fenestrations, windows, and doorways. It does not include a ceiling so as not to obstruct the view. Other common attributes may be added, but are not required, such as cabinets, flooring, bathroom fixtures, paint color, wall tile, and other interior finishes. Furniture may be added to assist in communicating proper home staging and interior design.[1]"
             })
         }
 
-        this.categoryClick(true)
+        this.categoryClick(this.props.category)
     }
 
     categoryClick = (el) => {
         this.setState({
             time: false
         })
-        if (el === true) {
+        if (el === null) {
+            return (
+                <div className="empty-category">There are no photos in this category</div>
+            )
+        } else {
             const timer = setTimeout(() => {
                 this.setState({
                     time: true
@@ -104,32 +109,37 @@ class Projects extends Component {
             } else {
                 clearTimeout(timer);
                 return (
-                    <div>No Catalog</div>
+                    <div className="empty-category">There are no photos in this category</div>
                 )
             }
-
         }
+
+    }
+
+    categoryNone = (el) => {
         if (el === false) {
             return false
+        } else {
+            const timer = setTimeout(() => {
+                this.setState({
+                    time: true
+                })
+            }, 6000);
+            if (this.state.time === false) {
+                return (
+                    <Loader/>
+                )
+            } else {
+                clearTimeout(timer);
+                return (
+                    <div className="empty-category">There are no photos in this category</div>
+                )
+            }
         }
     }
 
-    categoryNone = () => {
-        const timer = setTimeout(() => {
-            this.setState({
-                time: true
-            })
-        }, 6000);
-        if (this.state.time === false) {
-            return (
-                <Loader/>
-            )
-        } else {
-            clearTimeout(timer);
-            return (
-                <div className="empty-category">There are no photos in this category</div>
-            )
-        }
+    projectLink(el) {
+        this.props.history.push('/project/' + el);
     }
 
     render() {
@@ -190,7 +200,7 @@ class Projects extends Component {
                                                         return (
                                                             <React.Fragment key={index}>
                                                                 {
-                                                                    category.categoryData.map((urlImage, number) => {
+                                                                    category.data.categoryData.map((urlImage, number) => {
                                                                         return (
                                                                             <div className="col-md-6" key={number}>
                                                                                 <GalleryItem
@@ -209,6 +219,15 @@ class Projects extends Component {
                                                                                         </div>
                                                                                     </div>
                                                                                 </GalleryItem>
+
+                                                                                <div
+                                                                                    onClick={() => this.projectLink(category.path)}
+                                                                                    className="service-link">
+                                                                                    <h6>{category.data.categoryName}</h6>
+                                                                                    <h5>{urlImage.projectTitle}</h5>
+                                                                                    <div className="line"/>
+                                                                                    <i className="ti-arrow-right"/>
+                                                                                </div>
                                                                             </div>
                                                                         )
                                                                     })
@@ -233,6 +252,7 @@ class Projects extends Component {
                                             </div>
                                             <ul>
                                                 {
+                                                    // eslint-disable-next-line
                                                     this.state.categoryOptions.map((options, index) => {
                                                         if (index === 0) {
                                                             return (
@@ -283,4 +303,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Projects);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Projects));

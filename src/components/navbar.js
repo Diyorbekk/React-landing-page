@@ -45,8 +45,9 @@ function NavigationBar() {
             window.$('.nav-color').each(function () {
                 let el = window.$(this);
                 let effect = el.data('active');
+                window.$(this).removeClass('active');
                 // eslint-disable-next-line
-                if (location.pathname.indexOf(effect) === 0) {
+                if (location.pathname.indexOf(effect) == 0) {
                     window.$(this).addClass('active');
                 }
             });

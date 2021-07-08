@@ -184,9 +184,10 @@ export function getProjectCategory(getCategoriesReturnType) {
                     return project.data.map(projectsList2 => {
                         // eslint-disable-next-line
                         if (projectsList2.category == getCategoriesReturnType) {
-                            return result.push(
-                                projectsList2
-                            )
+                            return result.push({
+                                data:projectsList2,
+                                path: project.path
+                            })
                         }
                     })
                 }
@@ -195,6 +196,7 @@ export function getProjectCategory(getCategoriesReturnType) {
             if(result.length === 0){
                 result = null
             }
+            console.log(result)
             dispatch(getProjectCategorySuccess(result))
 
 
