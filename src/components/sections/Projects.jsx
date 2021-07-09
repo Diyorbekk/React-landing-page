@@ -7,6 +7,7 @@ import {GalleryItem, LightBoxGallery} from "@sekmet/react-magnific-popup";
 import Loader from "../UI/LoaderMinHeight/Loader";
 import {withRouter} from "react-router-dom";
 
+let timeOut = false
 class Projects extends Component {
     state = {
         categoryTitle: "Architecture",
@@ -25,10 +26,35 @@ class Projects extends Component {
 
     componentDidMount() {
         this.props.getProjectCategory(1)
+        if (this.props.category === null) {
+            this.setState({
+                time: true
+            })
+        } else {
+            this.setState({
+                time: false
+            })
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.category !== prevProps.category) {
+            if (this.props.category === null) {
+                this.setState({
+                    time: true
+                })
+            } else {
+                this.setState({
+                    time: false
+                })
+            }
+
+
+        }
     }
 
     categoryValue(el) {
-        this.categoryNone(false)
+        timeOut = false
         this.setState({
             time: false
         })
@@ -78,52 +104,43 @@ class Projects extends Component {
                 categoryText: "A Decor plan, or 3D floorplan, is a virtual model of a building floor plan, depicted from a birds eye view, utilized within the building industry to better convey architectural plans. Usually built to scale, a 3D floor plan must include walls and a floor and typically includes exterior wall fenestrations, windows, and doorways. It does not include a ceiling so as not to obstruct the view. Other common attributes may be added, but are not required, such as cabinets, flooring, bathroom fixtures, paint color, wall tile, and other interior finishes. Furniture may be added to assist in communicating proper home staging and interior design.[1]"
             })
         }
-
-        this.categoryClick(true)
     }
 
     categoryClick = (el) => {
         if (el === true) {
-            const timer = setTimeout(() => {
-                console.log("false")
-                this.setState({
-                    time: true
-                })
-            }, 6000);
             if (this.state.time === false) {
-                clearTimeout(timer);
-                return (
-                    <div className="empty-category">There are no photos in this category</div>
-                )
-            }
-        } else {
-            return false
-        }
-
-    }
-
-    categoryNone(e) {
-        if (e === false) {
-            return false
-        } else {
-            const timer = setTimeout(() => {
-                this.setState({
-                    time: true
-                })
-            }, 6000);
-            if (this.state.time === false) {
-                return (
-                    <Loader/>
-                )
+                setTimeout(()=> {
+                    return timeOut = true
+                }, 2000);
+                if(timeOut === true) {
+                    return (
+                        <div className="empty-category">There are no photos in this category</div>
+                    )
+                } else {
+                    return (
+                        <Loader/>
+                    )
+                }
             } else {
-                clearTimeout(timer);
-                return (
-                    <div className="empty-category">There are no photos in this category</div>
-                )
-            }
-        }
-    }
+                setTimeout(()=> {
+                    return timeOut = true
+                }, 2000);
+                if(timeOut === true) {
+                    this.setState({
+                        time: false
+                    })
+                } else {
+                    return (
+                        <div className="empty-category">There are no photos in this category</div>
+                    )
+                }
 
+            }
+        } else {
+            return false
+        }
+
+    }
     projectLink(el) {
         this.props.history.push('/project/' + el);
     }
@@ -174,7 +191,7 @@ class Projects extends Component {
                                 <React.Fragment>
                                     {
                                         this.props.loading || this.props.category === null
-                                            ? this.categoryClick(false) || this.categoryNone(true)
+                                            ? this.categoryClick(true)
                                             : this.props.category.length === 0
                                             ? <Loader/>
                                             : <LightBoxGallery
