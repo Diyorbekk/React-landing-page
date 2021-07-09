@@ -25,7 +25,7 @@ class Projects extends Component {
     }
 
     componentDidMount() {
-        this.props.getProjectCategory(1)
+        this.props.getProjectCategory(2)
         if (this.props.category === null) {
             this.setState({
                 time: true

@@ -41,7 +41,7 @@ const PromoVideos = () => {
                         <div className="col-md-6">
                             <div className="vid-area">
                                 <div className="vid-icon">
-                                    <ModalVideo channel='youtube' autoplay isOpen={isOpen} videoId="L61p2uyiMSo"
+                                    <ModalVideo channel='custom' autoplay isOpen={isOpen} url="https://player.vimeo.com/video/537816640?title=0&portrait=0&byline=0&autoplay=1"
                                                 onClose={() => setOpen(false)}/>
 
                                     <p className="play-button" onClick={() => setOpen(true)}>
@@ -59,7 +59,7 @@ const PromoVideos = () => {
 
 
                                 </div>
-                                <div className="cont mt-15 mb-30">
+                                <div className="cont mt-25 mb-30">
                                     <h5>View promo video</h5>
                                 </div>
                             </div>
