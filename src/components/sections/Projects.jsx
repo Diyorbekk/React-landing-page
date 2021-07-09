@@ -27,25 +27,16 @@ class Projects extends Component {
         this.props.getProjectCategory(1)
     }
 
-    categoryValue = (el) => {
+    categoryValue(el) {
+        this.categoryNone(false)
         this.setState({
             time: false
         })
-        this.categoryNone(false)
         this.props.getProjectCategory(el.target.id)
         window.$(".sidebar .services ul li").removeClass("active")
         window.$('#' + el.target.id).parent().addClass("active")
 
         if (parseInt(el.target.id) === 2) {
-            /*            if(this.props.category === null){
-                            this.setState({
-                                categoryTitle: "Architecture",
-                                categoryText: "Architecture (Latin architectura, from the Greek ἀρχιτέκτων arkhitekton \"architect\", from ἀρχι- \"chief\" and τέκτων \"creator\") is both the process and the product of planning, designing, and constructing buildings or other structures. Architectural works, in the material form of buildings, are often perceived as cultural symbols and as works of art. Historical civilizations are often identified with their surviving architectural achievements."
-                            })
-                        } else {
-
-                        }*/
-
             this.setState({
                 categoryTitle: "Architecture",
                 categoryText: "Architecture (Latin architectura, from the Greek ἀρχιτέκτων arkhitekton \"architect\", from ἀρχι- \"chief\" and τέκτων \"creator\") is both the process and the product of planning, designing, and constructing buildings or other structures. Architectural works, in the material form of buildings, are often perceived as cultural symbols and as works of art. Historical civilizations are often identified with their surviving architectural achievements."
@@ -88,48 +79,31 @@ class Projects extends Component {
             })
         }
 
-        this.categoryClick(this.props.category)
+        this.categoryClick(true)
     }
 
-    categoryClick(el) {
-        if (el === null) {
+    categoryClick = (el) => {
+        if (el === true) {
             const timer = setTimeout(() => {
+                console.log("false")
                 this.setState({
                     time: true
                 })
             }, 6000);
             if (this.state.time === false) {
-                return (
-                    <Loader/>
-                )
-            } else {
                 clearTimeout(timer);
                 return (
                     <div className="empty-category">There are no photos in this category</div>
                 )
             }
         } else {
-            const timer = setTimeout(() => {
-                this.setState({
-                    time: true
-                })
-            }, 6000);
-            if (this.state.time === false) {
-                return (
-                    <Loader/>
-                )
-            } else {
-                clearTimeout(timer);
-                return (
-                    <div className="empty-category">There are no photos in this category</div>
-                )
-            }
+            return false
         }
 
     }
 
-    categoryNone = (el) => {
-        if (el === false) {
+    categoryNone(e) {
+        if (e === false) {
             return false
         } else {
             const timer = setTimeout(() => {
@@ -200,7 +174,7 @@ class Projects extends Component {
                                 <React.Fragment>
                                     {
                                         this.props.loading || this.props.category === null
-                                            ? this.categoryClick() || this.categoryNone()
+                                            ? this.categoryClick(false) || this.categoryNone(true)
                                             : this.props.category.length === 0
                                             ? <Loader/>
                                             : <LightBoxGallery
