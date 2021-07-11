@@ -32,7 +32,7 @@ function loadScript(src) {
         s.src = src;
         s.onload = resolve;
         s.onerror = reject;
-        document.body.appendChild(s);
+        document.header.appendChild(s);
     });
 }
 export default loadScript

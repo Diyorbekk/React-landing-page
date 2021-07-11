@@ -1,6 +1,9 @@
 import {
+    CREATE_CLIENTS,
+    CREATE_NEWS,
     CREATE_PROJECT,
-    CREATE_PROJECT_CATALOG,
+    CREATE_PROJECT_CATALOG, RESET_CLIENTS,
+    RESET_NEWS,
     RESET_PROJECT_CREATION,
     RESET_PROJECT_CREATION_CATALOG,
 } from "./actionTypes";
@@ -20,6 +23,20 @@ export function createProjectCatalog(item) {
     }
 }
 
+export function createNews(item) {
+    return {
+        type: CREATE_NEWS,
+        item
+    }
+}
+
+export function createClientsSay(item) {
+    return {
+        type: CREATE_CLIENTS,
+        item
+    }
+}
+
 export function resetProjectCreation() {
     return {
         type: RESET_PROJECT_CREATION
@@ -28,6 +45,17 @@ export function resetProjectCreation() {
 export function resetProjectCreationCatalog() {
     return {
         type: RESET_PROJECT_CREATION_CATALOG
+    }
+}
+
+export function resetNews() {
+    return {
+        type: RESET_NEWS
+    }
+}
+export function resetClientsSay() {
+    return {
+        type: RESET_CLIENTS
     }
 }
 
@@ -42,5 +70,19 @@ export function finishCreateProject() {
     return async (dispatch, getState) => {
         await axios.post('/projects.json', getState().create.project)
         dispatch(resetProjectCreation())
+    }
+}
+
+export function finishCreateNews() {
+    return async (dispatch, getState) => {
+        await axios.post('/news.json', getState().create.news)
+        dispatch(resetNews())
+    }
+}
+
+export function finishCreateClientsSay() {
+    return async (dispatch, getState) => {
+        await axios.post('/news.json', getState().create.clients)
+        dispatch(resetClientsSay())
     }
 }

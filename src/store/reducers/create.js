@@ -1,13 +1,17 @@
 import {
+    CREATE_CLIENTS,
+    CREATE_NEWS,
     CREATE_PROJECT,
-    CREATE_PROJECT_CATALOG,
+    CREATE_PROJECT_CATALOG, RESET_CLIENTS, RESET_NEWS,
     RESET_PROJECT_CREATION,
     RESET_PROJECT_CREATION_CATALOG
 } from "../actions/actionTypes";
 
 const initialState = {
     project: [],
-    category: []
+    category: [],
+    news: [],
+    clients: []
 }
 
 export default function createReducer(state= initialState,action) {
@@ -31,6 +35,26 @@ export default function createReducer(state= initialState,action) {
             return {
                 ...state,
                 category: []
+            }
+        case CREATE_NEWS:
+            return{
+                ...state,
+                news: [...state.news, action.item]
+            }
+        case RESET_NEWS:
+            return {
+                ...state,
+                news: []
+            }
+        case CREATE_CLIENTS:
+            return{
+                ...state,
+                clients: [...state.clients, action.item]
+            }
+        case RESET_CLIENTS:
+            return {
+                ...state,
+                clients: []
             }
         default:
             return state

@@ -20,6 +20,7 @@ import SliderEdit from "./components/AdminPanel/Panels/Slider/SliderEdit";
 import ProjectCatalogEdit from "./components/AdminPanel/Panels/Projects-list/ProjectListEdit";
 import AdminProjectListSingleProject from "./components/AdminPanel/Panels/Projects-list/CatalogSingleProject";
 import Projects from "./components/sections/Projects";
+import ErrorBoundary from "./ErrorBoundary/ErrorBoundary";
 
 const App = () => {
     const history = useHistory();
@@ -39,6 +40,12 @@ const App = () => {
                 window.$(this).css("background-image", "url(" + window.$(this).data("background") + ")");
             }
         })
+        let banner = window.$(".owl-carousel");
+
+        if(typeof banner.data('owlCarousel') != 'undefined') {
+            banner.data('owlCarousel').destroy();
+            banner.removeClass('owl-carousel');
+        }
     })
 
 
@@ -146,7 +153,7 @@ const App = () => {
             {user ?
                 (
                     <Switch>
-                        <React.Fragment>
+                        <ErrorBoundary>
                             <ToTop/>
                             <ScrollToTop>
                                 <Panel handleLogOut={handleLogOut}>
@@ -160,7 +167,7 @@ const App = () => {
                                 <Route path="/projects-catalog/:id" component={AdminProjectListSingleProject}/>
                             </ScrollToTop>
 
-                        </React.Fragment>
+                        </ErrorBoundary>
                         <PreLoader/>
                     </Switch>
                 )
