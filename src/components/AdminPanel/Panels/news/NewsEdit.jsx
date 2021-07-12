@@ -1,19 +1,17 @@
 import React, {Component} from "react";
+import {createNews, finishCreateNews} from "../../../../store/actions/create";
+import CompletedCheck from "../../../UI/completedCheck/completedCheck";
 import {createControl, validate, validateForm} from "../../../UI/form/formFramework";
 import {storage} from "../../../../util/firebase";
+import {connect} from "react-redux";
 import Auxiliary from "../../../../Auxiliary/Auxiliary";
 import Input from "../../../UI/InputAdmin/Input";
-import TextArea from "../../../UI/TextAreaAdmin/TextArea";
+import Select from "../../../UI/Select/Select";
 import InputFile from "../../../UI/InputFileAdmin/InputFile";
 import Button from "../../../UI/Button/Button";
-import {createProject, finishCreateProject} from "../../../../store/actions/create";
-import {connect} from "react-redux";
-import OwlCarousel from "react-owl-carousel2";
-import CompletedCheck from "../../../UI/completedCheck/completedCheck";
-import $ from 'jquery';
-window.jQuery = $;
-window.$ = $;
-
+import TextArea from "../../../UI/TextAreaAdmin/TextArea";
+import ContentWrapper from "../../../content-wrapper";
+import Banner from "../../../../assets/img/banner.jpg";
 
 function createFormControls() {
     return {
@@ -27,8 +25,7 @@ function createFormControls() {
 let refTextarea = "textarea"
 let valueInput = ""
 
-class SliderEdit extends Component {
-
+class NewsEdit extends Component {
     state = {
         textTitle: '',
         editor: "",
@@ -40,6 +37,9 @@ class SliderEdit extends Component {
         image: null,
         staticImageSize: null,
         errorImage: null,
+        category: 1,
+        categoryError: null,
+        categoryText: "",
         progress: 0,
         imageAdding: false,
         isFormValid: false,
@@ -57,7 +57,7 @@ class SliderEdit extends Component {
         });
     }
 
-    handleChange = e => {
+    handleNewsImageChange = e => {
         let fileUrl = e.target.files[0];
         let file = e.target.files;
         if (file.length === 0) {
@@ -73,7 +73,7 @@ class SliderEdit extends Component {
             for (let i = 0; i < file.length; i++) {
                 let fileName = file[i].name
                 let fileNameSlice = fileName.slice(0, fileName.indexOf('.'))
-                if(fileNameSlice.length < 4){
+                if (fileNameSlice.length < 4) {
                     window.$(document).ready(function () {
                         window.$('.__lk-fileInput span').removeClass('right');
                         window.$('.__lk-fileInput .multiple-file').addClass('error');
@@ -108,7 +108,7 @@ class SliderEdit extends Component {
         }
     };
 
-    handleUpload = () => {
+    handleNewsImageUpload = () => {
         this.setState({
             image: null,
             staticImage: "",
@@ -134,7 +134,7 @@ class SliderEdit extends Component {
 
         let filenames = nameList + ext
 
-        const uploadTask = storage.ref(`images/${filenames}`).put(this.state.image);
+        const uploadTask = storage.ref(`images/news/${filenames}`).put(this.state.image);
         uploadTask.on(
             "state_changed",
             snapshot => {
@@ -150,7 +150,7 @@ class SliderEdit extends Component {
             },
             () => {
                 storage
-                    .ref("images")
+                    .ref("images/news")
                     .child(filenames)
                     .getDownloadURL()
                     .then(url => {
@@ -170,7 +170,7 @@ class SliderEdit extends Component {
         event.preventDefault()
     };
 
-    createProjectHandler = event => {
+    createNewsHandler = event => {
         event.preventDefault();
 
         if (this.state.url.length === 0) {
@@ -192,12 +192,9 @@ class SliderEdit extends Component {
                 })
             } else {
                 let currentDateSlider = new Date();
-                let datetimeSlider = currentDateSlider.getDate() + "/"
-                    + (currentDateSlider.getMonth() + 1) + "/"
-                    + currentDateSlider.getFullYear() + " "
-                    + currentDateSlider.getHours() + ":"
-                    + currentDateSlider.getMinutes() + ":"
-                    + currentDateSlider.getSeconds();
+                let datetimeSlider = currentDateSlider.getDate() + "."
+                    + (currentDateSlider.getMonth() + 1) + "."
+                    + currentDateSlider.getFullYear()
 
                 const {projectTitle} = this.state.formControls;
 
@@ -206,10 +203,10 @@ class SliderEdit extends Component {
                     projectText: this.state.editor,
                     projectImgUrl: this.state.url,
                     createData: datetimeSlider,
-                    id: this.props.projectCreate.length + 1,
+                    id: this.props.newsCreate.length + 1,
                 };
 
-                this.props.createProject(projectItem)
+                this.props.createNews(projectItem)
 
                 this.setState({
                     project: [],
@@ -225,6 +222,9 @@ class SliderEdit extends Component {
                     imageAdding: false,
                     lookChange: false,
                     lookCheck: false,
+                    category: 1,
+                    categoryError: null,
+                    categoryText: "",
                     textTitle: '',
                     editorText: "",
                     staticImageName: "Select file",
@@ -232,7 +232,7 @@ class SliderEdit extends Component {
                     formControls: createFormControls()
                 })
 
-                this.props.finishCreateProject()
+                this.props.finishCreateNews()
                 document.getElementById("textBox").innerHTML = ''
             }
 
@@ -241,11 +241,11 @@ class SliderEdit extends Component {
 
     };
 
-    changeHandler = (value, controlName) => {
+    inputHandler = (value, controlName) => {
         const formControls = {...this.state.formControls};
         const control = {...formControls[controlName]};
         // eslint-disable-next-line
-        if (this.state.textTitle.length == valueInput.length){
+        if (this.state.textTitle.length == valueInput.length) {
             this.setState({
                 lookChange: false,
                 lookCheck: true,
@@ -265,9 +265,9 @@ class SliderEdit extends Component {
         })
     };
 
-    editorChange(event) {
+    editorInputChange(event) {
         event.preventDefault();
-        document.getElementById("textBox").addEventListener("input", function(e) {
+        document.getElementById("textBox").addEventListener("input", function (e) {
             console.log(refTextarea.innerHTML.trim());
         }, false);
         // eslint-disable-next-line
@@ -282,7 +282,7 @@ class SliderEdit extends Component {
         })
     }
 
-    saveChanges = () => {
+    saveNewsChanges = () => {
         if (this.state.url.length === 0) {
             this.setState({
                 staticImage: "",
@@ -301,19 +301,39 @@ class SliderEdit extends Component {
                     editorError: "Text 6 ta harf dan kam bo'lish mumkin emas",
                 })
             } else {
-                this.setState({
-                    textTitle: valueInput,
-                    lookChange: true,
-                    editorText: refTextarea.innerHTML.trim()
-                })
+
+                if (this.state.category === 1) {
+                    this.setState({
+                        categoryError: "Kategoriyani talash kerak",
+                    })
+                    let element = document.querySelector("#error-select");
+                    element.scrollIntoView({behavior: 'smooth', block: 'end'});
+                } else {
+                    this.setState({
+                        textTitle: valueInput,
+                        lookChange: true,
+                        editorText: refTextarea.innerHTML.trim()
+                    })
+                }
+
             }
         }
 
     }
 
-    renderProjects(e) {
+    renderNews(e) {
+        window.$(document).ready(function () {
+            window.$(this).attr("data-background")
+            let pageSection = window.$(".bg-img, section");
+            pageSection.each(function () {
+                if (window.$(this).attr("data-background")) {
+                    window.$(this).css("background-image", "url(" + window.$(this).data("background") + ")");
+                }
+            })
+        })
+
         if (e === false) {
-            if(this.state.lookCheck) {
+            if (this.state.lookCheck) {
                 return (
                     <div className="col-12">
                         Please check save 🔁
@@ -328,54 +348,24 @@ class SliderEdit extends Component {
             }
         } else {
 
-
-            const options = {
-                items: 1,
-                loop: true,
-                dots: false,
-                margin: 0,
-                autoplay: true,
-                smartSpeed: 500,
-                nav: true,
-                animateOut: 'fadeOut',
-                navText: ['<i class="ti-angle-left" aria-hidden="true"></i>', '<i class="ti-angle-right" aria-hidden="true"></i>']
-            };
-            const events = {
-                onChanged: function (event) {
-                    let item = event.item.index - 2;     // Position of the current item
-                    window.$('h4').removeClass('animated fadeInUp');
-                    window.$('h1').removeClass('animated fadeInUp');
-                    window.$('p').removeClass('animated fadeInUp');
-                    window.$('.butn-light').removeClass('animated fadeInUp');
-                    window.$('.owl-item').not('.cloned').eq(item).find('h4').addClass('animated fadeInUp');
-                    window.$('.owl-item').not('.cloned').eq(item).find('h1').addClass('animated fadeInUp');
-                    window.$('.owl-item').not('.cloned').eq(item).find('p').addClass('animated fadeInUp');
-                    window.$('.owl-item').not('.cloned').eq(item).find('.butn-light').addClass('animated fadeInUp');
-                }
-            };
             return this.state.url.map((projects, index) => {
                 return (
-                    <div className="col-12 slider-fade" key={index}>
-                        <OwlCarousel clasname="owl-carousel owl-theme" options={options} events={events}>
-                            <div className="text-left item bg-img" data-overlay-dark="3" key={index}
-                                 style={{backgroundImage: `url(${projects})`}}>
-                                <div className="v-bottom caption">
-                                    <div className="container">
-                                        <div className="row">
-                                            <div className="col-md-7">
-                                                <div className="o-hidden">
-                                                    <h1>{this.state.textTitle}</h1>
-                                                    <hr/>
-                                                    <p className="text-white"
-                                                       dangerouslySetInnerHTML={{__html: this.state.editorText}}/>
-                                                </div>
-                                            </div>
-                                        </div>
+                    <ContentWrapper>
+                        <div className="banner-header banner-img valign bg-img bg-fixed"
+                             data-overlay-light="3"
+                             data-background={Banner} key={index}/>
+                        <div className="pb-90">
+                            <div className="container">
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <img src={projects} className="mb-30" alt={projects}/>
+                                        <h2 className="section-title2">{this.state.textTitle}</h2>
+                                        <p dangerouslySetInnerHTML={{__html: this.state.editorText}}/>
                                     </div>
                                 </div>
                             </div>
-                        </OwlCarousel>
-                    </div>
+                        </div>
+                    </ContentWrapper>
                 )
             })
 
@@ -396,7 +386,7 @@ class SliderEdit extends Component {
                             shouldValidate={!!control.validation}
                             touched={control.touched}
                             errorMessage={control.errorMessage}
-                            onChange={event => this.changeHandler(event.target.value, controlName)}
+                            onChange={event => this.inputHandler(event.target.value, controlName)}
                         />
 
                     }
@@ -405,11 +395,45 @@ class SliderEdit extends Component {
         })
     }
 
+    selectChangeHandler = event => {
+        let index = event.nativeEvent.target.selectedIndex;
+        let category = event.target.value
+
+        this.setState({
+            category: category,
+            categoryText: event.nativeEvent.target[index].text
+        })
+        // eslint-disable-next-line
+        if (category == event.target.value) {
+            this.setState({
+                lookCheck: true,
+            })
+        }
+
+    };
+
     render() {
+        const select = <Select
+            label="Category"
+            placeholder="Please select category"
+            value={this.state.category}
+            onChange={this.selectChangeHandler}
+            errorMessage={this.state.categoryError}
+            options={[
+                {text: "Please select category", value: 1},
+                {text: "Architecture", value: 2},
+                {text: "Interior Design", value: 3},
+                {text: "Urban Design", value: 4},
+                {text: "Planning", value: 5},
+                {text: "3D Modelling", value: 6},
+                {text: "Decor Plan", value: 7}
+            ]}
+        />;
+
         return (
             <section className="mt-5 edit container">
                 {
-                    this.props.projectCreate.length === 0
+                    this.props.newsCreate.length === 0
                         ? null
                         : <CompletedCheck/>
                 }
@@ -417,15 +441,15 @@ class SliderEdit extends Component {
                     <div className="col-12">
                         <br/>
                         {
-                            this.state.url.length === 0 ?
-                                <React.Fragment>
+                            this.state.url.length === 0
+                                ? <React.Fragment>
                                     <InputFile
-                                        legend="Slide image"
+                                        legend="News image"
                                         file={this.state.staticImage}
                                         label={this.state.staticImageName}
                                         size={this.state.staticImageSize}
                                         errorMessage={this.state.errorImage}
-                                        onChange={this.handleChange}
+                                        onChange={this.handleNewsImageChange}
                                     />
                                     <br/>
                                     <div className="progress">
@@ -434,38 +458,40 @@ class SliderEdit extends Component {
                                              aria-valuemin="0"
                                              aria-valuemax="100"
                                              style={{width: this.state.progress + "%"}}
-                                        >{this.state.progress} %</div>
+                                        >{this.state.progress} %
+                                        </div>
 
                                     </div>
                                     <br/>
                                     <Button
                                         type="primary"
-                                        onClick={this.handleUpload}
+                                        onClick={this.handleNewsImageUpload}
                                         disabled={!this.state.image}
                                     >
                                         Image upload
                                     </Button>
                                 </React.Fragment>
-                                : <div className="row">{this.renderProjects(this.state.lookChange)} </div>
+                                : <div className="row">{this.renderNews(this.state.lookChange)}</div>
                         }
 
                         <br/>
                         <br/>
                         {
                             <React.Fragment>
+                                {select}
                                 {this.renderInput()}
                                 <TextArea
                                     label="Create Text"
                                     inputRef={el => refTextarea = el}
-                                    onInput={(event) => this.editorChange(event)}
-                                    onChange={(event) => this.editorChange(event)}
+                                    onInput={(event) => this.editorInputChange(event)}
+                                    onChange={(event) => this.editorInputChange(event)}
                                     errorMessage={this.state.editorError}
                                 />
 
                                 <Button
                                     type="success"
                                     className="btn"
-                                    onClick={this.saveChanges}
+                                    onClick={this.saveNewsChanges}
                                     disabled={!this.state.isFormValid || !this.state.imageAdding}
                                     hidden={this.state.lookChange}
                                 >
@@ -474,7 +500,7 @@ class SliderEdit extends Component {
                                 <Button
                                     type="success"
                                     className="btn"
-                                    onClick={this.createProjectHandler}
+                                    onClick={this.createNewsHandler}
                                     disabled={!this.state.lookChange}
                                     hidden={!this.state.lookChange}
                                 >
@@ -493,16 +519,16 @@ class SliderEdit extends Component {
 
 function mapStateToProps(state) {
     return {
-        projectCreate: state.create.project,
+        newsCreate: state.create.news,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        createProject: item => dispatch(createProject(item)),
-        finishCreateProject: () => dispatch(finishCreateProject()),
+        createNews: item => dispatch(createNews(item)),
+        finishCreateNews: () => dispatch(finishCreateNews()),
 
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SliderEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(NewsEdit);

@@ -80,8 +80,6 @@ class ProjectListEdit extends Component {
         });
     }
 
-
-
     handleChangeCatalog = e => {
         let fileUrl = e.target.files[0];
         let file = e.target.files;
@@ -117,7 +115,7 @@ class ProjectListEdit extends Component {
                         image: null,
                         staticImageName: "Select file",
                         staticImageSize: null,
-                        errorImage: file[i].name + " - Fayl nomi 4 ta harf dan kam yoki bosh nomi son bo'lish mumkun emas",
+                        errorImage: file[i].name + " - Fayl nomi 4 ta harf dan kam yoki nomi son bo'lish mumkun emas",
                         imageAdding: false,
                         urlWatch: [],
                     })

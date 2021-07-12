@@ -17,8 +17,7 @@ class Header extends Component {
     render() {
         const options = {
             items: 1,
-            loop: false,
-            rewind: true,
+            loop: true,
             dots: false,
             margin: 0,
             autoplay: true,
@@ -28,8 +27,15 @@ class Header extends Component {
             navText: ['<i class="ti-angle-left" aria-hidden="true"></i>', '<i class="ti-angle-right" aria-hidden="true"></i>']
         };
         const events = {
-            onChanged: function () {
+            onChanged: function (event) {
                 window.$(document).ready(function () {
+                    var item = event.item.index - 2;
+                    window.$('h4').removeClass('animated fadeInUp');
+                    window.$('h1').removeClass('animated fadeInUp');
+                    window.$('p').removeClass('animated fadeInUp');
+                    window.$('p').removeClass('animated fadeInUp');
+                    window.$('.butn-light').removeClass('animated fadeInUp');
+
                     let pageSection = window.$(".bg-img, section");
                     pageSection.each(function () {
                         if (window.$(this).attr("data-background")) {
@@ -37,16 +43,23 @@ class Header extends Component {
                         }
                     });
                     let owlItem = window.$('.owl-item')
-                    let owlItemActive = window.$('.owl-item.active')
-                    let owlItemClone = window.$('.owl-item.cloned')
-                    if (owlItem.hasClass("active") || owlItemClone.hasClass("active")) {
+/*                    let owlItemActive = window.$('.owl-item.active')
+                    let owlItemClone = window.$('.owl-item.cloned')*/
+
+                    window.$(owlItem).not('.cloned').eq(item).removeClass('animated owl-animated-out fadeOut');
+                    window.$(owlItem).not('.cloned').eq(item).find('h4').addClass('animated fadeInUp');
+                    window.$(owlItem).not('.cloned').eq(item).find('h1').addClass('animated fadeInUp');
+                    window.$(owlItem).not('.cloned').eq(item).find('p').addClass('animated fadeInUp');
+                    window.$(owlItem).not('.cloned').eq(item).find('.butn-light').addClass('animated fadeInUp');
+/*                    if (owlItem.hasClass("active") || owlItemClone.hasClass("active")) {
                         window.$(owlItemActive).not('.cloned').find('h1').addClass('animated fadeInUp');
                         window.$(owlItemActive).not('.cloned').find('p').addClass('animated fadeInUp');
                         setTimeout(function () {
                             window.$(owlItemActive).not('.cloned').find('h1').removeClass('animated fadeInUp')
                             window.$(owlItemActive).not('.cloned').find('p').removeClass('animated fadeInUp')
+                            window.$(owlItemActive).removeClass('animated owl-animated-out fadeOut')
                         }, 2000);
-                    }
+                    }*/
                 })
 
             }

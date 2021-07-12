@@ -16,7 +16,7 @@ class Services extends Component {
                     <div className="row">
                         <div className="col-md-4">
                             <div className="item">
-                                <span to="architecture.html">
+                                <span>
                                     <img src={icon_1} alt="icons"/>
                                     <h5>Architecture</h5>
                                     <div className="line"/>
@@ -28,7 +28,7 @@ class Services extends Component {
                         </div>
                         <div className="col-md-4">
                             <div className="item">
-                                <span to="interior-design.html">
+                                <span>
                                     <img src={icon_2} alt="icons"/>
                                     <h5>Interior Design</h5>
                                     <div className="line"/>
@@ -40,7 +40,7 @@ class Services extends Component {
                         </div>
                         <div className="col-md-4">
                             <div className="item">
-                                <span to="urban-design.html">
+                                <span>
                                     <img src={icon_3} alt="icons"/>
                                     <h5>Urban Design</h5>
                                     <div className="line"/>

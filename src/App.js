@@ -12,13 +12,20 @@ import {firebase} from "./util/firebase";
 import Auxiliary from "./Auxiliary/Auxiliary";
 import Login from "./components/sections/Login";
 import Panel from "./components/AdminPanel/AdminPanelHome"
+// Admin Panel Slider
 import AdminEditorsList from "./components/AdminPanel/Panels/Slider/SliderPanel";
-import ProjectEditorsPanel from "./components/AdminPanel/Panels/Projects-list/ProjectListPanel";
-import PreLoader from "./components/preLoader";
 import AdminSliderSingleProject from "./components/AdminPanel/Panels/Slider/AdminSliderSingleProject";
 import SliderEdit from "./components/AdminPanel/Panels/Slider/SliderEdit";
+// Admin Panel Project Catalog
+import ProjectEditorsPanel from "./components/AdminPanel/Panels/Projects-list/ProjectListPanel";
 import ProjectCatalogEdit from "./components/AdminPanel/Panels/Projects-list/ProjectListEdit";
 import AdminProjectListSingleProject from "./components/AdminPanel/Panels/Projects-list/CatalogSingleProject";
+// Admin Panel News
+import NewsPanel from "./components/AdminPanel/Panels/news/NewsPanel";
+import NewsEdit from "./components/AdminPanel/Panels/news/NewsEdit";
+
+//
+import PreLoader from "./components/preLoader";
 import Projects from "./components/sections/Projects";
 import ErrorBoundary from "./ErrorBoundary/ErrorBoundary";
 
@@ -159,7 +166,9 @@ const App = () => {
                                 <Panel handleLogOut={handleLogOut}>
                                     <Route exact path="/slider-project" component={AdminEditorsList}/>
                                     <Route exact path="/projects-catalog" component={ProjectEditorsPanel}/>
+                                    <Route exact path="/news" component={NewsPanel}/>
                                     <Route path="/project-catalog-add" component={ProjectCatalogEdit}/>
+                                    <Route path="/news-add" component={NewsEdit}/>
                                     <Route path="/slider-add" component={SliderEdit}/>
                                 </Panel>
 

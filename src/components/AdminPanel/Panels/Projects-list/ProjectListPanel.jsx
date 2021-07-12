@@ -67,7 +67,7 @@ class ProjectListPanel extends Component {
             <div>
 
 
-                <h1>Projects Catalog</h1>
+                <h1>Catalog Projects</h1>
                 {
                     this.props.loading && this.props.length !== 0
                         ? <Loader/>
@@ -75,11 +75,12 @@ class ProjectListPanel extends Component {
                             <div className="row">
                                 {this.renderProjects(link)}
                                 <div className="col-md-4 mt-4">
-                                <NavLink to={"/project-catalog-add"}
-                                         className="border rounded d-flex align-items-center justify-content-center pl-2 pt-2">
-                                    <img src={add} style={{width: 150}} alt="icon-add"/>
-                                </NavLink>
-                            </div></div>
+                                    <NavLink to={"/project-catalog-add"}
+                                             className="border rounded d-flex align-items-center justify-content-center pl-2 pt-2">
+                                        <img src={add} style={{width: 150}} alt="icon-add"/>
+                                    </NavLink>
+                                </div>
+                            </div>
                         </React.Fragment>
                 }
             </div>
