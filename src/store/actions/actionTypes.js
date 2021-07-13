@@ -23,6 +23,9 @@ export const GET_NAVIGATION_SUCCESS = "GET_NAVIGATION_SUCCESS"
 // Post News
 export const CREATE_NEWS = 'CREATE_NEWS'
 export const RESET_NEWS = 'RESET_NEWS'
+// Get News
+export const FETCH_NEWS_SUCCESS = 'FETCH_NEWS_SUCCESS'
+export const FETCH_NEWS_NAVIGATOR = 'FETCH_NEWS_NAVIGATOR'
 // Post Clients
 export const CREATE_CLIENTS = 'CREATE_CLIENTS'
 export const RESET_CLIENTS = 'RESET_CLIENTS'

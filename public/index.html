@@ -55,6 +55,31 @@
     <script async src="https://diyorbekk.github.io/js/jquery.magnific-popup.js"></script>
     <script async src="https://diyorbekk.github.io/js/modernizr-2.6.2.min.js"></script>
     <script async src="https://diyorbekk.github.io/js/custom.js"></script>
+    <script>
+      $(document).ready(function () {
+        // ScrollIt
+        $.scrollIt({
+          upKey: 38,                // key code to navigate to the next section
+          downKey: 40,              // key code to navigate to the previous section
+          easing: 'swing',          // the easing function for animation
+          scrollTime: 600,          // how long (in ms) the animation takes
+          activeClass: 'active',    // class given to the active nav element
+          onPageChange: null,       // function(pageIndex) that is called when page is changed
+          topOffset: -70            // offste (in px) for fixed top navigation
+        });
+
+        $.scrollActive({
+          upKey: 38,                // key code to navigate to the next section
+          downKey: 40,              // key code to navigate to the previous section
+          easing: 'swing',          // the easing function for animation
+          scrollTime: 600,          // how long (in ms) the animation takes
+          activeClass: 'fadeInUp animated',    // class given to the active nav element
+          onPageChange: null,       // function(pageIndex) that is called when page is changed
+          topOffset: -500            // offste (in px) for fixed top navigation
+        });
+
+      })
+    </script>
   </body>
 
 

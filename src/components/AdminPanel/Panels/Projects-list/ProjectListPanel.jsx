@@ -65,8 +65,6 @@ class ProjectListPanel extends Component {
         })
         return (
             <div>
-
-
                 <h1>Catalog Projects</h1>
                 {
                     this.props.loading && this.props.length !== 0

@@ -11,8 +11,10 @@ import {
     FETCH_PROJECTS_SUCCESS,
     GET_CATALOG_SUCCESS,
     GET_NAVIGATION_SUCCESS,
+    FETCH_NEWS_SUCCESS,
 } from "./actionTypes";
 
+// Projects json
 export function fetchProjects() {
     return async dispatch => {
         dispatch(fetchProjectsStart())
@@ -37,7 +39,7 @@ export function fetchProjects() {
         }
     }
 }
-
+// Category json
 export function fetchProjectsCatalog() {
     return async dispatch => {
         dispatch(fetchProjectsStart())
@@ -61,7 +63,7 @@ export function fetchProjectsCatalog() {
         }
     }
 }
-
+// Projects ID json
 export function fetchProjectById() {
 
     return async dispatch => {
@@ -108,7 +110,7 @@ export function fetchProjectById() {
 
     }
 }
-
+// Category ID json
 export function fetchProjectCatalogById() {
 
     return async dispatch => {
@@ -153,7 +155,7 @@ export function fetchProjectCatalogById() {
 
     }
 }
-
+// Category ID json
 export function getProjectCategory(getCategoriesReturnType) {
 
     return async dispatch => {

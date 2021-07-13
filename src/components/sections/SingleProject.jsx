@@ -20,14 +20,12 @@ class SingleProject extends Component {
         })
 
         const options = {
-            loop: false,
             rewind: true,
             margin: 30,
             mouseDrag: true,
             autoplay: true,
             dots: true,
-            autoplayHoverPause: true,
-            smartSpeed: 1500,
+            smartSpeed: 500,
             responsive: {
                 0: {
                     items: 1
