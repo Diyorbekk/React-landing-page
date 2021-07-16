@@ -34,6 +34,15 @@ class CatalogSingleProject extends Component {
     }
 
     render() {
+        window.$(document).ready(function () {
+            window.$(this).attr("data-background")
+            let pageSection = window.$(".bg-img, section");
+            pageSection.each(function () {
+                if (window.$(this).attr("data-background")) {
+                    window.$(this).css("background-image", "url(" + window.$(this).data("background") + ")");
+                }
+            })
+        })
         return (
             <ContentWrapper>
                 <div className="banner-header banner-img valign bg-img bg-fixed"

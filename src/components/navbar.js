@@ -34,7 +34,7 @@ function NavigationBar() {
                     <p className="nav-link mb-0" data-scroll-nav="3">Services</p>
                 </li>
                 <li className="nav-item">
-                    <p className="nav-link mb-0" data-scroll-nav="4">Blog</p></li>
+                    <p className="nav-link mb-0" data-scroll-nav="4">News</p></li>
                 <li className="nav-item">
                     <p className="nav-link mb-0" data-scroll-nav="5">Contact</p>
                 </li>
@@ -74,7 +74,7 @@ function NavigationBar() {
                     <NavHashLink className="nav-link nav-color" data-active="/services" to="/#services" scroll={el => scrollWidthOffset(el)} >Services</NavHashLink>
                 </li>
                 <li className="nav-item">
-                    <NavHashLink className="nav-link nav-color" data-active="/blog" to="/#blog" scroll={el => scrollWidthOffset(el)}>Blog</NavHashLink>
+                    <NavHashLink className="nav-link nav-color" data-active="/blog" to="/#blog" scroll={el => scrollWidthOffset(el)}>News</NavHashLink>
                 </li>
                 <li className="nav-item">
                     <NavHashLink  className="nav-link nav-color" data-active="/contact" to="/#contact" scroll={el => scrollWidthOffset(el)}>Contact</NavHashLink>

@@ -16,16 +16,11 @@ class ErrorBoundary extends Component {
         // You can also log error messages to an error reporting service here
     }
 
-    refreshPage = (e) => {
-        e.preventDefault();
-        window.location.reload(false);
-    }
-
     render() {
         if (this.state.errorInfo) {
             return (
                 <div>
-                    <button onClick={this.refreshPage()}>
+                    <button>
                         Refresh Page
                     </button>
                 </div>

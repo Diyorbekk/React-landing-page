@@ -5,6 +5,7 @@ import ToTop from "./components/UI/ToTopButton";
 import Contents from "./components/contents";
 import Layout from "./components/Layout";
 import ProjectPage from "./components/ProjectPage";
+import NewsPage from "./components/NewsPage";
 import './assets/css/plugins.css';
 import './assets/css/style.css';
 import './customHooks/importScript';
@@ -23,6 +24,7 @@ import AdminProjectListSingleProject from "./components/AdminPanel/Panels/Projec
 // Admin Panel News
 import NewsPanel from "./components/AdminPanel/Panels/news/NewsPanel";
 import NewsEdit from "./components/AdminPanel/Panels/news/NewsEdit";
+import NewsSinglePage from "./components/AdminPanel/Panels/news/NewsSinglePage";
 
 //
 import PreLoader from "./components/preLoader";
@@ -47,12 +49,6 @@ const App = () => {
                 window.$(this).css("background-image", "url(" + window.$(this).data("background") + ")");
             }
         })
-        let banner = window.$(".owl-carousel");
-
-        if(typeof banner.data('owlCarousel') != 'undefined') {
-            banner.data('owlCarousel').destroy();
-            banner.removeClass('owl-carousel');
-        }
     })
 
 
@@ -174,6 +170,7 @@ const App = () => {
 
                                 <Route exact path="/slider-project/:id" component={AdminSliderSingleProject}/>
                                 <Route path="/projects-catalog/:id" component={AdminProjectListSingleProject}/>
+                                <Route path="/news-single/:id" component={NewsSinglePage}/>
                             </ScrollToTop>
 
                         </ErrorBoundary>
@@ -199,6 +196,7 @@ const App = () => {
                             <ToTop/>
                             <ScrollToTop>
                                 <Route path="/project/:id" component={ProjectPage}/>
+                                <Route path="/news/:id" component={NewsPage}/>
                                 <Route path="/services" exact component={Projects}/>
                                 <Route path="/" exact component={Contents}/>
                             </ScrollToTop>

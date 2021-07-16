@@ -8,7 +8,7 @@ import {
     FETCH_PROJECT_SINGLE_SUCCESS,
     FETCH_PROJECT_CATALOG_SUCCESS,
     FETCH_CATALOG_LIST_SUCCESS,
-    FETCH_CATALOG_SINGLE_SUCCESS, GET_CATALOG_SUCCESS, GET_NAVIGATION_SUCCESS,
+    FETCH_CATALOG_SINGLE_SUCCESS, GET_CATALOG_SUCCESS, GET_NAVIGATION_SUCCESS, FETCH_NEWS_SUCCESS,
 } from "../actions/actionTypes";
 
 
@@ -16,6 +16,7 @@ const initialState = {
     projects: [],
     category: [],
     GetCategory: [],
+    news: [],
     projectSingle: null,
     singleCatalog: null,
     projectList: [],
@@ -65,6 +66,10 @@ export default function quizReducer(state = initialState, action) {
         case GET_CATALOG_SUCCESS:
             return {
                 ...state, loading: false, GetCategory: action.GetCategory
+            }
+        case FETCH_NEWS_SUCCESS:
+            return {
+                ...state, loading: false, news: action.news
             }
         case GET_NAVIGATION_SUCCESS:
             return {

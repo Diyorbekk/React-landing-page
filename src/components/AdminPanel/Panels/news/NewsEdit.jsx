@@ -199,6 +199,8 @@ class NewsEdit extends Component {
                 const {projectTitle} = this.state.formControls;
 
                 const projectItem = {
+                    category: this.state.category,
+                    categoryName: this.state.categoryText,
                     projectTitle: projectTitle.value,
                     projectText: this.state.editor,
                     projectImgUrl: this.state.url,

@@ -14,6 +14,9 @@ import {
     FETCH_NEWS_SUCCESS,
 } from "./actionTypes";
 
+// Function Axios
+
+
 // Projects json
 export function fetchProjects() {
     return async dispatch => {
@@ -155,7 +158,7 @@ export function fetchProjectCatalogById() {
 
     }
 }
-// Category ID json
+// Category ID Return json
 export function getProjectCategory(getCategoriesReturnType) {
 
     return async dispatch => {
@@ -210,7 +213,7 @@ export function getProjectCategory(getCategoriesReturnType) {
 
     }
 }
-
+// Projects ID Return json
 export function fetchProjectByUrl(projectUrl) {
     return async dispatch => {
         dispatch(fetchProjectsStart())
@@ -229,7 +232,7 @@ export function fetchProjectByUrl(projectUrl) {
 
     }
 }
-
+// Category ID URL Return json
 export function fetchProjectCatalogByUrl(projectUrl) {
     return async dispatch => {
         dispatch(fetchProjectsStart())
@@ -247,11 +250,10 @@ export function fetchProjectCatalogByUrl(projectUrl) {
 
     }
 }
-
+// Category ID NAVIGATOR Return json
 export function fetchNextAndPrev(navigation) {
     return async dispatch => {
         dispatch(fetchProjectsStart())
-
         try {
             const response = await axios.get(`/category.json`);
             const projects = []
@@ -296,7 +298,97 @@ export function fetchNextAndPrev(navigation) {
 
     }
 }
+// News json
+export function fetchNews(navigation) {
+    return async dispatch => {
+        dispatch(fetchProjectsStart())
+        try {
+            const response = await axios.get('/news.json');
+            const news = [];
+            Object.keys(response.data).forEach((key, index) => {
+                news.push({
+                    id: key,
+                    name: `${index + 1}`,
+                })
+            });
 
+            console.log(navigation)
+
+            if (typeof(navigation) != "undefined"){
+                const response = await axios.get(`/news/${navigation}.json`);
+
+                const singleCatalog = response.data;
+
+                let previous = null
+                let next = null
+                let lastElement = news[news.length - 1].id;
+                let firstElement = news[0].id;
+
+                for (let i = 0; i < news.length; i++) {
+                    if (news[i].id === navigation) {
+
+                        // eslint-disable-next-line
+                        previous = news[i == 0 ? news.length - 1 : i - 1].id;
+                        // eslint-disable-next-line
+                        next = news[i == news.length - 1 ? 0 : i + 1].id;
+                        if (firstElement === navigation) {
+                            previous = null;
+                            // eslint-disable-next-line
+                            next = news[i == news.length - 1 ? 0 : i + 1].id;
+                        }
+
+                        if (lastElement === navigation) {
+                            // eslint-disable-next-line
+                            previous = news[i == 0 ? news.length - 1 : i - 1].id;
+                            next = null;
+                        }
+                    }
+                }
+
+
+                dispatch(fetchNewsSuccess(singleCatalog))
+                dispatch(fetchNavigationSuccess(previous, next))
+            }else {
+                const categoryKeys = response.data
+                const propOwn = Object.getOwnPropertyNames(categoryKeys);
+                const projectsTik = []
+                let projectList = []
+                let i = 0
+                let result = []
+
+                for (const key of propOwn) {
+                    i++
+                    projectsTik[key] = await axios.get(`/news/${key}.json`);
+                    projectList.push({
+                        data: projectsTik[key].data,
+                        path: key,
+                        id: i,
+                    })
+                }
+
+                projectList.map(project => {
+                        return project.data.map(projectsList2 => {
+                            return result.push({
+                                data: projectsList2,
+                                path: project.path
+                            })
+                        })
+                    }
+                )
+                dispatch(fetchNewsSuccess(result))
+            }
+        } catch (e) {
+            let dataEmpty = []
+            dispatch(fetchNewsSuccess(dataEmpty))
+            dispatch(fetchProjectsError(e))
+        }
+    }
+}
+
+// Function Actions
+
+
+// Projects ID json
 export function fetchProjectListSuccess(projectList) {
     return {
         type: FETCH_PROJECT_LIST_SUCCESS,
@@ -304,6 +396,7 @@ export function fetchProjectListSuccess(projectList) {
     }
 }
 
+// Category ID json
 export function fetchProjectCategoryListSuccess(categoryList) {
     return {
         type: FETCH_CATALOG_LIST_SUCCESS,
@@ -311,6 +404,7 @@ export function fetchProjectCategoryListSuccess(categoryList) {
     }
 }
 
+// Category ID Return json
 export function getProjectCategorySuccess(GetCategory) {
     return {
         type: GET_CATALOG_SUCCESS,
@@ -318,6 +412,7 @@ export function getProjectCategorySuccess(GetCategory) {
     }
 }
 
+// Projects ID Return json
 export function fetchSingleProjectSuccess(projectSingle) {
     return {
         type: FETCH_PROJECT_SINGLE_SUCCESS,
@@ -325,6 +420,7 @@ export function fetchSingleProjectSuccess(projectSingle) {
     }
 }
 
+// Category ID URL Return json
 export function fetchSingleProjectCategorySuccess(singleCatalog) {
     return {
         type: FETCH_CATALOG_SINGLE_SUCCESS,
@@ -332,6 +428,7 @@ export function fetchSingleProjectCategorySuccess(singleCatalog) {
     }
 }
 
+// Category ID NAVIGATOR Return json
 export function fetchNavigationSuccess(previous, next) {
     return {
         type: GET_NAVIGATION_SUCCESS,
@@ -346,6 +443,7 @@ export function fetchProjectsStart() {
     }
 }
 
+// Projects json
 export function fetchProjectsSuccess(projects) {
     return {
         type: FETCH_PROJECTS_SUCCESS,
@@ -353,10 +451,19 @@ export function fetchProjectsSuccess(projects) {
     }
 }
 
+// Category json
 export function fetchProjectsCatalogSuccess(category) {
     return {
         type: FETCH_PROJECT_CATALOG_SUCCESS,
         category
+    }
+}
+
+// News json
+export function fetchNewsSuccess(news) {
+    return {
+        type: FETCH_NEWS_SUCCESS,
+        news
     }
 }
 

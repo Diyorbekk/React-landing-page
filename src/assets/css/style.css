@@ -645,7 +645,7 @@ input[type="checkbox"] {
 }
 
 .owl-theme .owl-nav.disabled + .owl-dots {
-    margin-top: 0px;
+    margin-top: 0;
     line-height: .7;
     display: block;
 }
@@ -2178,8 +2178,8 @@ button.mfp-arrow {
 /* ======= Blog style ======= */
 .bauen-blog .item {
     position: relative;
-    overflow: hidden;
-    margin-bottom: 20px;
+    margin-bottom: 35px;
+    height: 380px;
 }
 
 .bauen-blog .item:hover img {
@@ -2203,6 +2203,8 @@ button.mfp-arrow {
     -webkit-transition: all .5s;
     transition: all .5s;
     -webkit-filter: brightness(100%);
+    object-fit: none;
+    object-position: 50% 50%;
 }
 
 .bauen-blog .item .con {
