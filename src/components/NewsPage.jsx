@@ -37,10 +37,10 @@ class NewsPage extends Component {
                 </section>
 
                 {
-                    this.props.loading || this.props.newsPage.length === 0
+                    this.props.loading || !this.props.newsPageSingle
                         ? <Loader/>
                         : <React.Fragment>{
-                            this.props.newsPage.map((single, index) => {
+                            this.props.newsPageSingle.map((single, index) => {
                                 return (
                                     <section className="pb-90" key={index}>
                                         <div className="container">
@@ -64,7 +64,7 @@ class NewsPage extends Component {
                             <div className="col-md-12">
                                 <div className="d-sm-flex align-items-center justify-content-between">
                                     {
-                                        this.props.newsPage.length === 0
+                                        !this.props.newsPageSingle
                                             ? <Loader/>
                                             : <React.Fragment>
                                                 <div className="projects-prev-next-left">
@@ -108,7 +108,7 @@ class NewsPage extends Component {
 
 function mapStateToProps(state) {
     return {
-        newsPage: state.project.news,
+        newsPageSingle: state.project.newsPage,
         previous: state.project.previous,
         nextProps: state.project.next,
         loading: state.project.loading

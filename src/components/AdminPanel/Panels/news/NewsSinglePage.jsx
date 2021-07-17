@@ -9,6 +9,7 @@ import Banner from "../../../../assets/img/banner.jpg";
 class NewsSinglePage extends Component {
     componentDidMount() {
         this.props.fetchNews(this.props.match.params.id)
+        console.log(this.props.newsPageSingle)
     }
 
     render() {
@@ -29,10 +30,10 @@ class NewsSinglePage extends Component {
                 </section>
 
                 {
-                    this.props.loading || this.props.newsPage.length === 0
+                    this.props.loading || !this.props.newsPageSingle
                         ? <Loader/>
                         : <React.Fragment>{
-                            this.props.newsPage.map((single, index) => {
+                            this.props.newsPageSingle.map((single, index) => {
                                 return (
                                     <section className="pb-90" key={index}>
                                         <div className="container">
@@ -58,7 +59,7 @@ class NewsSinglePage extends Component {
 
 function mapStateToProps(state) {
     return {
-        newsPage: state.project.news,
+        newsPageSingle: state.project.newsPage,
         loading: state.project.loading
     }
 }

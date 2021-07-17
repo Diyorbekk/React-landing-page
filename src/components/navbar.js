@@ -74,7 +74,7 @@ function NavigationBar() {
                     <NavHashLink className="nav-link nav-color" data-active="/services" to="/#services" scroll={el => scrollWidthOffset(el)} >Services</NavHashLink>
                 </li>
                 <li className="nav-item">
-                    <NavHashLink className="nav-link nav-color" data-active="/blog" to="/#blog" scroll={el => scrollWidthOffset(el)}>News</NavHashLink>
+                    <NavHashLink className="nav-link nav-color" data-active="/news" to="/#blog" scroll={el => scrollWidthOffset(el)}>News</NavHashLink>
                 </li>
                 <li className="nav-item">
                     <NavHashLink  className="nav-link nav-color" data-active="/contact" to="/#contact" scroll={el => scrollWidthOffset(el)}>Contact</NavHashLink>

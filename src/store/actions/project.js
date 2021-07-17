@@ -11,7 +11,7 @@ import {
     FETCH_PROJECTS_SUCCESS,
     GET_CATALOG_SUCCESS,
     GET_NAVIGATION_SUCCESS,
-    FETCH_NEWS_SUCCESS,
+    FETCH_NEWS_SUCCESS, FETCH_NEWS_NAVIGATOR,
 } from "./actionTypes";
 
 // Function Axios
@@ -272,7 +272,37 @@ export function fetchNextAndPrev(navigation) {
             for (let i = 0; i < projects.length; i++) {
                 if (projects[i].id === navigation) {
 
-                    // eslint-disable-next-line
+                    if (firstElement === navigation) {
+                        if (lastElement === navigation) {
+                            previous = null;
+                            next = null;
+                        } else {
+                            previous = null;
+                            // eslint-disable-next-line
+                            next = projects[i == projects.length - 1 ? 0 : i + 1].id;
+                        }
+
+                    } else {
+                        // eslint-disable-next-line
+                        previous = projects[i == 0 ? projects.length - 1 : i - 1].id;
+                    }
+
+                    if (lastElement === navigation) {
+                        if (firstElement === navigation) {
+                            previous = null;
+                            next = null;
+                        } else {
+                            // eslint-disable-next-line
+                            previous = projects[i == 0 ? projects.length - 1 : i - 1].id;
+                            next = null;
+                        }
+
+                    } else {
+                        // eslint-disable-next-line
+                        next = projects[i == projects.length - 1 ? 0 : i + 1].id;
+                    }
+
+/*                    // eslint-disable-next-line
                     previous = projects[i == 0 ? projects.length - 1 : i - 1].id;
                     // eslint-disable-next-line
                     next = projects[i == projects.length - 1 ? 0 : i + 1].id;
@@ -286,7 +316,7 @@ export function fetchNextAndPrev(navigation) {
                         // eslint-disable-next-line
                         previous = projects[i == 0 ? projects.length - 1 : i - 1].id;
                         next = null;
-                    }
+                    }*/
                 }
             }
 
@@ -312,8 +342,6 @@ export function fetchNews(navigation) {
                 })
             });
 
-            console.log(navigation)
-
             if (typeof(navigation) != "undefined"){
                 const response = await axios.get(`/news/${navigation}.json`);
 
@@ -323,30 +351,44 @@ export function fetchNews(navigation) {
                 let next = null
                 let lastElement = news[news.length - 1].id;
                 let firstElement = news[0].id;
-
                 for (let i = 0; i < news.length; i++) {
                     if (news[i].id === navigation) {
-
-                        // eslint-disable-next-line
-                        previous = news[i == 0 ? news.length - 1 : i - 1].id;
-                        // eslint-disable-next-line
-                        next = news[i == news.length - 1 ? 0 : i + 1].id;
                         if (firstElement === navigation) {
-                            previous = null;
+                            if (lastElement === navigation) {
+                                previous = null;
+                                next = null;
+                            } else {
+                                previous = null;
+                                // eslint-disable-next-line
+                                next = news[i == news.length - 1 ? 0 : i + 1].id;
+                            }
+
+                        } else {
                             // eslint-disable-next-line
-                            next = news[i == news.length - 1 ? 0 : i + 1].id;
+                            previous = news[i == 0 ? news.length - 1 : i - 1].id;
                         }
 
                         if (lastElement === navigation) {
+                            if (firstElement === navigation) {
+                                previous = null;
+                                next = null;
+                            } else {
+                                // eslint-disable-next-line
+                                previous = news[i == 0 ? news.length - 1 : i - 1].id;
+                                next = null;
+                            }
+
+                        } else {
                             // eslint-disable-next-line
-                            previous = news[i == 0 ? news.length - 1 : i - 1].id;
-                            next = null;
+                            next = news[i == news.length - 1 ? 0 : i + 1].id;
                         }
                     }
                 }
 
+                console.log(previous)
+                console.log(next)
 
-                dispatch(fetchNewsSuccess(singleCatalog))
+                dispatch(fetchNewsSingleSuccess(singleCatalog))
                 dispatch(fetchNavigationSuccess(previous, next))
             }else {
                 const categoryKeys = response.data
@@ -464,6 +506,14 @@ export function fetchNewsSuccess(news) {
     return {
         type: FETCH_NEWS_SUCCESS,
         news
+    }
+}
+
+// News Single json
+export function fetchNewsSingleSuccess(newsPage) {
+    return {
+        type: FETCH_NEWS_NAVIGATOR,
+        newsPage
     }
 }
 
