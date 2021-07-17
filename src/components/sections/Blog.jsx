@@ -67,43 +67,6 @@ class Blog extends Component {
                                                 )
                                             })
                                         }
-
-                                        {/*                                        <div className="item">
-                                            <div className="position-re o-hidden">
-                                                <img src={slider_2} alt="slider"/></div>
-                                            <div className="con"> <span className="category">
-                                        <Link to="blog.html">Interior</Link> - 18.12.2021
-                                    </span>
-                                                <h5>
-                                                    <Link to="post.html">Modernism in Architecture</Link>
-                                                </h5>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="position-re o-hidden">
-                                                <img src={slider_3} alt="slider"/>
-                                            </div>
-                                            <div className="con"> <span className="category">
-                                        <Link to="blog.html">Urban</Link> - 16.12.2021
-                                    </span>
-                                                <h5>
-                                                    <Link to="post.html">Postmodern Architecture</Link>
-                                                </h5>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="position-re o-hidden">
-                                                <img src={slider_4} alt=""/>
-                                            </div>
-                                            <div className="con">
-                                        <span className="category">
-                                    <Link to="blog.html">Planing</Link> - 14.12.2021
-                                </span>
-                                                <h5>
-                                                    <Link to="post.html">Modern Architecture Buildings</Link>
-                                                </h5>
-                                            </div>
-                                        </div>*/}
                                     </OwlCarousel>
                             }
                         </div>

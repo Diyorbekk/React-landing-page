@@ -29,6 +29,7 @@ import NewsSinglePage from "./components/AdminPanel/Panels/news/NewsSinglePage";
 //
 import PreLoader from "./components/preLoader";
 import Projects from "./components/sections/Projects";
+import NewsBlog from "./components/sections/NewsBlog";
 import ErrorBoundary from "./ErrorBoundary/ErrorBoundary";
 
 const App = () => {
@@ -198,6 +199,7 @@ const App = () => {
                                 <Route path="/project/:id" component={ProjectPage}/>
                                 <Route path="/news/:id" component={NewsPage}/>
                                 <Route path="/services" exact component={Projects}/>
+                                <Route path="/news-blog" exact component={NewsBlog}/>
                                 <Route path="/" exact component={Contents}/>
                             </ScrollToTop>
                         </Layout>

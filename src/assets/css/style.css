@@ -2203,8 +2203,9 @@ button.mfp-arrow {
     -webkit-transition: all .5s;
     transition: all .5s;
     -webkit-filter: brightness(100%);
-    object-fit: none;
+    object-fit: cover;
     object-position: 50% 50%;
+    height: 100%;
 }
 
 .bauen-blog .item .con {

@@ -80,7 +80,7 @@ class NewsPage extends Component {
                                                     }
 
                                                 </div>
-                                                <NavLink to={"/services"}><i className="ti-layout-grid3-alt"/></NavLink>
+                                                <NavLink to={"/news-blog"}><i className="ti-layout-grid3-alt"/></NavLink>
                                                 <div className="projects-prev-next-right">
                                                     {
                                                         this.props.nextProps === null
