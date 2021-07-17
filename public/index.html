@@ -17,28 +17,32 @@
     <script async src="https://diyorbekk.github.io/js/custom.js"></script>
     <script>
       $(document).ready(function () {
-        // ScrollIt
+        Pace.on('done', function() {
+          $('#preloader').delay(500).fadeOut(800);
+        });
+
         $.scrollIt({
-          upKey: 38,                // key code to navigate to the next section
-          downKey: 40,              // key code to navigate to the previous section
-          easing: 'swing',          // the easing function for animation
-          scrollTime: 600,          // how long (in ms) the animation takes
-          activeClass: 'active',    // class given to the active nav element
-          onPageChange: null,       // function(pageIndex) that is called when page is changed
-          topOffset: -70            // offset (in px) for fixed top navigation
+          upKey: 38,
+          downKey: 40,
+          easing: 'swing',
+          scrollTime: 600,
+          activeClass: 'active',
+          onPageChange: null,
+          topOffset: -70
         });
 
         $.scrollActive({
-          upKey: 38,                // key code to navigate to the next section
-          downKey: 40,              // key code to navigate to the previous section
-          easing: 'swing',          // the easing function for animation
-          scrollTime: 600,          // how long (in ms) the animation takes
-          activeClass: 'fadeInUp animated',    // class given to the active nav element
-          onPageChange: null,       // function(pageIndex) that is called when page is changed
-          topOffset: -500            // offset (in px) for fixed top navigation
+          upKey: 38,
+          downKey: 40,
+          easing: 'swing',
+          scrollTime: 600,
+          activeClass: 'fadeInUp animated',
+          onPageChange: null,
+          topOffset: -500
         });
-
       })
+
+
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
