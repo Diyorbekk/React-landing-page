@@ -25,7 +25,7 @@
 }*/
 
 
-function loadScript(src) {
+/*function loadScript(src) {
     return new Promise(function (resolve, reject) {
         let s;
         s = document.createElement('script');
@@ -34,5 +34,22 @@ function loadScript(src) {
         s.onerror = reject;
         document.header.appendChild(s);
     });
-}
-export default loadScript
+}*/
+
+import {useEffect} from "react";
+
+const useScript = url => {
+    useEffect(() => {
+        const script = document.createElement('script');
+
+        script.src = url;
+        script.async = true;
+
+        document.body.appendChild(script);
+
+        return () => {
+            document.body.removeChild(script);
+        }
+    }, [url]);
+};
+export default useScript

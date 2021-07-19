@@ -31,6 +31,7 @@ import PreLoader from "./components/preLoader";
 import Projects from "./components/sections/Projects";
 import NewsBlog from "./components/sections/NewsBlog";
 import ErrorBoundary from "./ErrorBoundary/ErrorBoundary";
+import useScript from "./customHooks/importScript";
 
 const App = () => {
     const history = useHistory();
@@ -41,17 +42,16 @@ const App = () => {
     const [passwordError, setPasswordError] = useState('');
     const [hasAccount, setHasAccount] = useState('');
     let location = false
-
-    window.$(document).ready(function () {
-        window.$(this).attr("data-background")
-        let pageSection = window.$(".bg-img, section");
-        pageSection.each(function () {
-            if (window.$(this).attr("data-background")) {
-                window.$(this).css("background-image", "url(" + window.$(this).data("background") + ")");
-            }
-        })
-    })
-
+    useScript('https://code.jquery.com/jquery-3.4.1.min.js');
+    useScript('https://diyorbekk.github.io/js/bootstrap.min.js');
+    useScript('https://diyorbekk.github.io/js/popper.min.js');
+    useScript('https://diyorbekk.github.io/js/owl.carousel.min.js');
+    useScript('https://diyorbekk.github.io/js/jquery.waypoints.min.js');
+    useScript('https://diyorbekk.github.io/js/scrollIt.min.js');
+    useScript('https://diyorbekk.github.io/js/jquery.stellar.min.js');
+    useScript('https://diyorbekk.github.io/js/jquery-migrate-3.0.0.min.js');
+    useScript('https://diyorbekk.github.io/js/jquery.magnific-popup.js');
+    useScript('https://diyorbekk.github.io/js/custom.js');
 
     const clearInputs = () => {
         setEmail('')
