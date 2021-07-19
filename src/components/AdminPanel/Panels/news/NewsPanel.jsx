@@ -12,7 +12,7 @@ class NewsPanel extends Component {
     deleteTutorial(props) {
         NewsDataService.delete(props)
             .then(() => {
-                return this.props.fetchProjectCatalogById()
+                return this.props.fetchNews()
             })
             .catch((e) => {
                 console.log(e);
@@ -21,6 +21,7 @@ class NewsPanel extends Component {
 
     renderProjects() {
         return this.props.newsList.map((projectsList, index) => {
+            console.log(projectsList.path)
             return (
                 <React.Fragment key={index}>
                     <div className="col-md-4 mt-4 d-flex flex-column">
@@ -55,7 +56,7 @@ class NewsPanel extends Component {
             <div>
                 <h1>News Projects</h1>
                 {
-                    this.props.loading && this.props.newsList.length === 0
+                    this.props.loading && this.props.length !== 0
                         ? <Loader/>
                         : <React.Fragment>
                             <div className="row">

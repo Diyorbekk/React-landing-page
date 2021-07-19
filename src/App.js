@@ -133,12 +133,19 @@ const App = () => {
 
     location = firebase.auth().currentUser !== null;
 
-
-
+    const navigatorOnLine = () => {
+        if (navigator.onLine
+        ) {
+            console.log('online');
+        } else {
+            console.log('offline');
+        }
+    }
 
 
     useEffect(() => {
         authListener()
+        navigatorOnLine()
         if (location === true) {
             let locationPath = window.location.pathname
             if (window.performance) {
