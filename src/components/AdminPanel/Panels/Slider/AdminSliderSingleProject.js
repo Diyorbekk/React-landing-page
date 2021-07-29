@@ -17,19 +17,31 @@ class AdminSliderSingleProject extends Component {
     componentDidMount() {
         const str = this.props.match.params.id;
         this.props.fetchProjectByUrl("-" + str)
+
+        window.$(document).ready(function () {
+            let owlItem = window.$('.swiper-slide')
+            window.$(owlItem).not('.swiper-slide-duplicate').find('h1').addClass('d-none');
+            window.$(owlItem).not('.swiper-slide-duplicate').find('p').addClass('d-none');
+            window.$(owlItem).not('.swiper-slide-duplicate').find('.butn-light').addClass('d-none');
+            window.$(owlItem).not('.swiper-slide-duplicate').find('h4').addClass('d-none');
+        })
     }
 
     sliderStart() {
         window.$(document).ready(function () {
             let item = window.$('.swiper-slide-prev, .swiper-slide-next');
             let owlItem = window.$('.swiper-slide')
+            window.$(owlItem).not('.swiper-slide-duplicate').find('h1').addClass('d-none');
+            window.$(owlItem).not('.swiper-slide-duplicate').find('p').addClass('d-none');
+            window.$(owlItem).not('.swiper-slide-duplicate').find('.butn-light').addClass('d-none')
+            window.$(owlItem).not('.swiper-slide-duplicate').find('h4').addClass('d-none');
             let owlItemActive = window.$('.swiper-slide-active, .swiper-slide-duplicate-active')
             let owlItemClone = window.$('.swiper-slide.swiper-slide-duplicate')
             if (owlItem.hasClass("swiper-slide-active") || owlItemClone.hasClass("swiper-slide-active")) {
-                window.$(owlItemActive).not('.swiper-slide-duplicate').find('h1').removeClass('animated fadeOutDown');
-                window.$(owlItemActive).not('.swiper-slide-duplicate').find('p').removeClass('animated fadeOutDown');
-                window.$(owlItemActive).not('.swiper-slide-duplicate').find('.butn-light').removeClass('animated fadeOutDown')
-                window.$(owlItemActive).not('.swiper-slide-duplicate').find('h4').removeClass('animated fadeOutDown');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('h1').removeClass('d-none animated fadeOutDown');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('p').removeClass('d-none animated fadeOutDown');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('.butn-light').removeClass('d-none animated fadeOutDown')
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('h4').removeClass('d-none animated fadeOutDown');
                 window.$(owlItemActive).not('.swiper-slide-duplicate').find('h1').addClass('animated fadeInUp');
                 window.$(owlItemActive).not('.swiper-slide-duplicate').find('p').addClass('animated fadeInUp');
                 window.$(owlItemActive).not('.swiper-slide-duplicate').find('.butn-light').addClass('animated fadeInUp')
@@ -40,10 +52,10 @@ class AdminSliderSingleProject extends Component {
                 window.$('p').removeClass('animated fadeInUp');
                 window.$('.butn-light').removeClass('animated fadeInUp');
             }
-            window.$(item).not('.swiper-slide-duplicate').find('h1').addClass('animated fadeOutDown');
-            window.$(item).not('.swiper-slide-duplicate').find('p').addClass('animated fadeOutDown');
-            window.$(item).not('.swiper-slide-duplicate').find('.butn-light').addClass('animated fadeOutDown')
-            window.$(item).not('.swiper-slide-duplicate').find('h4').addClass('animated fadeOutDown');
+            window.$(item).not('.swiper-slide-duplicate').find('h1').addClass('d-none animated fadeOutDown');
+            window.$(item).not('.swiper-slide-duplicate').find('p').addClass('d-none animated fadeOutDown');
+            window.$(item).not('.swiper-slide-duplicate').find('.butn-light').addClass('d-none animated fadeOutDown')
+            window.$(item).not('.swiper-slide-duplicate').find('h4').addClass('d-none animated fadeOutDown');
 
         })
     }

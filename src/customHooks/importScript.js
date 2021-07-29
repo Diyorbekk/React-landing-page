@@ -44,11 +44,12 @@ const useScript = url => {
 
         script.src = url;
         script.async = true;
+        script.defer = true;
 
-        document.body.appendChild(script);
+        document.getElementsByTagName('head')[0].appendChild(script);
 
         return () => {
-            document.body.removeChild(script);
+            document.getElementsByTagName('head')[0].removeChild(script);
         }
     }, [url]);
 };

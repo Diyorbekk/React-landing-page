@@ -37,11 +37,15 @@ class Header extends Component {
             let owlItem = window.$('.swiper-slide')
             let owlItemActive = window.$('.swiper-slide-active, .swiper-slide-duplicate-active')
             let owlItemClone = window.$('.swiper-slide.swiper-slide-duplicate')
+            window.$(owlItem).not('.swiper-slide-duplicate').find('h1').addClass('d-none');
+            window.$(owlItem).not('.swiper-slide-duplicate').find('p').addClass('d-none');
+            window.$(owlItem).not('.swiper-slide-duplicate').find('.butn-light').addClass('d-none')
+            window.$(owlItem).not('.swiper-slide-duplicate').find('h4').addClass('d-none');
             if (owlItem.hasClass("swiper-slide-active") || owlItemClone.hasClass("swiper-slide-active")) {
-                window.$(owlItemActive).not('.swiper-slide-duplicate').find('h1').removeClass('animated fadeOutDown');
-                window.$(owlItemActive).not('.swiper-slide-duplicate').find('p').removeClass('animated fadeOutDown');
-                window.$(owlItemActive).not('.swiper-slide-duplicate').find('.butn-light').removeClass('animated fadeOutDown')
-                window.$(owlItemActive).not('.swiper-slide-duplicate').find('h4').removeClass('animated fadeOutDown');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('h1').removeClass('d-none animated fadeOutDown');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('p').removeClass('d-none animated fadeOutDown');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('.butn-light').removeClass('d-none animated fadeOutDown')
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('h4').removeClass('d-none animated fadeOutDown');
                 window.$(owlItemActive).not('.swiper-slide-duplicate').find('h1').addClass('animated fadeInUp');
                 window.$(owlItemActive).not('.swiper-slide-duplicate').find('p').addClass('animated fadeInUp');
                 window.$(owlItemActive).not('.swiper-slide-duplicate').find('.butn-light').addClass('animated fadeInUp')
@@ -56,6 +60,7 @@ class Header extends Component {
             window.$(item).not('.swiper-slide-duplicate').find('p').addClass('animated fadeOutDown');
             window.$(item).not('.swiper-slide-duplicate').find('.butn-light').addClass('animated fadeOutDown')
             window.$(item).not('.swiper-slide-duplicate').find('h4').addClass('animated fadeOutDown');
+
 
         })
     }
@@ -95,9 +100,9 @@ class Header extends Component {
                                                             <div className="row">
                                                                 <div className="col-md-7 col-xl-8">
                                                                     <div className="o-hidden">
-                                                                        <h1>{project.projectTitle}</h1>
+                                                                        <h1 className="animated fadeInUp">{project.projectTitle}</h1>
                                                                         <hr/>
-                                                                        <p dangerouslySetInnerHTML={{__html: project.projectText}}/>
+                                                                        <p className="animated fadeInUp" dangerouslySetInnerHTML={{__html: project.projectText}}/>
                                                                     </div>
                                                                 </div>
                                                             </div>
