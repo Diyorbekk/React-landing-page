@@ -8,9 +8,21 @@ import InputFile from "../../../UI/InputFileAdmin/InputFile";
 import Button from "../../../UI/Button/Button";
 import {createProject, finishCreateProject} from "../../../../store/actions/create";
 import {connect} from "react-redux";
-import OwlCarousel from "react-owl-carousel2";
 import CompletedCheck from "../../../UI/completedCheck/completedCheck";
 import $ from 'jquery';
+import {Swiper, SwiperSlide} from "swiper/react";
+import SwiperCore, {
+    EffectFade,
+    Lazy,
+    Autoplay,
+    Navigation
+} from 'swiper/core';
+
+import "swiper/swiper.min.css";
+import "swiper/components/effect-fade/effect-fade.min.css"
+import "swiper/components/lazy/lazy.min.css"
+import "swiper/components/navigation/navigation.min.css"
+
 window.jQuery = $;
 window.$ = $;
 
@@ -24,8 +36,14 @@ function createFormControls() {
     }
 }
 
+const navigation = {
+    nextEl: ".owl-next",
+    prevEl: ".owl-prev "
+};
+
 let refTextarea = "textarea"
 let valueInput = ""
+
 
 class SliderEdit extends Component {
 
@@ -73,7 +91,7 @@ class SliderEdit extends Component {
             for (let i = 0; i < file.length; i++) {
                 let fileName = file[i].name
                 let fileNameSlice = fileName.slice(0, fileName.indexOf('.'))
-                if(fileNameSlice.length < 4){
+                if (fileNameSlice.length < 4) {
                     window.$(document).ready(function () {
                         window.$('.__lk-fileInput span').removeClass('right');
                         window.$('.__lk-fileInput .multiple-file').addClass('error');
@@ -245,7 +263,7 @@ class SliderEdit extends Component {
         const formControls = {...this.state.formControls};
         const control = {...formControls[controlName]};
         // eslint-disable-next-line
-        if (this.state.textTitle.length == valueInput.length){
+        if (this.state.textTitle.length == valueInput.length) {
             this.setState({
                 lookChange: false,
                 lookCheck: true,
@@ -267,7 +285,7 @@ class SliderEdit extends Component {
 
     editorChange(event) {
         event.preventDefault();
-        document.getElementById("textBox").addEventListener("input", function(e) {
+        document.getElementById("textBox").addEventListener("input", function (e) {
             console.log(refTextarea.innerHTML.trim());
         }, false);
         // eslint-disable-next-line
@@ -311,9 +329,38 @@ class SliderEdit extends Component {
 
     }
 
+    sliderStart() {
+        window.$(document).ready(function () {
+            let item = window.$('.swiper-slide-prev, .swiper-slide-next');
+            let owlItem = window.$('.swiper-slide')
+            let owlItemActive = window.$('.swiper-slide-active, .swiper-slide-duplicate-active')
+            let owlItemClone = window.$('.swiper-slide.swiper-slide-duplicate')
+            if (owlItem.hasClass("swiper-slide-active") || owlItemClone.hasClass("swiper-slide-active")) {
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('h1').removeClass('animated fadeOutDown');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('p').removeClass('animated fadeOutDown');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('.butn-light').removeClass('animated fadeOutDown')
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('h4').removeClass('animated fadeOutDown');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('h1').addClass('animated fadeInUp');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('p').addClass('animated fadeInUp');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('.butn-light').addClass('animated fadeInUp')
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('h4').addClass('animated fadeInUp');
+            } else {
+                window.$('h4').removeClass('animated fadeInUp');
+                window.$('h1').removeClass('animated fadeInUp');
+                window.$('p').removeClass('animated fadeInUp');
+                window.$('.butn-light').removeClass('animated fadeInUp');
+            }
+            window.$(item).not('.swiper-slide-duplicate').find('h1').addClass('animated fadeOutDown');
+            window.$(item).not('.swiper-slide-duplicate').find('p').addClass('animated fadeOutDown');
+            window.$(item).not('.swiper-slide-duplicate').find('.butn-light').addClass('animated fadeOutDown')
+            window.$(item).not('.swiper-slide-duplicate').find('h4').addClass('animated fadeOutDown');
+
+        })
+    }
+
     renderProjects(e) {
         if (e === false) {
-            if(this.state.lookCheck) {
+            if (this.state.lookCheck) {
                 return (
                     <div className="col-12">
                         Please check save 🔁
@@ -327,54 +374,47 @@ class SliderEdit extends Component {
                 )
             }
         } else {
-
-
-            const options = {
-                items: 1,
-                loop: true,
-                dots: false,
-                margin: 0,
-                autoplay: true,
-                smartSpeed: 500,
-                nav: true,
-                animateOut: 'fadeOut',
-                navText: ['<i class="ti-angle-left" aria-hidden="true"></i>', '<i class="ti-angle-right" aria-hidden="true"></i>']
-            };
-            const events = {
-                onChanged: function (event) {
-                    let item = event.item.index - 2;     // Position of the current item
-                    window.$('h4').removeClass('animated fadeInUp');
-                    window.$('h1').removeClass('animated fadeInUp');
-                    window.$('p').removeClass('animated fadeInUp');
-                    window.$('.butn-light').removeClass('animated fadeInUp');
-                    window.$('.owl-item').not('.cloned').eq(item).find('h4').addClass('animated fadeInUp');
-                    window.$('.owl-item').not('.cloned').eq(item).find('h1').addClass('animated fadeInUp');
-                    window.$('.owl-item').not('.cloned').eq(item).find('p').addClass('animated fadeInUp');
-                    window.$('.owl-item').not('.cloned').eq(item).find('.butn-light').addClass('animated fadeInUp');
-                }
-            };
             return this.state.url.map((projects, index) => {
+                SwiperCore.use([EffectFade, Navigation, Lazy, Autoplay]);
                 return (
                     <div className="col-12 slider-fade" key={index}>
-                        <OwlCarousel clasname="owl-carousel owl-theme" options={options} events={events}>
-                            <div className="text-left item bg-img" data-overlay-dark="3" key={index}
-                                 style={{backgroundImage: `url(${projects})`}}>
-                                <div className="v-bottom caption">
-                                    <div className="container">
-                                        <div className="row">
-                                            <div className="col-md-7">
-                                                <div className="o-hidden">
-                                                    <h1>{this.state.textTitle}</h1>
-                                                    <hr/>
-                                                    <p className="text-white"
-                                                       dangerouslySetInnerHTML={{__html: this.state.editorText}}/>
+                        <Swiper
+                            navigation={navigation}
+                            effect={'fade'}
+                            lazy={true}
+                            loop={true}
+                            autoplay={{
+                                delay: 5000,
+                                disableOnInteraction: false
+                            }}
+                            grabCursor={true}
+                            onSlideChange={() => this.sliderStart()}
+                            className="header-slider">
+                            <SwiperSlide key={index}>
+                                <div className="text-left item bg-img swiper-lazy" data-overlay-dark="3"
+                                     style={{backgroundImage: `url(${projects})`}}>
+                                    <div className="v-bottom caption">
+                                        <div className="container">
+                                            <div className="row">
+                                                <div className="col-md-7">
+                                                    <div className="o-hidden">
+                                                        <h1>{this.state.textTitle}</h1>
+                                                        <hr/>
+                                                        <p className="text-white"
+                                                           dangerouslySetInnerHTML={{__html: this.state.editorText}}/>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </OwlCarousel>
+                                <div className="swiper-lazy-preloader swiper-lazy-preloader-white"/>
+                            </SwiperSlide>
+                        </Swiper>
+                        <div className="owl-nav">
+                            <div className="owl-prev"><i className="ti-angle-left" aria-hidden="true"/></div>
+                            <div className="owl-next"><i className="ti-angle-right" aria-hidden="true"/></div>
+                        </div>
                     </div>
                 )
             })
@@ -434,7 +474,8 @@ class SliderEdit extends Component {
                                              aria-valuemin="0"
                                              aria-valuemax="100"
                                              style={{width: this.state.progress + "%"}}
-                                        >{this.state.progress} %</div>
+                                        >{this.state.progress} %
+                                        </div>
 
                                     </div>
                                     <br/>

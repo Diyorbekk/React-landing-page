@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import OwlCarousel from 'react-owl-carousel2';
 import quot from '../../assets/img/quot.png'
 import team_1 from '../../assets/img/team/1.jpg'
 import team_2 from '../../assets/img/team/2.jpg'
@@ -7,32 +6,26 @@ import team_3 from '../../assets/img/team/3.jpg'
 import team_4 from '../../assets/img/team/4.jpg'
 import ModalVideo from 'react-modal-video'
 import 'react-modal-video/css/modal-video.min.css';
+import {Swiper, SwiperSlide} from "swiper/react";
+import SwiperCore, {
+    Pagination,
+    Lazy,
+    Autoplay,
+    Navigation
+} from 'swiper/core';
+
+import "swiper/swiper.min.css";
+import "swiper/components/lazy/lazy.min.css"
+import "swiper/components/navigation/navigation.min.css"
+import "swiper/components/pagination/pagination.min.css"
 
 const PromoVideos = () => {
     const [isOpen, setOpen] = useState(false)
 
 
-    const options = {
-        loop: true,
-        margin: 30,
-        mouseDrag: true,
-        autoplay: false,
-        dots: true,
-        nav: false,
-        navText: ["<span class='lnr ti-angle-left'></span>", "<span class='lnr ti-angle-right'></span>"],
-        responsive: {
-            0: {
-                items: 1,
-            },
-            600: {
-                items: 1
-            },
-            1000: {
-                items: 1
-            }
-        }
-    }
+    SwiperCore.use([Pagination, Navigation, Lazy, Autoplay]);
     return (
+
         <section className="testimonials">
             <div className="background bg-img bg-fixed section-padding pb-0" data-background="img/banner2.jpg"
                  data-overlay-dark="3">
@@ -41,7 +34,8 @@ const PromoVideos = () => {
                         <div className="col-md-6">
                             <div className="vid-area">
                                 <div className="vid-icon">
-                                    <ModalVideo channel='custom' autoplay isOpen={isOpen} url="https://player.vimeo.com/video/537816640?title=0&portrait=0&byline=0&autoplay=1"
+                                    <ModalVideo channel='custom' autoplay isOpen={isOpen}
+                                                url="https://player.vimeo.com/video/537816640?title=0&portrait=0&byline=0&autoplay=1"
                                                 onClose={() => setOpen(false)}/>
 
                                     <p className="play-button" onClick={() => setOpen(true)}>
@@ -69,23 +63,46 @@ const PromoVideos = () => {
                                 <div className="head-box">
                                     <h4>What Client's Say?</h4>
                                 </div>
-                                <OwlCarousel clasname="owl-carousel owl-theme" options={options}>
-                                    <div className="item">
+                                <Swiper
+                                        autoplay={{
+                                            delay: 5000,
+                                            disableOnInteraction: false
+                                        }}
+                                        lazy={true}
+                                        spaceBetween={30}
+                                        grabCursor={true}
+                                        pagination={true}
+                                        slidesPerView={1} breakpoints={{
+                                    "0": {
+                                        "slidesPerView": 1,
+                                    },
+                                    "600": {
+                                        "slidesPerView": 1,
+                                    },
+                                    "1000": {
+                                        "slidesPerView": 1,
+                                    }
+                                }} className="project-slider">
+                                    <SwiperSlide>
+                                        <div className="item swiper-lazy">
                                             <span className="quote">
                                             <img src={quot} alt="quot"/>
                                             </span>
-                                        <p>Architect dapibus augue metus the nec feugiat erat hendrerit nec. Duis ve
-                                            ante the lemon sanleo nec feugiat erat hendrerit necuis ve ante.</p>
-                                        <div className="info">
-                                            <div className="author-img">
-                                                <img src={team_1} alt="teams"/>
-                                            </div>
-                                            <div className="cont">
-                                                <h6>Jason Brown</h6> <span>Crowne Plaza Owner</span>
+                                            <p>Architect dapibus augue metus the nec feugiat erat hendrerit nec. Duis ve
+                                                ante the lemon sanleo nec feugiat erat hendrerit necuis ve ante.</p>
+                                            <div className="info">
+                                                <div className="author-img">
+                                                    <img src={team_1} alt="teams"/>
+                                                </div>
+                                                <div className="cont">
+                                                    <h6>Jason Brown</h6> <span>Crowne Plaza Owner</span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="item">
+                                        <div className="swiper-lazy-preloader swiper-lazy-preloader-white"/>
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                        <div className="item swiper-lazy">
                                             <span className="quote">
                                             <img src={quot} alt="quot"/>
                                         </span>
@@ -100,7 +117,10 @@ const PromoVideos = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="item">
+                                        <div className="swiper-lazy-preloader swiper-lazy-preloader-white"/>
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                        <div className="item swiper-lazy">
                                             <span className="quote">
                                             <img src={quot} alt="quot"/>
                                         </span>
@@ -115,7 +135,10 @@ const PromoVideos = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="item">
+                                        <div className="swiper-lazy-preloader swiper-lazy-preloader-white"/>
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                        <div className="item swiper-lazy">
                                             <span className="quote">
                                             <img src={quot} alt="quot"/>
                                         </span>
@@ -130,7 +153,12 @@ const PromoVideos = () => {
                                             </div>
                                         </div>
                                     </div>
-                                </OwlCarousel>
+                                        <div className="swiper-lazy-preloader swiper-lazy-preloader-white"/>
+                                    </SwiperSlide>
+
+
+
+                                </Swiper>
                             </div>
                         </div>
                     </div>
@@ -139,7 +167,6 @@ const PromoVideos = () => {
         </section>
     )
 }
-
 
 
 export default PromoVideos;

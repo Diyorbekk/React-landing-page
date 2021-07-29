@@ -45,7 +45,6 @@ const App = () => {
     useScript('https://code.jquery.com/jquery-3.4.1.min.js');
     useScript('https://diyorbekk.github.io/js/bootstrap.min.js');
     useScript('https://diyorbekk.github.io/js/popper.min.js');
-    useScript('https://diyorbekk.github.io/js/owl.carousel.min.js');
     useScript('https://diyorbekk.github.io/js/jquery.waypoints.min.js');
     useScript('https://diyorbekk.github.io/js/scrollIt.min.js');
     useScript('https://diyorbekk.github.io/js/jquery.stellar.min.js');

@@ -43,8 +43,6 @@ class NewsPanel extends Component {
                 </React.Fragment>
             )
         })
-
-
     }
 
     componentDidMount() {

@@ -1,16 +1,28 @@
 import React, {Component} from "react";
 import {NavLink} from "react-router-dom";
-import OwlCarousel from 'react-owl-carousel2';
 import {fetchProjectCatalogById, fetchProjectsCatalog} from "../../store/actions/project";
 import {connect} from "react-redux";
 import Loader from "../UI/Loader/Loader";
+import {Swiper, SwiperSlide} from "swiper/react";
+import SwiperCore, {
+    Pagination,
+    Lazy,
+    Autoplay,
+    Navigation
+} from 'swiper/core';
 
-// Projects owlCarousel
+import "swiper/swiper.min.css";
+import "swiper/components/lazy/lazy.min.css"
+import "swiper/components/navigation/navigation.min.css"
+import "swiper/components/pagination/pagination.min.css"
+
+// Projects
 
 class SingleProject extends Component {
     componentDidMount() {
         this.props.fetchProjectsCatalog()
         this.props.fetchProjectCatalogById()
+
     }
 
     render() {
@@ -18,26 +30,7 @@ class SingleProject extends Component {
         const link = this.props.categoryUrl.map((projectsUrl) => {
             return projectsUrl.id
         })
-
-        const options = {
-            rewind: true,
-            margin: 30,
-            mouseDrag: true,
-            autoplay: true,
-            dots: true,
-            smartSpeed: 500,
-            responsive: {
-                0: {
-                    items: 1
-                },
-                600: {
-                    items: 2
-                },
-                1000: {
-                    items: 2
-                }
-            }
-        }
+        SwiperCore.use([Pagination, Navigation, Lazy, Autoplay]);
         return (
             <section id="projects" className="projects section-padding" data-scroll-index="2">
                 <div className="container">
@@ -52,37 +45,62 @@ class SingleProject extends Component {
                             {
                                 this.props.loading || this.props.categoryList.length === 0
                                     ? <Loader/>
-                                    : <OwlCarousel clasname="owl-carousel owl-theme" options={options}>
+                                    : <Swiper
+                                        autoplay={{
+                                            delay: 5000,
+                                            disableOnInteraction: false
+                                        }}
+                                        lazy={true}
+                                        spaceBetween={30}
+                                        grabCursor={true}
+                                        pagination={true}
+                                        slidesPerView={2} breakpoints={{
+                                        "0": {
+                                            "slidesPerView": 1,
+                                        },
+                                        "600": {
+                                            "slidesPerView": 2,
+                                        },
+                                        "1000": {
+                                            "slidesPerView": 2,
+                                        }
+                                    }} className="project-slider">
+
                                         {
                                             this.props.categoryList.map((projectsList, index) => {
                                                 return (
-                                                    <div className="item" key={index}>
-                                                        <NavLink to={"/project/" + link[index]} className="h-100 d-block">
-                                                            {
-                                                                projectsList.categoryData.map((listCategory, number) => {
-                                                                    return (
-                                                                        <React.Fragment key={number}>
-                                                                            <div className="position-re o-hidden h-100">
-                                                                                <img src={listCategory.projectImgUrl[0]}
-                                                                                     alt={listCategory.projectImgUrl[0]} loading={"lazy"}/>
-                                                                            </div>
-                                                                            <div className="con">
-                                                                                <h6>{projectsList.categoryName}</h6>
-                                                                                <h5>{listCategory.projectTitle}</h5>
-                                                                                <div className="line"/>
-                                                                                <i className="ti-arrow-right"/>
-                                                                            </div>
-                                                                        </React.Fragment>
-                                                                    )
-                                                                })
-                                                            }
-                                                        </NavLink>
-                                                    </div>
+                                                    <SwiperSlide key={index}>
+                                                        <div className="item swiper-lazy">
+                                                            <NavLink to={"/project/" + link[index]}
+                                                                     className="h-100 d-block">
+                                                                {
+                                                                    projectsList.categoryData.map((listCategory, number) => {
+                                                                        return (
+                                                                            <React.Fragment key={number}>
+                                                                                <div className="position-re o-hidden h-100">
+                                                                                    <img src={listCategory.projectImgUrl[0]}
+                                                                                         alt={listCategory.projectImgUrl[0]}
+                                                                                         loading={"lazy"}/>
+                                                                                </div>
+                                                                                <div className="con">
+                                                                                    <h6>{projectsList.categoryName}</h6>
+                                                                                    <h5>{listCategory.projectTitle}</h5>
+                                                                                    <div className="line"/>
+                                                                                    <i className="ti-arrow-right"/>
+                                                                                </div>
+                                                                            </React.Fragment>
+                                                                        )
+                                                                    })
+                                                                }
+                                                            </NavLink>
+                                                        </div>
+                                                        <div className="swiper-lazy-preloader swiper-lazy-preloader-white"/>
+                                                    </SwiperSlide>
                                                 )
                                             })
                                         }
 
-                                    </OwlCarousel>
+                                    </Swiper>
                             }
 
                         </div>

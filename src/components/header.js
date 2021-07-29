@@ -2,11 +2,28 @@ import React, {Component} from 'react';
 import {fetchProjectById, fetchProjects} from "../store/actions/project";
 import {connect} from "react-redux";
 import Loader from "./UI/Loader/Loader";
-import OwlCarousel from "react-owl-carousel2";
 import image from "../assets/img/projects/1.jpg"
 import $ from 'jquery';
+import {Swiper, SwiperSlide} from "swiper/react";
+import SwiperCore, {
+    EffectFade,
+    Lazy,
+    Autoplay,
+    Navigation
+} from 'swiper/core';
+
+import "swiper/swiper.min.css";
+import "swiper/components/effect-fade/effect-fade.min.css"
+import "swiper/components/lazy/lazy.min.css"
+import "swiper/components/navigation/navigation.min.css"
+
 window.jQuery = $;
 window.$ = $;
+const navigation = {
+    nextEl: ".owl-next",
+    prevEl: ".owl-prev "
+};
+
 
 class Header extends Component {
 
@@ -14,58 +31,37 @@ class Header extends Component {
         this.props.fetchProjectById()
     }
 
-    render() {
-        const options = {
-            items: 1,
-            loop: true,
-            dots: false,
-            margin: 0,
-            autoplay: true,
-            smartSpeed: 500,
-            nav: true,
-            animateOut: 'fadeOut',
-            navText: ['<i class="ti-angle-left" aria-hidden="true"></i>', '<i class="ti-angle-right" aria-hidden="true"></i>']
-        };
-        const events = {
-            onChanged: function (event) {
-                window.$(document).ready(function () {
-                    var item = event.item.index - 2;
-                    window.$('h4').removeClass('animated fadeInUp');
-                    window.$('h1').removeClass('animated fadeInUp');
-                    window.$('p').removeClass('animated fadeInUp');
-                    window.$('p').removeClass('animated fadeInUp');
-                    window.$('.butn-light').removeClass('animated fadeInUp');
-
-                    let pageSection = window.$(".bg-img, section");
-                    pageSection.each(function () {
-                        if (window.$(this).attr("data-background")) {
-                            window.$(this).css("background-image", "url(" + window.$(this).data("background") + ")");
-                        }
-                    });
-                    let owlItem = window.$('.owl-item')
-/*                    let owlItemActive = window.$('.owl-item.active')
-                    let owlItemClone = window.$('.owl-item.cloned')*/
-
-                    window.$(owlItem).not('.cloned').eq(item).removeClass('animated owl-animated-out fadeOut');
-                    window.$(owlItem).not('.cloned').eq(item).find('h4').addClass('animated fadeInUp');
-                    window.$(owlItem).not('.cloned').eq(item).find('h1').addClass('animated fadeInUp');
-                    window.$(owlItem).not('.cloned').eq(item).find('p').addClass('animated fadeInUp');
-                    window.$(owlItem).not('.cloned').eq(item).find('.butn-light').addClass('animated fadeInUp');
-/*                    if (owlItem.hasClass("active") || owlItemClone.hasClass("active")) {
-                        window.$(owlItemActive).not('.cloned').find('h1').addClass('animated fadeInUp');
-                        window.$(owlItemActive).not('.cloned').find('p').addClass('animated fadeInUp');
-                        setTimeout(function () {
-                            window.$(owlItemActive).not('.cloned').find('h1').removeClass('animated fadeInUp')
-                            window.$(owlItemActive).not('.cloned').find('p').removeClass('animated fadeInUp')
-                            window.$(owlItemActive).removeClass('animated owl-animated-out fadeOut')
-                        }, 2000);
-                    }*/
-                })
-
+    sliderStart() {
+        window.$(document).ready(function () {
+            let item = window.$('.swiper-slide-prev, .swiper-slide-next');
+            let owlItem = window.$('.swiper-slide')
+            let owlItemActive = window.$('.swiper-slide-active, .swiper-slide-duplicate-active')
+            let owlItemClone = window.$('.swiper-slide.swiper-slide-duplicate')
+            if (owlItem.hasClass("swiper-slide-active") || owlItemClone.hasClass("swiper-slide-active")) {
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('h1').removeClass('animated fadeOutDown');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('p').removeClass('animated fadeOutDown');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('.butn-light').removeClass('animated fadeOutDown')
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('h4').removeClass('animated fadeOutDown');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('h1').addClass('animated fadeInUp');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('p').addClass('animated fadeInUp');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('.butn-light').addClass('animated fadeInUp')
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('h4').addClass('animated fadeInUp');
+            } else {
+                window.$('h4').removeClass('animated fadeInUp');
+                window.$('h1').removeClass('animated fadeInUp');
+                window.$('p').removeClass('animated fadeInUp');
+                window.$('.butn-light').removeClass('animated fadeInUp');
             }
-        };
+            window.$(item).not('.swiper-slide-duplicate').find('h1').addClass('animated fadeOutDown');
+            window.$(item).not('.swiper-slide-duplicate').find('p').addClass('animated fadeOutDown');
+            window.$(item).not('.swiper-slide-duplicate').find('.butn-light').addClass('animated fadeOutDown')
+            window.$(item).not('.swiper-slide-duplicate').find('h4').addClass('animated fadeOutDown');
 
+        })
+    }
 
+    render() {
+        SwiperCore.use([EffectFade, Navigation, Lazy, Autoplay]);
         return (
             <header id="home" className="header slider-fade" data-scroll-index="0">
                 <div className="header slider-fade">
@@ -73,32 +69,53 @@ class Header extends Component {
                     {
                         this.props.loading || this.props.projectList.length === 0
                             ? <Loader/>
-                            :
-                            <OwlCarousel clasname="owl-carousel owl-theme" options={options} events={events}>
-                                {this.props.projectList.map((project, index) => {
+                            : <React.Fragment>
+                                <Swiper
+                                    navigation={navigation}
+                                    effect={'fade'}
+                                    lazy={true}
+                                    loop={true}
+                                    autoplay={{
+                                        delay: 5000,
+                                        disableOnInteraction: false
+                                    }}
+                                    grabCursor={true}
+                                    onSlideChange={() => this.sliderStart()}
+                                    className="header-slider">
+                                    {this.props.projectList.map((project, index) => {
 
-                                    return (
-                                        <div className="text-left item bg-img" key={index} data-overlay-dark="3"
-                                             data-background={project.projectImgUrl || image}>
-                                            <div className="v-bottom caption">
-                                                <div className="container">
-                                                    <div className="row">
-                                                        <div className="col-md-7 col-xl-8">
-                                                            <div className="o-hidden">
-                                                                <h1>{project.projectTitle}</h1>
-                                                                <hr/>
-                                                                <p dangerouslySetInnerHTML={{__html: project.projectText}}/>
+                                        return (
+                                            <SwiperSlide key={index}>
+                                                <div className="text-left item bg-img swiper-lazy"
+                                                     style={{backgroundImage: `url(${project.projectImgUrl || image})`}}
+                                                     data-overlay-dark="3"
+                                                     data-background={project.projectImgUrl || image}>
+                                                    <div className="v-bottom caption">
+                                                        <div className="container">
+                                                            <div className="row">
+                                                                <div className="col-md-7 col-xl-8">
+                                                                    <div className="o-hidden">
+                                                                        <h1>{project.projectTitle}</h1>
+                                                                        <hr/>
+                                                                        <p dangerouslySetInnerHTML={{__html: project.projectText}}/>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                            </OwlCarousel>
-
+                                                <div className="swiper-lazy-preloader swiper-lazy-preloader-white"/>
+                                            </SwiperSlide>
+                                        )
+                                    })}
+                                </Swiper>
+                                <div className="owl-nav">
+                                    <div className="owl-prev"><i className="ti-angle-left" aria-hidden="true"/></div>
+                                    <div className="owl-next"><i className="ti-angle-right" aria-hidden="true"/></div>
+                                </div>
+                            </React.Fragment>
                     }
+
                 </div>
             </header>
         );

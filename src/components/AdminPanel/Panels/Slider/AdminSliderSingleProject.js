@@ -1,51 +1,56 @@
 import React, {Component} from "react";
-import OwlCarousel from "react-owl-carousel2";
 import {connect} from "react-redux";
 import {fetchProjectByUrl} from "../../../../store/actions/project";
 import Loader from "../../../UI/Loader/Loader";
 import $ from 'jquery';
+import {Swiper, SwiperSlide} from "swiper/react";
+import SwiperCore, {Autoplay, EffectFade, Lazy, Navigation} from "swiper";
 window.jQuery = $;
 window.$ = $;
 
-
+const navigation = {
+    nextEl: ".owl-next",
+    prevEl: ".owl-prev "
+};
 class AdminSliderSingleProject extends Component {
 
     componentDidMount() {
         const str = this.props.match.params.id;
         this.props.fetchProjectByUrl("-" + str)
+    }
 
+    sliderStart() {
+        window.$(document).ready(function () {
+            let item = window.$('.swiper-slide-prev, .swiper-slide-next');
+            let owlItem = window.$('.swiper-slide')
+            let owlItemActive = window.$('.swiper-slide-active, .swiper-slide-duplicate-active')
+            let owlItemClone = window.$('.swiper-slide.swiper-slide-duplicate')
+            if (owlItem.hasClass("swiper-slide-active") || owlItemClone.hasClass("swiper-slide-active")) {
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('h1').removeClass('animated fadeOutDown');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('p').removeClass('animated fadeOutDown');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('.butn-light').removeClass('animated fadeOutDown')
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('h4').removeClass('animated fadeOutDown');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('h1').addClass('animated fadeInUp');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('p').addClass('animated fadeInUp');
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('.butn-light').addClass('animated fadeInUp')
+                window.$(owlItemActive).not('.swiper-slide-duplicate').find('h4').addClass('animated fadeInUp');
+            } else {
+                window.$('h4').removeClass('animated fadeInUp');
+                window.$('h1').removeClass('animated fadeInUp');
+                window.$('p').removeClass('animated fadeInUp');
+                window.$('.butn-light').removeClass('animated fadeInUp');
+            }
+            window.$(item).not('.swiper-slide-duplicate').find('h1').addClass('animated fadeOutDown');
+            window.$(item).not('.swiper-slide-duplicate').find('p').addClass('animated fadeOutDown');
+            window.$(item).not('.swiper-slide-duplicate').find('.butn-light').addClass('animated fadeOutDown')
+            window.$(item).not('.swiper-slide-duplicate').find('h4').addClass('animated fadeOutDown');
+
+        })
     }
 
     render() {
-        const options = {
-            items: 1,
-            loop: true,
-            dots: false,
-            margin: 0,
-            autoplay: true,
-            smartSpeed: 500,
-            nav: true,
-            animateOut: 'fadeOut',
-            navText: ['<i class="ti-angle-left" aria-hidden="true"></i>', '<i class="ti-angle-right" aria-hidden="true"></i>']
-        };
+        SwiperCore.use([EffectFade, Navigation, Lazy, Autoplay]);
 
-        const events = {
-            onChanged: function () {
-                window.$(document).ready(function () {
-                    let owlItem = window.$('.owl-item')
-                    let owlItemActive = window.$('.owl-item.active')
-                    let owlItemClone = window.$('.owl-item.cloned')
-                    if (owlItem.hasClass("active") || owlItemClone.hasClass("active")) {
-                        window.$(owlItemActive).not('.cloned').find('h1').addClass('animated fadeInUp');
-                        window.$(owlItemActive).not('.cloned').find('p').addClass('animated fadeInUp');
-                        setTimeout(function() {
-                            window.$(owlItemActive).not('.cloned').find('h1').removeClass('animated fadeInUp')
-                            window.$(owlItemActive).not('.cloned').find('p').removeClass('animated fadeInUp')
-                        }, 2000);
-                    }
-                })
-            }
-        };
 
         return (
             <React.Fragment>
@@ -55,10 +60,22 @@ class AdminSliderSingleProject extends Component {
                         : this.props.project.map((project, index) => {
                             return (
                                 <div className="header slider-fade" key={index}>
-                                    <OwlCarousel clasname="owl-carousel owl-theme" options={options} events={events}>
+                                    <Swiper
+                                        navigation={navigation}
+                                        effect={'fade'}
+                                        lazy={true}
+                                        loop={true}
+                                        autoplay={{
+                                            delay: 5000,
+                                            disableOnInteraction: false
+                                        }}
+                                        grabCursor={true}
+                                        onSlideChange={() => this.sliderStart()}
+                                        className="header-slider">
                                         {project.projectImgUrl.map((projectBg, index) => {
                                             return (
-                                                <div className="text-left item bg-img" data-overlay-dark="3" key={index}
+                                                <SwiperSlide key={index}>
+                                                <div className="text-left item bg-img swiper-lazy" data-overlay-dark="3"
                                                          style={{backgroundImage: `url(${projectBg})`}}>
                                                 <div className="v-bottom caption">
                                                     <div className="container">
@@ -74,10 +91,16 @@ class AdminSliderSingleProject extends Component {
                                                     </div>
                                                 </div>
                                             </div>
+                                                    <div className="swiper-lazy-preloader swiper-lazy-preloader-white"/>
+                                                </SwiperSlide>
                                             )
                                         })}
 
-                                    </OwlCarousel>
+                                    </Swiper>
+                                    <div className="owl-nav">
+                                        <div className="owl-prev"><i className="ti-angle-left" aria-hidden="true"/></div>
+                                        <div className="owl-next"><i className="ti-angle-right" aria-hidden="true"/></div>
+                                    </div>
                                 </div>
                             )
                         })
