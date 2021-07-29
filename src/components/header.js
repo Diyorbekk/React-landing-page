@@ -35,13 +35,9 @@ class Header extends Component {
         window.$(document).ready(function () {
             let item = window.$('.swiper-slide-prev, .swiper-slide-next');
             let owlItem = window.$('.swiper-slide')
-            let owlItemActive = window.$('.swiper-slide-active, .swiper-slide-duplicate-active')
-            let owlItemClone = window.$('.swiper-slide.swiper-slide-duplicate')
-            window.$(owlItem).not('.swiper-slide-duplicate').find('h1').addClass('d-none');
-            window.$(owlItem).not('.swiper-slide-duplicate').find('p').addClass('d-none');
-            window.$(owlItem).not('.swiper-slide-duplicate').find('.butn-light').addClass('d-none')
-            window.$(owlItem).not('.swiper-slide-duplicate').find('h4').addClass('d-none');
-            if (owlItem.hasClass("swiper-slide-active") || owlItemClone.hasClass("swiper-slide-active")) {
+            let attr = window.$('.swiper-slide.swiper-slide-duplicate-active')
+            let owlItemActive = window.$('.swiper-slide-active,.swiper-slide.swiper-slide-duplicate-active')
+            if (owlItem.hasClass("swiper-slide-active") || owlItem.hasClass("swiper-slide-duplicate-active")) {
                 window.$(owlItemActive).not('.swiper-slide-duplicate').find('h1').removeClass('d-none animated fadeOutDown');
                 window.$(owlItemActive).not('.swiper-slide-duplicate').find('p').removeClass('d-none animated fadeOutDown');
                 window.$(owlItemActive).not('.swiper-slide-duplicate').find('.butn-light').removeClass('d-none animated fadeOutDown')
@@ -50,6 +46,14 @@ class Header extends Component {
                 window.$(owlItemActive).not('.swiper-slide-duplicate').find('p').addClass('animated fadeInUp');
                 window.$(owlItemActive).not('.swiper-slide-duplicate').find('.butn-light').addClass('animated fadeInUp')
                 window.$(owlItemActive).not('.swiper-slide-duplicate').find('h4').addClass('animated fadeInUp');
+                window.$(attr).find('h1').removeClass('d-none animated fadeOutDown');
+                window.$(attr).find('p').removeClass('d-none animated fadeOutDown');
+                window.$(attr).find('.butn-light').removeClass('d-none animated fadeOutDown')
+                window.$(attr).find('h4').removeClass('d-none animated fadeOutDown')
+                window.$(attr).find('h1').addClass('animated fadeInUp');
+                window.$(attr).find('p').addClass('animated fadeInUp');
+                window.$(attr).find('.butn-light').addClass('animated fadeInUp')
+                window.$(attr).find('h4').addClass('animated fadeInUp');
             } else {
                 window.$('h4').removeClass('animated fadeInUp');
                 window.$('h1').removeClass('animated fadeInUp');
@@ -60,7 +64,6 @@ class Header extends Component {
             window.$(item).not('.swiper-slide-duplicate').find('p').addClass('animated fadeOutDown');
             window.$(item).not('.swiper-slide-duplicate').find('.butn-light').addClass('animated fadeOutDown')
             window.$(item).not('.swiper-slide-duplicate').find('h4').addClass('animated fadeOutDown');
-
 
         })
     }
