@@ -35,7 +35,7 @@
     <title>RENDERTIME INTERIOR STUDIO</title>
     <script async src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script async data-pace-options='{ "ajax": false }'
-            src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
+            src="custom/pace.js"></script>
 
 </head>
 <body>
@@ -52,13 +52,6 @@
   To begin the development, run `npm start` or `yarn start`.
   To create a production bundle, use `npm run build` or `yarn build`.
 -->
-<script>
-    $(document).ready(function () {
-        Pace.on('done', function () {
-            $('#preloader').delay(500).fadeOut(800);
-        });
-    })
-</script>
 </body>
 
 

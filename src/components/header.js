@@ -93,16 +93,15 @@ class Header extends Component {
                                             <SwiperSlide key={index}>
                                                 <div className="text-left item bg-img swiper-lazy"
                                                      style={{backgroundImage: `url(${project.projectImgUrl || image})`}}
-                                                     data-overlay-dark="3"
-                                                     data-background={project.projectImgUrl || image}>
+                                                     data-overlay-dark="3">
                                                     <div className="v-bottom caption">
                                                         <div className="container">
                                                             <div className="row">
                                                                 <div className="col-md-7 col-xl-8">
                                                                     <div className="o-hidden">
-                                                                        <h1 className="animated fadeInUp">{project.projectTitle}</h1>
+                                                                        <h1 className="d-none animated fadeInUp">{project.projectTitle}</h1>
                                                                         <hr/>
-                                                                        <p className="animated fadeInUp" dangerouslySetInnerHTML={{__html: project.projectText}}/>
+                                                                        <p className="d-none animated fadeInUp" dangerouslySetInnerHTML={{__html: project.projectText}}/>
                                                                     </div>
                                                                 </div>
                                                             </div>

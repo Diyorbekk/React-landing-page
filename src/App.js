@@ -51,7 +51,13 @@ const App = () => {
     useScript('https://diyorbekk.github.io/js/jquery-migrate-3.0.0.min.js');
     useScript('https://diyorbekk.github.io/js/jquery.magnific-popup.js');
     useScript('https://diyorbekk.github.io/js/custom.js');
-
+    document.write('<script>\n' +
+        '    $(document).ready(function () {\n' +
+        '        Pace.on(\'done\', function () {\n' +
+        '            $(\'#preloader\').delay(500).fadeOut(800);\n' +
+        '        });\n' +
+        '    })\n' +
+        '</script>');
     const clearInputs = () => {
         setEmail('')
         setPassword('')
