@@ -94,7 +94,7 @@ class SingleProject extends Component {
                                                                 }
                                                             </NavLink>
                                                         </div>
-                                                        <div className="swiper-lazy-preloader swiper-lazy-preloader-white"/>
+                                                        <div className="swiper-lazy-preloader swiper-lazy-preloader-black"/>
                                                     </SwiperSlide>
                                                 )
                                             })

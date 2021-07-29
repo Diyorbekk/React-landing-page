@@ -77,7 +77,7 @@ class Blog extends Component {
                                                                 </div>
                                                             </NavLink>
                                                         </div>
-                                                        <div className="swiper-lazy-preloader swiper-lazy-preloader-white"/>
+                                                        <div className="swiper-lazy-preloader swiper-lazy-preloader-black"/>
                                                     </SwiperSlide>
                                                 )
                                             })

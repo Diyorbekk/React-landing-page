@@ -99,7 +99,7 @@ const PromoVideos = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="swiper-lazy-preloader swiper-lazy-preloader-white"/>
+                                        <div className="swiper-lazy-preloader swiper-lazy-preloader-black"/>
                                     </SwiperSlide>
                                     <SwiperSlide>
                                         <div className="item swiper-lazy">
@@ -117,7 +117,7 @@ const PromoVideos = () => {
                                             </div>
                                         </div>
                                     </div>
-                                        <div className="swiper-lazy-preloader swiper-lazy-preloader-white"/>
+                                        <div className="swiper-lazy-preloader swiper-lazy-preloader-black"/>
                                     </SwiperSlide>
                                     <SwiperSlide>
                                         <div className="item swiper-lazy">
@@ -135,7 +135,7 @@ const PromoVideos = () => {
                                             </div>
                                         </div>
                                     </div>
-                                        <div className="swiper-lazy-preloader swiper-lazy-preloader-white"/>
+                                        <div className="swiper-lazy-preloader swiper-lazy-preloader-black"/>
                                     </SwiperSlide>
                                     <SwiperSlide>
                                         <div className="item swiper-lazy">
@@ -153,7 +153,7 @@ const PromoVideos = () => {
                                             </div>
                                         </div>
                                     </div>
-                                        <div className="swiper-lazy-preloader swiper-lazy-preloader-white"/>
+                                        <div className="swiper-lazy-preloader swiper-lazy-preloader-black"/>
                                     </SwiperSlide>
 
 
