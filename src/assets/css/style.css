@@ -1891,6 +1891,7 @@ hr {
 .gallery-item {
     position: relative;
     padding-top: 20px;
+    width: 100%;
 }
 
 .gallery-box {

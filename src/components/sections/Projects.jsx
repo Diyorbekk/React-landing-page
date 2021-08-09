@@ -6,8 +6,10 @@ import {connect} from "react-redux";
 import {GalleryItem, LightBoxGallery} from "@sekmet/react-magnific-popup";
 import Loader from "../UI/LoaderMinHeight/Loader";
 import {withRouter} from "react-router-dom";
+import Footer from "../Footer";
 
 let timeOut = false
+
 class Projects extends Component {
     state = {
         categoryTitle: "Architecture",
@@ -109,10 +111,10 @@ class Projects extends Component {
     categoryClick = (el) => {
         if (el === true) {
             if (this.state.time === false) {
-                setTimeout(()=> {
+                setTimeout(() => {
                     return timeOut = true
                 }, 2000);
-                if(timeOut === true) {
+                if (timeOut === true) {
                     return (
                         <div className="empty-category">There are no photos in this category</div>
                     )
@@ -122,10 +124,10 @@ class Projects extends Component {
                     )
                 }
             } else {
-                setTimeout(()=> {
+                setTimeout(() => {
                     return timeOut = true
                 }, 2000);
-                if(timeOut === true) {
+                if (timeOut === true) {
                     this.setState({
                         time: false
                     })
@@ -141,6 +143,7 @@ class Projects extends Component {
         }
 
     }
+
     projectLink(el) {
         this.props.history.push('/project/' + el);
     }
@@ -290,8 +293,13 @@ class Projects extends Component {
                         </div>
                     </div>
                 </section>
+
+                {/*<!-- Footer -->*/}
+                <Footer/>
             </ContentWrapper>
-        )
+
+
+    )
     }
 }
 

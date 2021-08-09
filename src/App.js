@@ -32,7 +32,13 @@ import Projects from "./components/sections/Projects";
 import NewsBlog from "./components/sections/NewsBlog";
 import ErrorBoundary from "./ErrorBoundary/ErrorBoundary";
 import useScript from "./customHooks/importScript";
-
+document.write('<script>\n' +
+    '    $(document).ready(function () {\n' +
+    '        Pace.on(\'done\', function () {\n' +
+    '            $(\'#preloader\').delay(500).fadeOut(800);\n' +
+    '        });\n' +
+    '    })\n' +
+    '</script>');
 const App = () => {
     const history = useHistory();
     const [user, setUser] = useState('');
@@ -51,13 +57,7 @@ const App = () => {
     useScript('https://diyorbekk.github.io/js/jquery-migrate-3.0.0.min.js');
     useScript('https://diyorbekk.github.io/js/jquery.magnific-popup.js');
     useScript('https://diyorbekk.github.io/js/custom.js');
-    document.write('<script>\n' +
-        '    $(document).ready(function () {\n' +
-        '        Pace.on(\'done\', function () {\n' +
-        '            $(\'#preloader\').delay(500).fadeOut(800);\n' +
-        '        });\n' +
-        '    })\n' +
-        '</script>');
+
     const clearInputs = () => {
         setEmail('')
         setPassword('')
@@ -137,20 +137,8 @@ const App = () => {
     }
 
     location = firebase.auth().currentUser !== null;
-
-    const navigatorOnLine = () => {
-        if (navigator.onLine
-        ) {
-            console.log('online');
-        } else {
-            console.log('offline');
-        }
-    }
-
-
     useEffect(() => {
         authListener()
-        navigatorOnLine()
         if (location === true) {
             let locationPath = window.location.pathname
             if (window.performance) {
