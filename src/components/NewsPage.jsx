@@ -6,29 +6,33 @@ import {connect} from "react-redux";
 import {fetchNews} from "../store/actions/project";
 import {NavLink} from "react-router-dom";
 import Footer from "./Footer";
+import $ from "jquery";
 
-
+$(document).ready(function () {
+    $('#preloader').delay(1500).fadeOut(800)
+    $(this).attr("data-background")
+    let pageSection = $(".bg-img, section");
+    pageSection.each(function () {
+        if ($(this).attr("data-background")) {
+            $(this).css("background-image", "url(" + $(this).data("background") + ")");
+        }
+    })
+})
 class NewsPage extends Component {
     componentDidMount() {
         this.props.fetchNews(this.props.match.params.id)
+
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.location !== prevProps.location) {
             this.props.fetchNews(this.props.match.params.id)
         }
+
     }
 
     render() {
-        window.$(document).ready(function () {
-            window.$(this).attr("data-background")
-            let pageSection = window.$(".bg-img, section");
-            pageSection.each(function () {
-                if (window.$(this).attr("data-background")) {
-                    window.$(this).css("background-image", "url(" + window.$(this).data("background") + ")");
-                }
-            })
-        })
+
 
         return (
             <ContentWrapper>

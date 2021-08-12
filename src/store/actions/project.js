@@ -200,8 +200,14 @@ export function getProjectCategory(getCategoriesReturnType) {
 
             if (result.length === 0) {
                 result = null
+                setTimeout(function () {
+                    dispatch(getProjectCategorySuccess(null))
+
+                }, 500);
+
             }
             dispatch(getProjectCategorySuccess(result))
+
 
 
         } catch (e) {

@@ -103,7 +103,7 @@ class Projects extends Component {
         if (parseInt(el.target.id) === 7) {
             this.setState({
                 categoryTitle: "Decor Plan",
-                categoryText: "A Decor plan, or 3D floorplan, is a virtual model of a building floor plan, depicted from a birds eye view, utilized within the building industry to better convey architectural plans. Usually built to scale, a 3D floor plan must include walls and a floor and typically includes exterior wall fenestrations, windows, and doorways. It does not include a ceiling so as not to obstruct the view. Other common attributes may be added, but are not required, such as cabinets, flooring, bathroom fixtures, paint color, wall tile, and other interior finishes. Furniture may be added to assist in communicating proper home staging and interior design.[1]"
+                categoryText: "A Decor plan, or 3D floorplan, is a virtual model of a building floor plan, depicted from a birds eye view, utilized within the building industry to better convey architectural plans. Usually built to scale, a 3D floor plan must include walls and a floor and typically includes exterior wall fenestrations, windows, and doorways. It does not include a ceiling so as not to obstruct the view. Other common attributes may be added, but are not required, such as cabinets, flooring, bathroom fixtures, paint color, wall tile, and other interior finishes. Furniture may be added to assist in communicating proper home staging and interior design"
             })
         }
     }
@@ -113,20 +113,18 @@ class Projects extends Component {
             if (this.state.time === false) {
                 setTimeout(() => {
                     return timeOut = true
-                }, 2000);
+                }, 1);
                 if (timeOut === true) {
                     return (
                         <div className="empty-category">There are no photos in this category</div>
                     )
                 } else {
-                    return (
-                        <Loader/>
-                    )
+                    return <Loader/>
                 }
             } else {
                 setTimeout(() => {
                     return timeOut = true
-                }, 2000);
+                }, 1);
                 if (timeOut === true) {
                     this.setState({
                         time: false
@@ -138,8 +136,6 @@ class Projects extends Component {
                 }
 
             }
-        } else {
-            return false
         }
 
     }
@@ -193,9 +189,9 @@ class Projects extends Component {
                                 <p>{this.state.categoryText}</p>
                                 <React.Fragment>
                                     {
-                                        this.props.loading || this.props.category === null
+                                        this.props.category == null || this.props.loading
                                             ? this.categoryClick(true)
-                                            : this.props.category.length === 0
+                                            : this.props.category.length == null
                                             ? <Loader/>
                                             : <LightBoxGallery
                                                 className="popup-gallery"
